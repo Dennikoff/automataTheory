@@ -1,6 +1,6 @@
 import random
 import sys
-
+import datetime as dt
 import AppClass
 import randomizer as ran
 
@@ -41,6 +41,7 @@ elif choice == 3:
 	appobject = AppClass.AppClass()
 	k = int(input("Введите кол-во строк"))
 	lst = ran.generate(k)
+	date = dt.datetime.now()
 	for i in lst:
 		if appobject.CheckString(i) == False:
 			result = "not acceptable"
@@ -48,6 +49,14 @@ elif choice == 3:
 		else:
 			result = "acceptable"
 		print(f"The string \"{i}\" is {result}")
+	print(date, '\n', dt.datetime.now() - date)
+	ch = int(input("Введите(1), если хотите записать в файл"))
+	if ch == 1:
+		fname = input("Введите имя файла\n")
+		f = open(fname + '.txt', 'w')
+		for i in lst:
+			f.write(i + '\n')
+		f.close()
 elif choice == 4:
 	fname = input("Введите имя файла\n")
 	f = open(fname+'.txt', 'w')

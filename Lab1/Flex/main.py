@@ -2,6 +2,7 @@ import random
 import randomizer as ran
 import sys
 import Flex
+import datetime as dt
 # rg = regex.Regex()
 # rg.checkStringRG("kek: lol orbidol")
 # print(rg.aim)
@@ -13,6 +14,7 @@ if choice == 1:
     fname = input("Введите имя файла\n")
     f = open(fname+'.txt', 'r')
     lx = Flex.LexAnalyser()
+    date = dt.datetime.now()
     for line in f:
         line = line[:-1]
         if not(lx.analyse(line)):
@@ -21,6 +23,7 @@ if choice == 1:
         else:
             result = "acceptable"
         print('The string "%s" is %s.\n' % (line, result))
+    print(dt.datetime.now() - date)
     statistics = {}
     for i in lx.set:
         if lx.dict.get(i) != None:

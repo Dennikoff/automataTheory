@@ -1,6 +1,7 @@
 import random
 import sys
 import regex
+import datetime as dt
 import randomizer as ran
 
 # rg = regex.Regex()
@@ -11,19 +12,19 @@ success = 0
 dictstr = {}
 choice = int(input("Откуда вы хотите читать\n1-Файл\n2-Клавиатура\n3-Генерация\n4-Запись в файл\n"))
 if choice == 1:
-    count = 1
     fname = input("Введите имя файла\n")
     f = open(fname+'.txt', 'r')
     rg = regex.Regex()
+    date = dt.datetime.now()
     for line in f:
         line = line[:-1]
-        count +=1
         if not(rg.checkStringRG(line)):
             result = "not acceptable"
             retcode = 1
         else:
             result = "acceptable"
         print('The string "%s" is %s.\n' % (line, result))
+    print(dt.datetime.now() - date)
     f.close()
     statistics = {}
     for i in rg.set:
@@ -45,13 +46,15 @@ elif choice == 3:
     rg = regex.Regex()
     k = int(input("Введите кол-во строк"))
     lst = ran.generate(k)
+    date = dt.datetime.now()
     for i in lst:
         if rg.checkStringRG(i) == False:
             result = "not acceptable"
             retcode = 1
         else:
             result = "acceptable"
-            print(f"The string \"{i}\" is {result}")
+        print(f"The string \"{i}\" is {result}")
+    print(dt.datetime.now() - date)
 elif choice == 4:
     fname = input("Введите имя файла\n")
     f = open(fname+'.txt', 'w')

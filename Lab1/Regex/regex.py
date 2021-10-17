@@ -11,6 +11,8 @@ class Regex:
 
     def checkStringRG(self, text):
         allresults = re.match(Pattern, text)
+        if text[0] == 'C' and text[1] == 'P':
+            print()
         if allresults:
             str = allresults.group('kk')
             str = re.sub(r'\s+', ' ', str)

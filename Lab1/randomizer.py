@@ -29,7 +29,7 @@ def generate(j):
                 if random.random() < 0.5:
                     lst.append(r.xeger(Pattern_Incorrect))
                 else:
-                    lst.append(r.rstr(string.digits + string.ascii_letters + '._: ', 30, 70, include=':'))
+                    lst.append(r.xeger(Pattern_Incorrect))#r.rstr(string.digits + string.ascii_letters + '._: ', 30, 70, include=':'))
             else:
                 lst.append(r.xeger(Pattern_Incorrect_Symbols))
     return lst
