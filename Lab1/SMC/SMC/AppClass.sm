@@ -1,0 +1,66 @@
+%start Map1::Start
+%class AppClass
+
+%map Map1
+%%
+// State        Transition          End State       Action(s)
+Start
+{
+                Space               Start           {}
+                Digit               Error           {}
+                Colon               Error           {}
+                Letter              B               {addSubStr();}
+}
+
+B
+{
+                Letter              B               {addSubStr();}
+                Digit               B               {addSubStr();}
+                Space               C               {}
+                Colon               D               {addToList(); clearSubStr();}
+}
+
+C
+{
+                Letter              Error           {}
+                Digit               Error           {}
+                Space               C               {}
+                Colon               D               {addToList(); clearSubStr();}
+}
+
+D
+{
+                Letter              E               {addSubStr();}
+                Space               D               {}
+                Colon               Error           {}
+                Digit               Error           {}
+                EOS                 Start           {Acceptable(); fillSetAndDict(); clearApp();}
+}
+
+E
+{
+                Letter              E               {addSubStr();}
+                Digit               E               {addSubStr();}
+                Space [ctxt.InTheList()]     D      {addToList(); clearSubStr();}
+                Space               Error           {}
+                Colon               Error           {}
+                EOS  [ctxt.InTheList()]     Start   {Acceptable(); addToList(); fillSetAndDict(); clearApp();}
+}
+
+Error
+{
+                Letter              Error           {}
+                Digit               Error           {}
+                Space               Error           {}
+                Colon               Error           {}
+}
+
+Final {}
+
+Default
+{
+                Unknown             Error           {}
+                EOS                 Start           {Unacceptable(); clearApp();}
+}
+
+%%
