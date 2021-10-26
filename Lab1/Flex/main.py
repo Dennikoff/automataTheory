@@ -44,6 +44,7 @@ elif choice == 3:
     lx = Flex.LexAnalyser()
     k = int(input("Введите кол-во строк"))
     lst = ran.generate(k)
+    date = dt.datetime.now()
     for i in lst:
         if lx.analyse(i) == False:
             result = "not acceptable"
@@ -52,6 +53,7 @@ elif choice == 3:
             result = "acceptable"
         print(f"The string \"{i}\" is {result}")
     statistics = {}
+    print(dt.datetime.now() - date)
     for i in lx.set:
         if lx.dict.get(i) != None:
             statistics[i] = lx.dict[i]
