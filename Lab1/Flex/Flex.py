@@ -21,7 +21,7 @@ class LexAnalyser:
         return t
 
     def t_AIMNAME(self, t):
-        r"[A-Za-z][A-Za-z0-9\._]*"
+        r"[A-Za-z\._][A-Za-z0-9\._]*"
         return t
 
     def t_error(self, t):
