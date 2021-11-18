@@ -34,6 +34,13 @@ def make_nka(tree):
         cur_start.add_child('~', cur_end)
         cur_start.add_child('~', arg1)
         return cur_start
+    if tree.root == '+':
+        cur_end = Nka.Nka()
+        cur_start = Nka.Nka()
+        arg1.add_child_loop('~', arg1)
+        arg1.add_child_tail('~', cur_end)
+        cur_start.add_child('~', arg1)
+        return cur_start
 
 
 
