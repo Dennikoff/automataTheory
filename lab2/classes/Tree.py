@@ -29,11 +29,12 @@ class Tree:
     def is_left(self):
         return self.left == None
 
-def print_tree(tree, tab = -1, end = '\n'):
+def print_tree(tree, kek = -1,tab = -1, end = '\n'):
     if tree == None:
         return
     tab+=1
-    print_tree(tree.right, tab)
-    print('     '*tab, tree.root, sep='', end=end)
-    print_tree(tree.left, tab)
+    kek+=1
+    print_tree(tree.right,kek, tab)
+    print(kek, '     '*tab, tree.root, sep='', end=end)
+    print_tree(tree.left, kek, tab)
 

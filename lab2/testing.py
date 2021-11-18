@@ -1,7 +1,5 @@
 import random
-import sys
 from collections import namedtuple as nt
-import Tree as tr
 
 m_symbols = set('|*/+{}[]()%$.-')
 string = input("Enter string\n")

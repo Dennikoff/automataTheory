@@ -1,6 +1,6 @@
 import sys
 from collections import namedtuple as nt
-import Tree as tr
+from classes import Tree as tr
 import random
 
 
@@ -97,7 +97,7 @@ def make_Tree(string):
         list_string.append(el(cur, tr.Tree(char)))
     for i in list_string:
         print(i.char, end=' ')
-        tr.print_tree(i.tree, -1, ' ')
+        tr.print_tree(i.tree, 0, -1, ' ')
     print(list_string[1].char.endswith('node'))
 
     # cr = 'a'
