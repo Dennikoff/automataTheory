@@ -30,7 +30,7 @@ def make_dka(nka, language):
             list_dka_vertex[i].child.append(current)
             list_dka_vertex.append(current)
         i+=1
-    Dka.print_dka(list_dka_vertex)
+    return list_dka_vertex
 
 def vertex_in_the_list(list, vertex):
     for index, el in enumerate(list):
