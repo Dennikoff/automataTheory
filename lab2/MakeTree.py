@@ -150,7 +150,7 @@ def make_Tree(string):
                 i = start + 1
                 while list_string[i].char != ')':
                     if list_string[i].char == '+' and list_string[i - 1].char.endswith("node") and list_string[i + 1].char != '*':
-                        node = el("+-node", list_string[i].tree.add_right_t(list_string[i - 1].tree))
+                        node = el("+-node", list_string[i].tree.add_right_t(list_string[i - 1].tree))                               #a**** меняем на a* a**+ меняем на a* a+* меняем на a+
                         list_string[i - 1] = node
                         list_string[i - 1:i + 1] = [list_string[i - 1]]
                         i -= 1

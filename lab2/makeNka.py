@@ -1,15 +1,16 @@
-from classes import Tree as tr
 import classes.Nka as Nka
 
-def make_nka(tree):
+
+def make_nka(tree, language):
     if tree == None:
         return None
     if tree.is_right() and tree.is_left():
         new = Nka.Nka()
         new.create_new_child(tree.root)
+        language.add(tree.root)
         return new
-    arg1 = make_nka(tree.right)
-    arg2 = make_nka(tree.left)
+    arg1 = make_nka(tree.right, language)
+    arg2 = make_nka(tree.left, language)
     if tree.root == '|':
         cur_end = Nka.Nka()
         arg1.add_child_tail('~', cur_end)

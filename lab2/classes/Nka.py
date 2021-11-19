@@ -9,6 +9,7 @@ class Nka:
             self.tail = None
             self.start = False
             self.end = False
+            self.printed = False
         else:
             Nka.max_name = get_next_name(Nka.max_name)
             self.name = Nka.max_name
@@ -17,6 +18,7 @@ class Nka:
             self.tail = None
             self.start = False
             self.end = False
+            self.printed = False
 
     def create_new_child(self, transition):
         new_child = Nka()
@@ -44,7 +46,7 @@ class Nka:
         self.tail = self.tail.child[0]
 
     def add_child_loop(self, transition, child):
-        self.tail.child.append(Nka(child.name))
+        self.tail.child.append(child)
         self.tail.transition.append(transition)
 
     def finish(self):
@@ -52,6 +54,9 @@ class Nka:
         self.tail.end = True
 
 def print_nka(nka):
+    if nka.printed:
+        return
+    nka.printed = True
     if len(nka.child) == 0:
         print(f"name:{nka.name} End:{nka.end}")
         return
