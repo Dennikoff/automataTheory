@@ -30,6 +30,14 @@ def make_Tree(string):
             break
     '''
     i = 0
+    while i != len(string):
+        if string[i] == '.' and string[i+1] == '.' and string[i+2] == '.':
+            string = string[:i]+ '*' + string[i+3:]
+        if string[i] == '.' and string[i+1] != '.':
+            string = string[:i]+string[i+1:]
+        i += 1
+    print(string)
+    i = 0
     start_1 = 0
     while i != len(string):
         if string[i] == '[':
@@ -53,6 +61,8 @@ def make_Tree(string):
             substr = substr[:len(substr)-1]
             string = string[:start_1] + '(' + substr + ')' + string[i + 1:]
             i = string.find(')', start_1)+1
+        elif string[i] == ']':
+            sys.exit(-1)
         if string[i] == '{':
             flag_first = True
             start = i
@@ -87,7 +97,6 @@ def make_Tree(string):
                 i +=1
                 mul //= 10
         i+=1
-    print(string)
     for char in string:
         cur = char
         if char == ' ':
@@ -95,10 +104,6 @@ def make_Tree(string):
         if m_symbols.isdisjoint(char):
             cur = f"{cur}-node"
         list_string.append(el(cur, tr.Tree(char)))
-    for i in list_string:
-        print(i.char, end=' ')
-        tr.print_tree(i.tree, 0, -1, ' ')
-    print(list_string[1].char.endswith('node'))
 
     # cr = 'a'
     # fi = 'z'
@@ -132,7 +137,6 @@ def make_Tree(string):
                             i += 1
                         end_index_of_the_figure = i
                         digit //= 10
-                        print(digit)
                         tree = tr.Tree('.')
                         tree.add_left_t(list_string[start_index_of_the_figure - 1].tree)
                         tree.add_right_t(list_string[start_index_of_the_figure - 1].tree)
@@ -199,5 +203,4 @@ def make_Tree(string):
                 #tr.print_tree(list_string[start + 1].tree, -1)
                 list_string[start:start+3] = [list_string[start + 1]]
                 break
-    print(list_string)
     return list_string[0].tree
