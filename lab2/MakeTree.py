@@ -17,7 +17,7 @@ def make_Tree(string):
     start_p = 0
     start_flag = False
     mul = 0
-    if string == '($)':
+    if string == '($)' or string == '()':
         print("string is empty")
         sys.exit(0)
     '''
@@ -31,15 +31,21 @@ def make_Tree(string):
     '''
     i = 0
     while i != len(string):
+        if string[i] == '%':
+            i+=2
         if string[i] == '.' and string[i+1] == '.' and string[i+2] == '.':
             string = string[:i] + '*' + string[i+3:]
         if string[i] == '.' and string[i+1] != '.':
             string = string[:i]+string[i+1:]
+        elif string[i] == '.' and string[i+1] == '.' and string[i+2] != '.':
+            sys.exit(-1)
         i += 1
-    print(string)
     i = 0
     start_1 = 0
     while i != len(string):
+        if string[i] == '%':
+            i+=2
+            continue
         if string[i] == '[':
             start_1 = i
             flag_first = True
@@ -97,14 +103,18 @@ def make_Tree(string):
         #         i +=1
         #         mul //= 10
         i+=1
+    flag = False
     for char in string:
         cur = char
+        if char == '%':
+            flag = True
+            continue
         if char == ' ':
             cur = 'space'
-        if m_symbols.isdisjoint(char):
+        if m_symbols.isdisjoint(char) or flag:
             cur = f"{cur}-node"
+            flag = False
         list_string.append(el(cur, tr.Tree(char)))
-
     # cr = 'a'
     # fi = 'z'
     # while cr != fi:

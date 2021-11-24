@@ -108,5 +108,24 @@ class Test6(unittest.TestCase):
         self.assertEqual(check_string(self.minDka, 'haaaa'), False)
 
 
+class Test7(unittest.TestCase):
+    def setUp(self):
+        self.minDka = compile_('string1|string%*|string%||string%.|string%[%]%{%}')
+    def test_string1(self):
+        self.assertEqual(check_string(self.minDka, 'string*'), True)
+
+    def test_string2(self):
+        self.assertEqual(check_string(self.minDka, 'string|'), True)
+
+    def test_string3(self):
+        self.assertEqual(check_string(self.minDka, 'string[]{}'), True)
+
+    def test_string4(self):
+        self.assertEqual(check_string(self.minDka, 'string.'), True)
+
+    def test_string5(self):
+        self.assertEqual(check_string(self.minDka, 'string%.'), False)
+
+
 if __name__ == '__main__':
     unittest.main()
