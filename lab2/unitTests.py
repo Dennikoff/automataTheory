@@ -98,7 +98,14 @@ class Test5(unittest.TestCase):
         self.assertEqual(check_string(self.minDka, 'a.b.o.b.a'), False)
 
 
+class Test6(unittest.TestCase):
+    def setUp(self):
+        self.minDka = compile_('ha{3}')
+    def test_string1(self):
+        self.assertEqual(check_string(self.minDka, 'haaa'), True)
 
+    def test_string2(self):
+        self.assertEqual(check_string(self.minDka, 'haaaa'), False)
 
 
 if __name__ == '__main__':

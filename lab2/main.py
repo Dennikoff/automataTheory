@@ -23,10 +23,10 @@ def compile_(string):
     return minDka
 
 
-# string = input("Введите регулярное выражение\n>>")
-# dka = compile_(string)
-# for i in range(10):
-#     string_check = input("Введите строку для проверки")
-#     print(check_string(dka, string_check))
+string = input("Введите регулярное выражение\n>>")
+dka = compile_(string)
+for i in range(10):
+    string_check = input("Введите строку для проверки")
+    print(check_string(dka, string_check))
 
 

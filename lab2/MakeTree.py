@@ -17,7 +17,7 @@ def make_Tree(string):
     start_p = 0
     start_flag = False
     mul = 0
-    if string == '(%$)':
+    if string == '($)':
         print("string is empty")
         sys.exit(0)
     '''
@@ -32,7 +32,7 @@ def make_Tree(string):
     i = 0
     while i != len(string):
         if string[i] == '.' and string[i+1] == '.' and string[i+2] == '.':
-            string = string[:i]+ '*' + string[i+3:]
+            string = string[:i] + '*' + string[i+3:]
         if string[i] == '.' and string[i+1] != '.':
             string = string[:i]+string[i+1:]
         i += 1
@@ -63,39 +63,39 @@ def make_Tree(string):
             i = string.find(')', start_1)+1
         elif string[i] == ']':
             sys.exit(-1)
-        if string[i] == '{':
-            flag_first = True
-            start = i
-        if string[i] == '}' and flag_first:
-            flag_first = False
-            if i - start == 6:
-                a = int(string[start+1]+string[start+2])
-                b = int(string[start+4]+string[start+5])
-                mul = random.randint(a, b % 101)
-            elif i - start == 5:
-                a = int(string[start+1])
-                b = int(string[start+3]+string[start+4])
-                mul = random.randint(a, b % 101)
-            elif i - start == 4:
-                if string[start+3]!= ',':
-                    a = int(string[start+1])
-                    b = int(string[start+3])
-                    mul = random.randint(a, b % 101)
-                elif string[start+1].isdigit() and string[start+3].isdigit():
-                    a = int(string[start+1]+string[start+2])
-                    mul = random.randint(a, 101)
-            elif i - start == 3:
-                a = int(string[start+1])
-                mul = random.randint(a, 101)
-            elif i - start == 2:
-                mul = int(string[start+1])
-            a = 0
-            b = 0
-            string = string[:start+1] + str(mul) + string[i:]
-            i = start + 2
-            while mul // 10 != 0:
-                i +=1
-                mul //= 10
+        # if string[i] == '{':
+        #     flag_first = True
+        #     start = i
+        # if string[i] == '}' and flag_first:
+        #     flag_first = False
+        #     if i - start == 6:
+        #         a = int(string[start+1]+string[start+2])
+        #         b = int(string[start+4]+string[start+5])
+        #         mul = random.randint(a, b % 101)
+        #     elif i - start == 5:
+        #         a = int(string[start+1])
+        #         b = int(string[start+3]+string[start+4])
+        #         mul = random.randint(a, b % 101)
+        #     elif i - start == 4:
+        #         if string[start+3]!= ',':
+        #             a = int(string[start+1])
+        #             b = int(string[start+3])
+        #             mul = random.randint(a, b % 101)
+        #         elif string[start+1].isdigit() and string[start+3].isdigit():
+        #             a = int(string[start+1]+string[start+2])
+        #             mul = random.randint(a, 101)
+        #     elif i - start == 3:
+        #         a = int(string[start+1])
+        #         mul = random.randint(a, 101)
+        #     elif i - start == 2:
+        #         mul = int(string[start+1])
+        #     a = 0
+        #     b = 0
+        #     string = string[:start+1] + str(mul) + string[i:]
+        #     i = start + 2
+        #     while mul // 10 != 0:
+        #         i +=1
+        #         mul //= 10
         i+=1
     for char in string:
         cur = char
