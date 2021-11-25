@@ -5,6 +5,7 @@ import random
 
 
 def make_Tree(string):
+    brEx = Exception("brackets are not correct")
     m_symbols = set('|*/+{}[]()%$.-')
     string = '(' + string + ')'
     list_groups = []
@@ -32,19 +33,26 @@ def make_Tree(string):
     i = 0
     while i != len(string):
         if string[i] == '%':
-            i+=2
-        if string[i] == '.' and string[i+1] == '.' and string[i+2] == '.':
-            string = string[:i] + '*' + string[i+3:]
-        if string[i] == '.' and string[i+1] != '.':
-            string = string[:i]+string[i+1:]
-        elif string[i] == '.' and string[i+1] == '.' and string[i+2] != '.':
-            sys.exit(-1)
+            i += 2
+        if string[i] == '.' and string[i + 1] == '.' and string[i + 2] == '.':
+            string = string[:i] + '*' + string[i + 3:]
+        if string[i] == '.' and string[i + 1] != '.':
+            string = string[:i] + string[i + 1:]
+        elif string[i] == '.' and string[i + 1] == '.' and string[i + 2] != '.':
+            raise Exception("bad '.' symbols")
+        if (string[i] == '*' or string[i] == '+') and (string[i + 1] == '*' or string[i+1] == '+'):
+            if string[i] == '+' and string[i+1] == '+':
+                string = string[:i+1] + string[i + 2:]
+            else:
+                string = string[:i] + '*' + string[i + 2:]
+            continue
         i += 1
     i = 0
     start_1 = 0
+    print(string)
     while i != len(string):
         if string[i] == '%':
-            i+=2
+            i += 2
             continue
         if string[i] == '[':
             start_1 = i
@@ -52,7 +60,7 @@ def make_Tree(string):
         if flag_first and string[i] == ']':
             substr = ''
             for index in range(start_1, i):
-                if m_symbols.isdisjoint(string[index]) and string[index+1] != '-' and string[index-1] != '-':
+                if m_symbols.isdisjoint(string[index]) and string[index + 1] != '-' and string[index - 1] != '-':
                     substr += string[index] + '|'
                 elif string[index] == '-':
                     st = string[index - 1]
@@ -61,14 +69,14 @@ def make_Tree(string):
                     while st != fi:
                         sub += st + '|'
                         st = chr(ord(st) + 1)
-                    sub+=st + '|'
-                    index+=1
-                    substr+= sub
-            substr = substr[:len(substr)-1]
+                    sub += st + '|'
+                    index += 1
+                    substr += sub
+            substr = substr[:len(substr) - 1]
             string = string[:start_1] + '(' + substr + ')' + string[i + 1:]
-            i = string.find(')', start_1)+1
+            i = string.find(')', start_1) + 1
         elif string[i] == ']':
-            sys.exit(-1)
+            raise brEx
         # if string[i] == '{':
         #     flag_first = True
         #     start = i
@@ -102,7 +110,7 @@ def make_Tree(string):
         #     while mul // 10 != 0:
         #         i +=1
         #         mul //= 10
-        i+=1
+        i += 1
     flag = False
     for char in string:
         cur = char
@@ -122,13 +130,13 @@ def make_Tree(string):
     #     cr = chr(ord(cr)+1)
     # print(cr)
     flag_first = False
-    while list_string[0].char == '(' or list_string[len(list_string)-1].char == ')':
-        if (list_string[0].char == '(') != (list_string[len(list_string)-1].char == ')'):
-            sys.exit(-1)
+    while list_string[0].char == '(' or list_string[len(list_string) - 1].char == ')':
+        if (list_string[0].char == '(') != (list_string[len(list_string) - 1].char == ')'):
+            raise brEx
         for index, char in enumerate(list_string):
             if char.char == '(':
-                if list_string[index+1].char == ')':
-                    del list_string[index:index+2]
+                if list_string[index + 1].char == ')':
+                    del list_string[index:index + 2]
                     flag_first = True
                     flag_last = True
                     break
@@ -163,12 +171,15 @@ def make_Tree(string):
                     i += 1
                 i = start + 1
                 while list_string[i].char != ')':
-                    if list_string[i].char == '+' and list_string[i - 1].char.endswith("node") and list_string[i + 1].char != '*':
-                        node = el("+-node", list_string[i].tree.add_right_t(list_string[i - 1].tree))                               #a**** меняем на a* a**+ меняем на a* a+* меняем на a+
+                    if list_string[i].char == '+' and list_string[i - 1].char.endswith("node") and list_string[
+                        i + 1].char != '*':
+                        node = el("+-node", list_string[i].tree.add_right_t(
+                            list_string[i - 1].tree))  # a**** меняем на a* a**+ меняем на a* a+* меняем на a+
                         list_string[i - 1] = node
                         list_string[i - 1:i + 1] = [list_string[i - 1]]
                         i -= 1
-                    elif list_string[i].tree.root == '+' and (not (list_string[i - 1].char.endswith("node")) or list_string[i+1].char == '*'):
+                    elif list_string[i].tree.root == '+' and (
+                            not (list_string[i - 1].char.endswith("node")) or list_string[i + 1].char == '*'):
                         sys.exit(-1)
                     i += 1
                 i = start + 1
@@ -194,7 +205,8 @@ def make_Tree(string):
                     i += 1
                 i = start + 1
                 while list_string[i].char != ')':
-                    if list_string[i + 1].char.endswith("node") and list_string[i - 1].char.endswith("node") and list_string[i].char == "|":
+                    if list_string[i + 1].char.endswith("node") and list_string[i - 1].char.endswith("node") and \
+                            list_string[i].char == "|":
                         tree = tr.Tree('|')
                         tree.add_right_t(list_string[i + 1].tree)
                         tree.add_left_t(list_string[i - 1].tree)
@@ -202,7 +214,8 @@ def make_Tree(string):
                         list_string[i - 1] = node
                         list_string[i - 1:i + 2] = [list_string[i - 1]]
                         i -= 1
-                    elif (not(list_string[i + 1].char.endswith("node")) or not(list_string[i - 1].char.endswith("node"))) and list_string[i].char == "|":
+                    elif (not (list_string[i + 1].char.endswith("node")) or not (
+                            list_string[i - 1].char.endswith("node"))) and list_string[i].char == "|":
                         sys.exit(-1)
                     i += 1
                 # list_groups.append(string[start + 1:index])
@@ -210,7 +223,7 @@ def make_Tree(string):
                 # string = string[:start] + '"' + str(num) + '"' + string[index + 1:]
                 # num += 1
                 # print(string)
-                #tr.print_tree(list_string[start + 1].tree, -1)
-                list_string[start:start+3] = [list_string[start + 1]]
+                # tr.print_tree(list_string[start + 1].tree, -1)
+                list_string[start:start + 3] = [list_string[start + 1]]
                 break
     return list_string[0].tree

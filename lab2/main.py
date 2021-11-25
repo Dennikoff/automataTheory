@@ -9,7 +9,10 @@ from checkString import check_string
 
 
 def compile_(string):
-    tree = make_Tree(string)
+    try:
+        tree = make_Tree(string)
+    except Exception:
+        print("Something went wrong")
     #print_tree(tree)
     language = set()
     nka = make_nka(tree, language)
