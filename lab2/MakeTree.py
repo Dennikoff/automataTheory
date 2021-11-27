@@ -56,6 +56,7 @@ def make_Tree(string):
             continue
         if string[i] == '[':
             start_1 = i
+            start_p = i
             flag_first = True
         if flag_first and string[i] == ']':
             substr = ''
@@ -74,42 +75,57 @@ def make_Tree(string):
                     substr += sub
             substr = substr[:len(substr) - 1]
             string = string[:start_1] + '(' + substr + ')' + string[i + 1:]
-            i = string.find(')', start_1) + 1
+            i = string.find(')', start_1)
         elif string[i] == ']':
             raise brEx
-        # if string[i] == '{':
-        #     flag_first = True
-        #     start = i
-        # if string[i] == '}' and flag_first:
-        #     flag_first = False
-        #     if i - start == 6:
-        #         a = int(string[start+1]+string[start+2])
-        #         b = int(string[start+4]+string[start+5])
-        #         mul = random.randint(a, b % 101)
-        #     elif i - start == 5:
-        #         a = int(string[start+1])
-        #         b = int(string[start+3]+string[start+4])
-        #         mul = random.randint(a, b % 101)
-        #     elif i - start == 4:
-        #         if string[start+3]!= ',':
-        #             a = int(string[start+1])
-        #             b = int(string[start+3])
-        #             mul = random.randint(a, b % 101)
-        #         elif string[start+1].isdigit() and string[start+3].isdigit():
-        #             a = int(string[start+1]+string[start+2])
-        #             mul = random.randint(a, 101)
-        #     elif i - start == 3:
-        #         a = int(string[start+1])
-        #         mul = random.randint(a, 101)
-        #     elif i - start == 2:
-        #         mul = int(string[start+1])
-        #     a = 0
-        #     b = 0
-        #     string = string[:start+1] + str(mul) + string[i:]
-        #     i = start + 2
-        #     while mul // 10 != 0:
-        #         i +=1
-        #         mul //= 10
+        if string[i] == '(':
+            start_p = i
+        if string[i] == '{':
+            flag_first = True
+            start = i
+        if string[i] == '}' and flag_first:
+            flag_first = False
+            a = -1
+            b = -1
+            if i - start == 6:
+                a = int(string[start+1]+string[start+2])
+                b = int(string[start+4]+string[start+5])
+            elif i - start == 5:
+                a = int(string[start+1])
+                b = int(string[start+3]+string[start+4])
+            elif i - start == 4:
+                if string[start+3]!= ',':
+                    a = int(string[start+1])
+                    b = int(string[start+3])
+                elif string[start+1].isdigit() and string[start+3].isdigit():
+                    a = int(string[start+1]+string[start+2])
+            elif i - start == 3:
+                a = int(string[start+1])
+            elif i - start == 2:
+                i+=1
+                continue
+            if string[start - 1] == ')':
+                substr = string[start_p+1:start - 1]
+            else:
+                substr = string[start - 1]
+            if b == -1:
+                substr = substr * a + '(' + substr + ')' + '*'
+            elif b != -1:
+                newsubstr = ''
+                for h in range(a, b + 1):
+                    newsubstr = newsubstr + '(' + ('('+substr + ')')*h + ')' + '|'
+                newsubstr = newsubstr[:len(newsubstr) - 1]
+                substr = newsubstr
+            if string[start - 1] == ')':
+                string = string[:start_p] + '(' + substr + ')' + string[i+1:]
+                i = start_p + len(substr) + 1
+                print(string[i])
+            else:
+                string = string[:start-1] + '(' + substr + ')' + string[i+1:]
+                i = start + len(substr)
+                print(string[i])
+        elif string[i] == '}':
+            raise brEx
         i += 1
     flag = False
     for char in string:
