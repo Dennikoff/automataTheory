@@ -49,7 +49,7 @@ class Test2(unittest.TestCase):
 
 class Test3(unittest.TestCase):
     def setUp(self):
-        self.minDka = compile_('[a-zA-Z]([a-zA-Z][0-9])*')
+        self.minDka = compile_('[a-zA-Z]([a-zA-Z]|[0-9])*')
     def test_string1(self):
         self.assertEqual(check_string(self.minDka, 'kek441'), True)
 
@@ -74,7 +74,7 @@ class Test3(unittest.TestCase):
 
 class Test4(unittest.TestCase):
     def setUp(self):
-        self.minDka = compile_('([a-zA-Z][0-9])+')
+        self.minDka = compile_('([a-zA-Z]|[0-9])+')
     def test_string1(self):
         self.assertEqual(check_string(self.minDka, '888echpochmak888'), True)
 
@@ -125,6 +125,41 @@ class Test7(unittest.TestCase):
 
     def test_string5(self):
         self.assertEqual(check_string(self.minDka, 'string%.'), False)
+
+
+# class Test8(unittest.TestCase):
+#     def setUp(self):
+#         self.minDka = compile_('[a-z0-9]{5,10}')
+#     def test_string1(self):
+#         self.assertEqual(check_string(self.minDka, 'keklol222'), True)
+#
+#     def test_string2(self):
+#         self.assertEqual(check_string(self.minDka, '0123456789'), True)
+#
+#     def test_string3(self):
+#         self.assertEqual(check_string(self.minDka, '1a2b3c4d'), True)
+#
+#     def test_string4(self):
+#         self.assertEqual(check_string(self.minDka, '1234'), False)
+#
+#     def test_string5(self):
+#         self.assertEqual(check_string(self.minDka, '12345678910'), False)
+
+
+class Test9(unittest.TestCase):
+    def setUp(self):
+        self.minDka = compile_('c{15,}')
+    def test_string1(self):
+        self.assertEqual(check_string(self.minDka, 'ccccccccccccccc'), True)
+
+    def test_string2(self):
+        self.assertEqual(check_string(self.minDka, 'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'), True)
+
+    def test_string3(self):
+        self.assertEqual(check_string(self.minDka, 'cccccccccc'), False)
+
+    def test_string4(self):
+        self.assertEqual(check_string(self.minDka, 'ccccccccccccccccccccccccccccccca'), False)
 
 
 if __name__ == '__main__':

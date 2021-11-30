@@ -50,6 +50,7 @@ def make_Tree(string):
     i = 0
     start_1 = 0
     print(string)
+    flagg = False
     while i != len(string):
         if string[i] == '%':
             i += 2
@@ -61,8 +62,15 @@ def make_Tree(string):
         if flag_first and string[i] == ']':
             substr = ''
             for index in range(start_1, i):
-                if m_symbols.isdisjoint(string[index]) and string[index + 1] != '-' and string[index - 1] != '-':
+                if flagg:
+                    flagg = False
+                    continue
+                if (m_symbols.isdisjoint(string[index])) and string[index + 1] != '-' and string[index - 1] != '-':
                     substr += string[index] + '|'
+                elif string[index] == '%':
+                    substr += string[index] + string[index+1] + '|'
+                    flagg = True
+                    continue
                 elif string[index] == '-':
                     st = string[index - 1]
                     fi = string[index + 1]
@@ -94,15 +102,15 @@ def make_Tree(string):
                 a = int(string[start+1])
                 b = int(string[start+3]+string[start+4])
             elif i - start == 4:
-                if string[start+3]!= ',':
+                if string[start+3] != ',':
                     a = int(string[start+1])
                     b = int(string[start+3])
-                elif string[start+1].isdigit() and string[start+3].isdigit():
+                elif string[start+1].isdigit() and string[start+2].isdigit():
                     a = int(string[start+1]+string[start+2])
             elif i - start == 3:
                 a = int(string[start+1])
             elif i - start == 2:
-                i+=1
+                i += 1
                 continue
             if string[start - 1] == ')':
                 substr = string[start_p+1:start - 1]
@@ -130,7 +138,7 @@ def make_Tree(string):
     flag = False
     for char in string:
         cur = char
-        if char == '%':
+        if char == '%' and not(flag):
             flag = True
             continue
         if char == ' ':
