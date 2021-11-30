@@ -51,6 +51,7 @@ def make_Tree(string):
     start_1 = 0
     print(string)
     flagg = False
+    flag_after = False
     while i != len(string):
         if string[i] == '%':
             i += 2
@@ -64,11 +65,13 @@ def make_Tree(string):
             for index in range(start_1, i):
                 if flagg:
                     flagg = False
+                    flag_after = True
                     continue
                 if (m_symbols.isdisjoint(string[index])) and string[index + 1] != '-' and string[index - 1] != '-':
                     substr += string[index] + '|'
-                elif string[index] == '%':
-                    substr += string[index] + string[index+1] + '|'
+                elif string[index] == '%' and not flagg:
+                    if string[index + 2] != '-':
+                        substr += string[index] + string[index+1] + '|'
                     flagg = True
                     continue
                 elif string[index] == '-':
@@ -76,6 +79,8 @@ def make_Tree(string):
                     fi = string[index + 1]
                     sub = ''
                     while st != fi:
+                        if flag_after:
+                            sub+= '%'
                         sub += st + '|'
                         st = chr(ord(st) + 1)
                     sub += st + '|'
@@ -138,7 +143,7 @@ def make_Tree(string):
     flag = False
     for char in string:
         cur = char
-        if char == '%' and not(flag):
+        if char == '%' and not flag:
             flag = True
             continue
         if char == ' ':

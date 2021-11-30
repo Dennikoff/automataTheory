@@ -32,7 +32,7 @@ def compile_(string):
 string = input("Введите регулярное выражение\n>>")
 dka = compile_(string)
 for i in range(10):
-    string_check = input("Введите строку для проверки")
+    string_check = input("Введите строку для проверки\n")
     print(check_string(dka, string_check))
 
 
