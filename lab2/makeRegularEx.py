@@ -69,9 +69,24 @@ def has_loop(vertex):
     return None, False
 
 
+def clear(curDka, index):
+    vertex = curDka.pop(index)
+    for cur_vertex in curDka:
+        i = 0
+        while i != len(cur_vertex.child):
+            child = cur_vertex.child[i]
+            if child == vertex:
+                cur_vertex.child.pop(i)
+                cur_vertex.transition.pop(i)
+                i -= 1
+            i += 1
+    return
+
+
 def get_regex(minDka):
     curDka = copyy(minDka)
-    for i in range(len(curDka)):
+    i = 0
+    while i < len(curDka):
         if not (curDka[i].start) and not(curDka[i].end):
             inputs = get_input(curDka, curDka[i])
             outputs, flag, loop = get_output(curDka[i])
@@ -94,6 +109,8 @@ def get_regex(minDka):
                             new_transition = f"{inp.transition}{outp.transition}"
                     inp.vertex.child.append(outp.vertex)
                     inp.vertex.transition.append(new_transition)
+            clear(curDka, i)
+            continue
                 # inp.vertex.child = new_child
                 # inp.vertex.transition = new_transitions
         i+=1
@@ -102,7 +119,10 @@ def get_regex(minDka):
         if vertex.end == True:
             trans, flag = has_loop(vertex)
             if flag:
-                string += '((' + curDka[0].transition[index] +')(' + trans+ ')*)|'
+                if vertex.start == True:
+                    string += '(' + trans + ')*|'
+                else:
+                    string += '((' + curDka[0].transition[index] +')(' + trans+ ')*)|'
             else:
                 string+= '(' + curDka[0].transition[index] + ')|'
     string = string[:len(string)-1]

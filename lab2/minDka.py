@@ -10,7 +10,8 @@ def min_dka(dka, language):
             group1.append(i)
         else:
             group2.append(i)
-    groups.append(group1)
+    if len(group1) != 0:
+        groups.append(group1)
     groups.append(group2)
     flag1 = True
     while flag1:

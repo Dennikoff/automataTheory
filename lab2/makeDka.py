@@ -5,6 +5,9 @@ def make_dka(nka, language):
     list_dka_vertex = []
     start_vertex = Dka.e_transition([nka])
     start = Dka.Dka(start_vertex)
+    for vertex in start_vertex:
+        if vertex.end:
+            start.end = True
     start.start = True
     list_dka_vertex.append(start)
     i = 0
