@@ -8,11 +8,11 @@ from classes import Dka
 from makeDka import make_dka
 from minDka import min_dka
 from checkString import check_string
-
+from makeRegularEx import get_regex as gr
 
 def compile_(string):
     #try:
-    tree = make_Tree(string)
+    tree, groups = make_Tree(string)
     #except Exception:
     #    print("Something went wrong")
     #    sys.exit(-1)
@@ -22,12 +22,14 @@ def compile_(string):
     nka.finish()
     #print_nka(nka)
     dka = make_dka(nka, language)
-    Dka.print_dka(dka)
+    #Dka.print_dka(dka)
     minDka = min_dka(dka, language)
     print('\n\n\n')
     Dka.print_dka(minDka)
+    print(f"Your Regular expression:{gr(minDka)}")
     return minDka
 
+# строки для проверки алгоритма воссоздания регулярного выражения: 1) (kek){4,} 2)(kek)+ 3)(mephi)|(m(s)*u)|lel|pop 4)[1-5]
 
 string = input("Введите регулярное выражение\n>>")
 dka = compile_(string)

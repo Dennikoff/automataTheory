@@ -5,10 +5,28 @@ import random
 
 
 def make_Tree(string):
-    brEx = Exception("brackets are not correct")
-    m_symbols = set('|*/+{}[]()%$.-')
-    string = '(' + string + ')'
+    flag = False
+    i = 0
     list_groups = []
+    brEx = Exception("brackets are not correct")
+    index = 0
+    while i < len(string):
+        if string[i] == '%':
+            i+=2
+            continue
+        if string[i] == '(':
+            flag = True
+            index = i
+        if string[i] == ')':
+            flag = False
+            list_groups.append(string[index+1:i])
+        if string[i] == '/' and flag:
+            raise brEx
+        elif string[i] == '/':
+            string = string[:i] + string[i+1:]
+        i += 1
+    m_symbols = set('|*+{}[]()%$.-')
+    string = '(' + string + ')'
     flag_first = False
     flag_last = False
     list_string = []
@@ -140,6 +158,7 @@ def make_Tree(string):
         elif string[i] == '}':
             raise brEx
         i += 1
+    print(string)
     flag = False
     for char in string:
         cur = char
@@ -202,8 +221,8 @@ def make_Tree(string):
                 while list_string[i].char != ')':
                     if list_string[i].char == '+' and list_string[i - 1].char.endswith("node") and list_string[
                         i + 1].char != '*':
-                        node = el("+-node", list_string[i].tree.add_right_t(
-                            list_string[i - 1].tree))  # a**** меняем на a* a**+ меняем на a* a+* меняем на a+
+                        node = el("+-node", list_string[i].tree.add_right_t(list_string[i - 1].tree))
+                        # a**** меняем на a* a**+ меняем на a* a+* меняем на a+
                         list_string[i - 1] = node
                         list_string[i - 1:i + 1] = [list_string[i - 1]]
                         i -= 1
@@ -255,4 +274,4 @@ def make_Tree(string):
                 # tr.print_tree(list_string[start + 1].tree, -1)
                 list_string[start:start + 3] = [list_string[start + 1]]
                 break
-    return list_string[0].tree
+    return list_string[0].tree, list_groups
