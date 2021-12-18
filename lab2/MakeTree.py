@@ -4,29 +4,34 @@ from classes import Tree as tr
 import random
 
 
-def make_Tree(string):
+def make_Tree(string, flag_make_regex):
     flag = False
     i = 0
     list_groups = []
     brEx = Exception("brackets are not correct")
-    index = 0
+    string = '(' + string + ')'
     while i < len(string):
         if string[i] == '%':
             i+=2
             continue
         if string[i] == '(':
             flag = True
-            index = i
+            if flag_make_regex == 0:
+                string = string[:i+1] + '!(' + string[i+1:]
+                i+=3
+                continue
         if string[i] == ')':
             flag = False
-            list_groups.append(string[index+1:i])
+            if flag_make_regex == 0:
+                string = string[:i] + ')?' + string[i:]
+                i+=3
+                continue
         if string[i] == '/' and flag:
             raise brEx
         elif string[i] == '/':
             string = string[:i] + string[i+1:]
         i += 1
     m_symbols = set('|*+{}[]()%$.-')
-    string = '(' + string + ')'
     flag_first = False
     flag_last = False
     list_string = []
@@ -36,6 +41,11 @@ def make_Tree(string):
     start_p = 0
     start_flag = False
     mul = 0
+    i = 0
+    while i < len(string):
+        if string[i] == '%' and(string[i+1] == '(' or string[i+1] == ')'):
+            string = string[:i] + string[i+1:]
+        i+=1
     if string == '($)' or string == '()':
         print("string is empty")
         sys.exit(0)

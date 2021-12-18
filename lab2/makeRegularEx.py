@@ -3,7 +3,7 @@ from collections import namedtuple as nt
 
 
 def get_input(Dka, vertex):
-    el = nt('el',['vertex', 'transition'])
+    el = nt('el', ['vertex', 'transition'])
     input = []
     for vertexes in Dka:
         if vertexes == vertex:
@@ -13,6 +13,13 @@ def get_input(Dka, vertex):
                 element = el(vertexes, vertexes.transition[index])
                 input.append(element)
     return input
+
+
+def error_state(state):
+    for child in state.child:
+        if child != state:
+            return False
+    return True
 
 
 def get_output(vertex):
@@ -43,6 +50,7 @@ def get_index(Dka, vertex):
             return index
     return 0
 
+
 def copyy(Dkaa):
     new_list = []
     new_elem = None
@@ -63,10 +71,14 @@ def copyy(Dkaa):
 
 
 def has_loop(vertex):
+    string = ''
+    flag = False
     for index, child in enumerate(vertex.child):
         if child == vertex:
-            return vertex.transition[index], True
-    return None, False
+            string += vertex.transition[index] + '|'
+            flag = True
+    string = string[:len(string) - 1]
+    return string, flag
 
 
 def clear(curDka, index):
@@ -83,6 +95,30 @@ def clear(curDka, index):
     return
 
 
+def has_edge_to_start(child):
+    for index, child2 in enumerate(child.child):
+        if child2.start:
+            return True
+    return False
+
+
+def all_transitions_to_end(start_vertex):
+    string = ''
+    for index, child in enumerate(start_vertex.child):
+        if child.end == True:
+            string += start_vertex.transition[index] + '|'
+    string = string[:len(string) - 1]
+    return string
+
+def find_all_edges(child):
+    transition_from_end = ''
+    for index, child_end in enumerate(child.child):
+        if child_end.start:
+            transition_from_end += child.transition[index] + '|'
+    transition_from_end = transition_from_end[:len(transition_from_end) - 1]
+    return transition_from_end
+
+
 def get_regex(minDka):
     curDka = copyy(minDka)
     i = 0
@@ -91,8 +127,6 @@ def get_regex(minDka):
             inputs = get_input(curDka, curDka[i])
             outputs, flag, loop = get_output(curDka[i])
             for inp in inputs:
-                new_transitions = []
-                new_child = []
                 for outp in outputs:
                     trans = transition(inp.vertex, outp)
                     if len(trans) > 1:
@@ -115,15 +149,43 @@ def get_regex(minDka):
                 # inp.vertex.transition = new_transitions
         i+=1
     string = ''
-    for index, vertex in enumerate(curDka[0].child):
-        if vertex.end == True:
-            trans, flag = has_loop(vertex)
-            if flag:
-                if vertex.start == True:
-                    string += '(' + trans + ')*|'
-                else:
-                    string += '((' + curDka[0].transition[index] +')(' + trans+ ')*)|'
+    loop_start, flag_start = has_loop(curDka[0])
+    flag_end = False
+    loop_end = ''
+    if len(curDka) > 1:
+        loop_end, flag_end = has_loop(curDka[1])
+    for index, child in enumerate(curDka[0].child):
+        if child.end:
+            if child.start:
+                string += f"({loop_start})*|"
+                string = string[:len(string) - 1]
+                return string
             else:
-                string+= '(' + curDka[0].transition[index] + ')|'
+                flag_end_trans = has_edge_to_start(child)
+                transition_from_end = find_all_edges(child)
+                transition_to_end = all_transitions_to_end(curDka[0])
+                if flag_end_trans:
+                    if flag_start:
+                        if flag_end:
+                            string = f"(({loop_start})|({transition_to_end})({loop_end})*({transition_from_end}))*({transition_to_end})({loop_end})*|"
+                        else:
+                            string = f"({loop_start}|({transition_to_end})({transition_from_end}))*({transition_to_end})|"
+                    else:
+                        if flag_end:
+                            string = f"(({transition_to_end})({loop_end})*({transition_from_end}))*({transition_to_end})({loop_end})*|"
+                        else:
+                            string = f"(({transition_to_end})({transition_from_end}))*({transition_to_end})|"
+                else:
+                    if flag_start:
+                        if flag_end:
+                            string = f"({loop_start})*{transition_to_end}({loop_end})*|"
+                        else:
+                            string = f"({loop_start})*{transition_to_end}|"
+                    else:
+                        if flag_end:
+                            string = f"({transition_to_end})({loop_end})*|"
+                        else:
+                            string = f"{transition_to_end}|"
+                break
     string = string[:len(string)-1]
     return string
