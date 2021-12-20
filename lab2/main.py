@@ -33,16 +33,16 @@ def compile_(string, flag=0):
 # строки для проверки алгоритма воссоздания регулярного выражения: 1) (kek){4,} 2)(kek)+  3)((a|1)|(b|2)(d|3)*(c|4))*(b|2)(d|3)*
 # 4)(mephi)|(m(s)*u)|lel|pop 5)[1-5]*  группы захвата: %(([a-z]*) %)*
 
-string = input("Введите регулярное выражение\n>>")
-dka = compile_(string, 1)
-for i in range(10):
-    string_check = input("Введите строку для проверки\n")
-    groups, flag = check_string(dka, string_check)
-    if flag:
-        print(f"{groups[0]}\n{flag}\n")
-        for index, i in enumerate(groups):
-            print(index, ':  ', i)
-    else:
-        print(string_check, '\n', flag)
+# string = input("Введите регулярное выражение\n>>")
+# dka = compile_(string, 1)
+# for i in range(10):
+#     string_check = input("Введите строку для проверки\n")
+#     groups, flag = check_string(dka, string_check)
+#     if flag:
+#         print(f"{groups[0]}\n{flag}\n")
+#         for index, i in enumerate(groups):
+#             print(index, ':  ', i)
+#     else:
+#         print(string_check, '\n', flag)
 
 
