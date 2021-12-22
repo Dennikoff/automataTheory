@@ -4,7 +4,7 @@ from classes import Tree as tr
 import random
 
 
-def make_Tree(string, flag_make_regex):
+def make_Tree(string, flag_make_groups):
     flag = False
     i = 0
     list_groups = []
@@ -16,13 +16,13 @@ def make_Tree(string, flag_make_regex):
             continue
         if string[i] == '(':
             flag = True
-            if flag_make_regex == 0:
+            if flag_make_groups == 1:
                 string = string[:i+1] + '!(' + string[i+1:]
                 i+=3
                 continue
         if string[i] == ')':
             flag = False
-            if flag_make_regex == 0:
+            if flag_make_groups == 1:
                 string = string[:i] + ')?' + string[i:]
                 i+=3
                 continue

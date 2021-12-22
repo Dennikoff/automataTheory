@@ -9,6 +9,8 @@ from makeDka import make_dka
 from minDka import min_dka
 from checkString import check_string
 from makeRegularEx import get_regex as gr
+from inversion import inversion
+
 
 def compile_(string, flag=0):
     #try:
@@ -16,7 +18,9 @@ def compile_(string, flag=0):
     #except Exception:
     #    print("Something went wrong")
     #    sys.exit(-1)
-    #print_tree(tree)
+    print_tree(tree)
+    inversion(tree)
+    print_tree(tree)
     language = set()
     nka = make_nka(tree, language)
     nka.finish()
@@ -33,16 +37,17 @@ def compile_(string, flag=0):
 # строки для проверки алгоритма воссоздания регулярного выражения: 1) (kek){4,} 2)(kek)+  3)((a|1)|(b|2)(d|3)*(c|4))*(b|2)(d|3)*
 # 4)(mephi)|(m(s)*u)|lel|pop 5)[1-5]*  группы захвата: %(([a-z]*) %)*
 
-# string = input("Введите регулярное выражение\n>>")
-# dka = compile_(string, 1)
-# for i in range(10):
-#     string_check = input("Введите строку для проверки\n")
-#     groups, flag = check_string(dka, string_check)
-#     if flag:
-#         print(f"{groups[0]}\n{flag}\n")
-#         for index, i in enumerate(groups):
-#             print(index, ':  ', i)
-#     else:
-#         print(string_check, '\n', flag)
+string = input("Введите регулярное выражение\n>>")
+flagg = 0
+dka = compile_(string, flagg)
+for i in range(10):
+    string_check = input("Введите строку для проверки\n")
+    groups, flag = check_string(dka, string_check, flagg)
+    if flag and flagg:
+        print(f"{groups[0]}\n{flag}\n")
+        for index, i in enumerate(groups):
+            print(index, ':  ', i)
+    else:
+        print('\n', string_check, flag, sep='\n')
 
 
