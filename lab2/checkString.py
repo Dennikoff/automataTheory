@@ -9,7 +9,7 @@ def error_state(state):
 
 
 def check_string(mdka, string, flag_groups=0):
-    if flag_groups == 1:
+    if flag_groups == 0:
         stack_start_indexes = []
         stack_groups = []
         el1 = nt('el1', ['string', 'number'])

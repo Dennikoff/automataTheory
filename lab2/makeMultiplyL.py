@@ -60,7 +60,7 @@ def make_multiply(mdka1, mdka2, language):
             index += 1
     print('kek')
 
-mdka1 = main.compile_('0*1+', 1)
-mdka2 = main.compile_('0*1+', 1)
-make_multiply(mdka1, mdka2, ['1', '0'])
+mdka1 = main.compile_('abc*', 1)
+mdka2 = main.compile_('ab*c', 1)
+make_multiply(mdka1, mdka2, ['a', 'b', 'c'])
 

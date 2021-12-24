@@ -19,8 +19,8 @@ def compile_(string, flag=0):
     #    print("Something went wrong")
     #    sys.exit(-1)
     print_tree(tree)
-    inversion(tree)
-    print_tree(tree)
+    # inversion(tree)
+    # print_tree(tree)
     language = set()
     nka = make_nka(tree, language)
     nka.finish()
@@ -31,7 +31,7 @@ def compile_(string, flag=0):
     print('\n\n\n')
     Dka.print_dka(minDka)
     if flag != 0:
-        print(f"Your Regular expression:{gr(minDka)}")
+        print(f":Your Regular expression{gr(minDka)}")
     return minDka
 
 # строки для проверки алгоритма воссоздания регулярного выражения: 1) (kek){4,} 2)(kek)+  3)((a|1)|(b|2)(d|3)*(c|4))*(b|2)(d|3)*
@@ -43,7 +43,7 @@ dka = compile_(string, flagg)
 for i in range(10):
     string_check = input("Введите строку для проверки\n")
     groups, flag = check_string(dka, string_check, flagg)
-    if flag and flagg:
+    if flag and not flagg:
         print(f"{groups[0]}\n{flag}\n")
         for index, i in enumerate(groups):
             print(index, ':  ', i)

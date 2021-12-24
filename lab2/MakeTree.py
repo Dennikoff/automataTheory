@@ -16,13 +16,13 @@ def make_Tree(string, flag_make_groups):
             continue
         if string[i] == '(':
             flag = True
-            if flag_make_groups == 1:
+            if flag_make_groups == 0:
                 string = string[:i+1] + '!(' + string[i+1:]
                 i+=3
                 continue
         if string[i] == ')':
             flag = False
-            if flag_make_groups == 1:
+            if flag_make_groups == 0:
                 string = string[:i] + ')?' + string[i:]
                 i+=3
                 continue
