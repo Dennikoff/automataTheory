@@ -58,9 +58,26 @@ def make_multiply(mdka1, mdka2, language):
                 vertex.pop(index)
                 index -= 1
             index += 1
-    print('kek')
+    return dka_M
 
-mdka1 = main.compile_('abc*', 1)
-mdka2 = main.compile_('ab*c', 1)
-make_multiply(mdka1, mdka2, ['a', 'b', 'c'])
+def check_string(dka, string):
+    temporary = ''
+    for i in dka:
+        for j in i:
+            if j.start:
+                temporary = j
+    for string_index, char in enumerate(string):
+        try:
+            index = temporary.transition.index(char)
+        except ValueError:
+            return None, False
+        temporary = temporary.child[index]
+    return None, temporary.end
+
+if __name__ == '__main__':
+    mdka1 = main.compile_('a*', 1)
+    mdka2 = main.compile_('b*', 1)
+
+    dka = make_multiply(mdka1, mdka2, ['a', 'b'])
+    print(check_string(dka, 'kek')[1])
 

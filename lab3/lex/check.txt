@@ -1,0 +1,10 @@
+begin
+  int kek set 10;
+  short lol set s-100;
+  vector of vector      of int set {{1,3},{3,5}}
+  if a|b larger then
+  int flag set true
+  else
+  int flag set false
+
+end

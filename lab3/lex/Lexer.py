@@ -1,4 +1,5 @@
 import ply.lex as lexer
+import re
 
 
 class LexerClass:
@@ -16,8 +17,6 @@ class LexerClass:
         'sizeof': 'SIZEOF',
         'add': 'ADD',
         'sub': 'SUB',
-        'first': 'FIRST',
-        'second': 'SECOND',
         'smaller': 'SMALLER',
         'larger': 'LARGER',
         'or': 'OR',
@@ -39,13 +38,15 @@ class LexerClass:
     }
 
     types = [
-        'INTTYP', 'SHORTTYP', 'STRTYP',
-        'OPBR', 'CLBR', 'SQOPBR', 'SQCLBR', 'CUOPBR', 'CUCLBR',
+        'INTTYP', 'SHORTTYP', 'VARIABLE',
+        'OPBR', 'CLBR', 'SQOPBR', 'SQCLBR', 'CUOPBR', 'CUCLBR', 'VERTBAR',
         'ENDSTR',
         'NEWLINE', 'COMMA', 'VECTOROF'
     ]
 
     tokens = types + list(reserved.values())
+
+    t_ignore = ' \t'
 
     def input(self, data):
         return self.lexer.input(data)
@@ -63,10 +64,17 @@ class LexerClass:
         t.value = int(t.value[1:])
         return t
 
+    def t_VECTOROF(self, t):
+        r'vector[ ]+of'
+        return t
 
-    def t_STRTYP(self, t):
+    def t_VARIABLE(self, t):
         r'[a-zA-Z][a-zA-Z0-9]*'
-        t.type = self.reserved.get(t.value, 'STRTYP')
+        t.type = self.reserved.get(t.value, 'VARIABLE')
+        return t
+
+    def t_VERTBAR(self, t):
+        r'\|'
         return t
 
     def t_OPBR(self, t):
@@ -109,9 +117,17 @@ class LexerClass:
     def t_error(self, t):
         print(f"Invalid character {t.value[0]}")
         t.lexer.skip(1)
+        t.value = t.value[0]
         return t
 
-    if __name__ == '__main__':
-        f = open('check.txt')
-        data = f.read().lower()
 
+if __name__ == '__main__':
+    f = open('check.txt', 'r')
+    lex = LexerClass()
+    data = f.read()
+    lex.input(data)
+    while True:
+        tok = lex.token()
+        if not tok:
+            break
+        print(tok)
