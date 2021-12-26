@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, type, data, children=None, lineno=-1):
+    def __init__(self, type, data = '', children=None, lineno=-1):
         if not children:
             children = []
         self.type = type
@@ -19,7 +19,7 @@ class Node:
         return result
 
 if __name__ == '__main__':
-    node = Node('kek', Node('a', 'b'))
+    node = Node('kek', children=Node('a', 'b'))
     # print(node)
     root = Node('1', 0, lineno=1)
     childL = Node('left', 0, lineno=1)
