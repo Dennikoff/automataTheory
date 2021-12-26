@@ -6,3 +6,10 @@ if a|b larger then
 bool flag set true;
 else
 bool flag set false;
+
+function sum(int a, int b)
+begin
+    int summa set a add b;
+end
+return summa;
+

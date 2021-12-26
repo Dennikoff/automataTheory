@@ -134,13 +134,13 @@ class NodeBuilder:
             p[0] = Node('function error 1', data='function already declared', lineno=p.lineno(1))
             return True
         else:
-            p[0] = Node('function', data=p[2], children={'variables': p[4], 'statement group': p[7], 'return': p[9]}, lineno=p.lineno)
+            p[0] = Node('function', data=p[2], children=[p[4],p[7],p[9]], lineno=p.lineno)
             functions[p[2]] = 'function'
         return False
 
     def arrtype(self, p):
         if len(p) == 3:
-            p[0] = Node('variable', data=p[3], children=[p[2]], lineno=p.lineno(1))
+            p[0] = Node('variable', data=p[2], children=[p[1]], lineno=p.lineno(1))
         else:
             p[0] = Node('comma variables', children=[p[1], p[3]], lineno=p.lineno(1))
 
