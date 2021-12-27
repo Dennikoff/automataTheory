@@ -1,1 +1,1 @@
-from lex import Lexer
+import sys

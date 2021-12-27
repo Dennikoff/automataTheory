@@ -15,6 +15,8 @@ class LexerClass:
         'short': 'SHORT',
         'set': 'SET',
         'sizeof': 'SIZEOF',
+        'first': 'FIRST',
+        'second': 'SECOND',
         'add': 'ADD',
         'sub': 'SUB',
         'smaller': 'SMALLER',
@@ -39,7 +41,7 @@ class LexerClass:
 
     types = [
         'INTTYP', 'SHORTTYP', 'VARIABLE',
-        'OPBR', 'CLBR', 'SQOPBR', 'SQCLBR', 'CUOPBR', 'CUCLBR', 'VERTBAR',
+        'OPBR', 'CLBR', 'SQOPBR', 'SQCLBR', 'CUOPBR', 'CUCLBR',
         'ENDSTR',
         'NEWLINE', 'COMMA', 'VECTOROF'
     ]
@@ -71,10 +73,6 @@ class LexerClass:
     def t_VARIABLE(self, t):
         r'[a-zA-Z][a-zA-Z0-9]*'
         t.type = self.reserved.get(t.value, 'VARIABLE')
-        return t
-
-    def t_VERTBAR(self, t):
-        r'\|'
         return t
 
     def t_OPBR(self, t):
@@ -112,7 +110,6 @@ class LexerClass:
     def t_NEWLINE(self, t):
         r'\n+'
         t.lexer.lineno += t.value.count('\n')
-        return t
 
     def t_error(self, t):
         print(f"Invalid character {t.value[0]}")

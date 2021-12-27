@@ -25,20 +25,19 @@ class ParserClass:
 
     def p_statement_list(self, p):
         """statement_list : statement_list single_statement
-                          | single_statement
-                          | NEWLINE"""
+                          | single_statement"""
         self.node_build.statement_list(p)
 
 
     def p_single_statement(self, p): # игнорировать newLine
-        """single_statement : declaration ENDSTR NEWLINE
-                            | setting ENDSTR NEWLINE
+        """single_statement : declaration ENDSTR
+                            | setting ENDSTR
                             | if
                             | dowhile
                             | function
-                            | callfunc ENDSTR NEWLINE
-                            | cmd ENDSTR NEWLINE
-                            | ENDSTR NEWLINE"""
+                            | callfunc ENDSTR
+                            | cmd ENDSTR
+                            | ENDSTR"""
         self.node_build.single_statement(p)
 
     def p_declaration(self, p):
@@ -129,8 +128,10 @@ class ParserClass:
     def p_math_expr(self, p): # !!!!
         """math_expr : expr SUB expr
                      | expr ADD expr
-                     | expr VERTBAR expr LARGER
-                     | expr VERTBAR expr SMALLER
+                     | expr SECOND LARGER expr
+                     | expr SECOND SMALLER expr
+                     | expr FIRST LARGER expr
+                     | expr FIRST SMALLER expr
                      | expr AND expr
                      | expr OR expr
                      | expr NOT AND expr
@@ -148,31 +149,30 @@ class ParserClass:
         self.node_build.varlist(p)
 
     def p_if(self, p): # !!!!! второе убрать
-        """if : IF expr THEN NEWLINE statement_gr ELSE NEWLINE statement_gr
-              | IF expr THEN NEWLINE statement_gr ELSE ENDSTR NEWLINE"""
+        """if : IF expr THEN statement_gr ELSE statement_gr"""
         self.node_build.if_b(p)
 
     def p_iferr(self, p):
-        """if : IF expr THEN NEWLINE statement_gr error
+        """if : IF expr THEN statement_gr error
               | IF expr error"""
         self.node_build.iferr_b(p)
 
     def p_statement_gr(self, p):
-        """statement_gr : BEGIN NEWLINE statement_list END NEWLINE
+        """statement_gr : BEGIN statement_list END
                         | single_statement"""
         self.node_build.statement_gr(p)
 
     def p_dowhile(self, p):
-        """dowhile : DO NEWLINE statement_gr WHILE expr ENDSTR NEWLINE"""
+        """dowhile : DO statement_gr WHILE expr ENDSTR"""
         self.node_build.dowhile(p)
 
     def p_dowhileerr(self, p):
-        """dowhile : DO NEWLINE error"""
+        """dowhile : DO error"""
         self.node_build.dowhileerr(p)
 
 
     def p_function(self, p):
-        """function : FUNCTION VARIABLE OPBR arrtype CLBR NEWLINE statement_gr RETURN expr ENDSTR NEWLINE"""
+        """function : FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR"""
         flag = self.node_build.function(p, self.functions)
         if flag:
             sys.stderr.write("Error in function declaration:\nName of the function already in use")
