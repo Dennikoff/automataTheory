@@ -25,7 +25,7 @@ class LexerClass:
         'begin': 'BEGIN',
         'end': 'END',
         'do': 'DO',
-        'while': 'WHILE',
+        'while': 'WHILE', #(a second smaller b) b < a
         'if': 'IF',
         'then': 'THEN',
         'else': 'ELSE',

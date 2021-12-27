@@ -1,5 +1,5 @@
 function sum(int a, int b)
 begin
     int summa set a add b;
-    return summa;
 end
+return summa;

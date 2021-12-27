@@ -30,7 +30,7 @@ class ParserClass:
         self.node_build.statement_list(p)
 
 
-    def p_single_statement(self, p):
+    def p_single_statement(self, p): # игнорировать newLine
         """single_statement : declaration ENDSTR NEWLINE
                             | setting ENDSTR NEWLINE
                             | if
@@ -52,7 +52,7 @@ class ParserClass:
                 | SHORT"""
         self.node_build.type(p)
 
-    def p_var(self, p):
+    def p_var(self, p): # индекс при объявлении
         """var : variable
                | setting
                | var COMMA var"""
@@ -126,7 +126,7 @@ class ParserClass:
                  | SHORTTYP"""
         self.node_build.digit(p)
 
-    def p_math_expr(self, p):
+    def p_math_expr(self, p): # !!!!
         """math_expr : expr SUB expr
                      | expr ADD expr
                      | expr VERTBAR expr LARGER
@@ -147,7 +147,7 @@ class ParserClass:
                    | varlist COMMA varlist"""
         self.node_build.varlist(p)
 
-    def p_if(self, p):
+    def p_if(self, p): # !!!!! второе убрать
         """if : IF expr THEN NEWLINE statement_gr ELSE NEWLINE statement_gr
               | IF expr THEN NEWLINE statement_gr ELSE ENDSTR NEWLINE"""
         self.node_build.if_b(p)
