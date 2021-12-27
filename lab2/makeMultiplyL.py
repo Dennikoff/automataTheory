@@ -15,7 +15,8 @@ def make_multiply(mdka1, mdka2, language):
     for vertex1 in mdka1:
         cur_row = []
         for vertex2 in mdka2:
-            vertex2.name = 'b' + vertex2.name[1:]
+            if vertex2.name[0] != 'e':
+                vertex2.name = 'b' + vertex2.name[1:]
             cur1 = DkaM((vertex1.name, vertex2.name), (vertex1, vertex2))
             if vertex1.start and vertex2.start:
                 cur1.start = True
@@ -74,10 +75,46 @@ def check_string(dka, string):
         temporary = temporary.child[index]
     return None, temporary.end
 
-if __name__ == '__main__':
-    mdka1 = main.compile_('a*', 1)
-    mdka2 = main.compile_('b*', 1)
 
-    dka = make_multiply(mdka1, mdka2, ['a', 'b'])
-    print(check_string(dka, 'kek')[1])
+def make_transitions(dka1, dka2, language):
+    number1 = dka1[len(dka1)-1].name[1:]
+    number2 = dka2[len(dka2)-1].name[1:]
+    err1 = DkaM('e' + str(int(number1) + 1))
+    err2 = DkaM('e' + str(int(number2) + 1))
+    dka1.append(err1)
+    dka2.append(err2)
+    i = 0
+    while i < max(len(dka1), len(dka2)):
+        for char in language:
+            if i < len(dka1):
+                try:
+                    index = dka1[i].transition.index(char)
+                except ValueError:
+                    dka1[i].transition.append(char)
+                    dka1[i].child.append(err1)
+            if i < len(dka2):
+                try:
+                    index = dka2[i].transition.index(char)
+                except ValueError:
+                    dka2[i].transition.append(char)
+                    dka2[i].child.append(err2)
+        i+=1
+
+
+def get_language(dka1, dka2):
+    language = set()
+    for transition in dka1[0].transition:
+        language.add(transition)
+    for transition in dka2[0].transition:
+        language.add(transition)
+    return language
+
+
+if __name__ == '__main__':
+    mdka1 = main.compile_('(a*bc*)*', 1)
+    mdka2 = main.compile_('b*', 1)
+    language = get_language(mdka1, mdka2)
+    make_transitions(mdka1, mdka2, language)
+    dka = make_multiply(mdka1, mdka2, language)
+    print(check_string(dka, 'aabbbbbccc')[1])
 
