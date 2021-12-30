@@ -1,0 +1,10 @@
+function work(int a, int b, int c)
+begin
+
+    int a set 5 sub 4 add 1;
+    int a set false;
+    int kek;
+    vector of vector of int lol;
+end
+return 0;
+

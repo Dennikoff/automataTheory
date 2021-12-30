@@ -1,4 +1,4 @@
-from Node import Node
+from Parser.Node import Node
 
 
 class NodeBuilder:
@@ -28,6 +28,9 @@ class NodeBuilder:
             p[0] = p[1]
         else:
             p[0] = Node('var', children=[p[1], p[3]], lineno=p.lineno(1))
+
+    def var_v(self, p):
+        p[0] = Node('variable', data=p[1], lineno=p.lineno(1))
 
     def setting(self, p):
         p[0] = Node('assign', data=p[2], children=[p[1], p[3]], lineno=p.lineno(1))
@@ -66,7 +69,7 @@ class NodeBuilder:
         if len(p)== 2:
             p[0] = Node('variable', data=p[1], lineno=p.lineno(1))
         else:
-            p[0] = Node('array variable', data= p[1], children=[p[2]], lineno=p.lineno(1))
+            p[0] = Node('array variable', data=p[1], children=[p[2]], lineno=p.lineno(1))
 
     def index(self, p):
         if len(p) == 3:
@@ -114,9 +117,7 @@ class NodeBuilder:
         if len(p) == 2:
             p[0] = p[1]
         else:
-            p[1] = Node('Begin', data=p[1], lineno=p.lineno(1))
-            p[3] = Node('End', data=p[3], lineno=p.lineno(1))
-            p[0] = Node('statement group', children=[p[1], p[2], p[3]], lineno=p.lineno(1))
+            p[0] = Node('statement group', children=[p[2]], lineno=p.lineno(1))
 
     def dowhile(self, p):
         p[0] = Node('do while', children=[p[2], p[4]], lineno=p.lineno(1))
@@ -130,7 +131,7 @@ class NodeBuilder:
             return True
         else:
             p[0] = Node('function', data=p[2], children=[p[4], p[6], p[8]], lineno=p.lineno)
-            functions[p[2]] = 'function'
+            functions[p[2]] = p[0]
         return False
 
     def arrtype(self, p):

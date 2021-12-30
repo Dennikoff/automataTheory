@@ -1,16 +1,32 @@
-class variable:
+class Variable:
     def __init__(self, value, type, name=''):
+        if type == 'short int':
+            type = 'short'
         if type == 'short':
             if isinstance(value, str):
                 if value[0] == 's':
                     value = int(value[1:])
+        elif type == 'int':
+            value = int(value)
         self.value = value
         self.type = type
         self.name = name
 
+    def set_value(self, value):
+        self.value = value
 
     def __repr__(self):
         return f"Name: {self.name}; Type: {self.type}; Value: {self.value};"
+
+class arr_variable:
+    def __init__(self, values, type, sizes, name =''):
+        if type == 'short int':
+            type = 'short'
+        self.type = type
+        self.array = []
+        for number in values:
+            pass
+
 
 
 def convert_type(value, type):
@@ -24,26 +40,26 @@ def convert_type(value, type):
 
 def int_to_bool(value, type):
      if value.value < 0:
-         return variable('False', type)
+         return Variable('False', type)
      if value.value == 0:
-         return variable('Undefined', type)
+         return Variable('Undefined', type)
      if value.value > 0:
-         return variable('True', type)
+         return Variable('True', type)
 
 
 def bool_to_int(value, type):
     if value.value == 'True':
-        return variable(1, type)
+        return Variable(1, type)
     if value.value == 'False':
-        return variable(-1, type)
+        return Variable(-1, type)
     if value.value == 'Undefined':
-        return variable(0, type)
+        return Variable(0, type)
 
 
 
 if __name__ == '__main__':
-    a = variable(0, 'int')
+    a = Variable(0, 'int')
     print(type(5) == int)
     print(convert_type(a, 'bool'))
-    print(convert_type(variable('False', 'bool'), 'int'))
-    print(variable('s-100', 'short'))
+    print(convert_type(Variable('False', 'bool'), 'int'))
+    print(Variable('s-100', 'short'))

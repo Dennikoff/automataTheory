@@ -1,7 +1,7 @@
 from lex.Lexer import LexerClass
 import ply.yacc as yacc
 import sys
-from NodeBuilder import NodeBuilder
+from Parser.NodeBuilder import NodeBuilder
 
 
 
@@ -52,10 +52,13 @@ class ParserClass:
         self.node_build.type(p)
 
     def p_var(self, p): # индекс при объявлении
-        """var : variable
-               | setting
+        """var : setting
                | var COMMA var"""
         self.node_build.var(p)
+
+    def p_var_v(self, p):
+        """var : VARIABLE"""
+        self.node_build.var_v(p)
 
     def p_setting(self, p):
         """setting : variable SET expr"""
