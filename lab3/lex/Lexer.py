@@ -42,7 +42,7 @@ class LexerClass:
     types = [
         'INTTYP', 'SHORTTYP', 'VARIABLE',
         'OPBR', 'CLBR', 'SQOPBR', 'SQCLBR', 'CUOPBR', 'CUCLBR',
-        'ENDSTR',
+        'ENDSTR', 'EQUAL',
         'NEWLINE', 'COMMA', 'VECTOROF'
     ]
 
@@ -105,6 +105,10 @@ class LexerClass:
 
     def t_ENDSTR(self, t):
         r'\;'
+        return t
+
+    def t_EQUAL(self, t):
+        r'\=\='
         return t
 
     def t_NEWLINE(self, t):

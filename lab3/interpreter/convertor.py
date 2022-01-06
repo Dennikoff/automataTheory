@@ -1,22 +1,5 @@
-class Variable:
-    def __init__(self, value, type, name=''):
-        if type == 'short int':
-            type = 'short'
-        if type == 'short':
-            if isinstance(value, str):
-                if value[0] == 's':
-                    value = int(value[1:])
-        elif type == 'int':
-            value = int(value)
-        self.value = value
-        self.type = type
-        self.name = name
+from interpreter.VariableClass import Variable
 
-    def set_value(self, value):
-        self.value = value
-
-    def __repr__(self):
-        return f"Name: {self.name}; Type: {self.type}; Value: {self.value};"
 
 class arr_variable:
     def __init__(self, values, type, sizes, name =''):
@@ -40,19 +23,19 @@ def convert_type(value, type):
 
 def int_to_bool(value, type):
      if value.value < 0:
-         return Variable('False', type)
+         return Variable('false', type)
      if value.value == 0:
-         return Variable('Undefined', type)
+         return Variable('undefined', type)
      if value.value > 0:
-         return Variable('True', type)
+         return Variable('true', type)
 
 
 def bool_to_int(value, type):
-    if value.value == 'True':
+    if value.value == 'true':
         return Variable(1, type)
-    if value.value == 'False':
+    if value.value == 'false':
         return Variable(-1, type)
-    if value.value == 'Undefined':
+    if value.value == 'undefined':
         return Variable(0, type)
 
 

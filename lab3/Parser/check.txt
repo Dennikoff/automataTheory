@@ -1,10 +1,15 @@
 function work(int a, int b, int c)
 begin
-
-    int a set 5 sub 4 add 1;
-    int a set false;
-    int kek;
-    vector of vector of int lol;
+    int fl set 10;
+    if (fl add 1 sub 2 add 1) == 10 then
+        bool flag set true;
+    else
+        bool flag set false;
+    int vara set 6;
+    int varb set 10;
+    int sum set vara add varb add 0;
+    int a set 4 add (4 sub 4) add 4;
+    bool True set true and a and 500 and true;
 end
 return 0;
-
+;

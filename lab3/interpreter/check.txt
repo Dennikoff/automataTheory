@@ -1,9 +1,26 @@
-function work(int a, int b, int c)
+function work(int a)
 begin
-    int a set 5 add 1 sub 4;
-    int a set 10;
-    int a set false;
-    int kek;
-    vector of vector of int lol;
+    int fl set 10;
+    int vara set 6;
+    int varb set 10;
+    if (fl add 1 sub 2 add 1) == 10 then
+        bool flag1 set true;
+    else
+        bool flag1 set false;
+    if false then
+        bool flag set true;
+    else
+        bool flag set false;
+    flag1 set false;
+    int sum set vara add varb add 0;
+    vara set varb;
+    int a set 4 sub (10 sub 4) add 4;
+    int kek set false add false add false;
+    bool andTrue set true and a and 500 and true;
+    bool andFalse set true and a and -1 and true;
+    bool NotAnd set true not and undefined;
+    bool orTrue set a or false or -1;
+    bool orFalse set false or false or -1;
+    bool notOr set false not or false not or false not or false;
 end
 return 0;

@@ -39,7 +39,7 @@ class NodeBuilder:
         if len(p) == 2:
             p[0] = p[1]
         else:
-            p[0] = Node('expression', children=[p[1], p[2], p[3]], lineno=p.lineno(1))
+            p[0] = Node('brackets expression', children=[p[2]], lineno=p.lineno(1))
 
     def setting_arr(self, p):
         p[0] = Node('assign array', data=p[2], children=[p[1], p[3]], lineno=p.lineno(1))
@@ -90,10 +90,7 @@ class NodeBuilder:
         if len(p) == 4:
             p[0] = Node('math expression', data=p[2], children=[p[1], p[3]], lineno=p.lineno(1))
         else:
-            if p[2] != 'not':
-                p[0] = Node('compare', data=f"{p[2]} {p[3]}", children=[p[1], p[4]], lineno=p.lineno(1))
-            else:
-                p[0] = Node('logic operator', data=f"{p[2]} {p[3]}", children=[p[1], p[4]], lineno=p.lineno(1))
+            p[0] = Node('math expression', data=f"{p[2]} {p[3]}", children=[p[1], p[4]], lineno=p.lineno(1))
 
     def callfunc(self, p):
         p[0] = Node('call function', data=p[1], children=[p[3]], lineno=p.lineno(1))

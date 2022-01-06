@@ -129,7 +129,8 @@ class ParserClass:
         self.node_build.digit(p)
 
     def p_math_expr(self, p): # !!!!
-        """math_expr : expr SUB expr
+        """math_expr : expr EQUAL expr
+                     | expr SUB expr
                      | expr ADD expr
                      | expr SECOND LARGER expr
                      | expr SECOND SMALLER expr
@@ -151,7 +152,7 @@ class ParserClass:
                    | varlist COMMA varlist"""
         self.node_build.varlist(p)
 
-    def p_if(self, p): # !!!!! второе убрать
+    def p_if(self, p):
         """if : IF expr THEN statement_gr ELSE statement_gr"""
         self.node_build.if_b(p)
 

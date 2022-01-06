@@ -25,10 +25,10 @@ class ErrorHandler:
         if data is None:
             data = ['placeholder']
         errors_list = {
-            0: f"[ERROR] Unexpected Error",
-            1: f"[ERROR] Missing Work function",
-            2: f"[ERROR] Some syntax error",
-            3: f"[ERROR] Key {data[0]} does not exist"
+            0: f"[ERROR] Unexpected Error\n",
+            1: f"[ERROR] Missing Work function\n",
+            2: f"[ERROR] Some syntax error\n",
+            3: f"[ERROR] Key {data[0]} does not exist\n"
         }
         print_err(errors_list[code])
 
