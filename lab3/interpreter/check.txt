@@ -1,8 +1,21 @@
 function work(int a)
 begin
+    int counter set 0;
+    do
+        counter set counter add 12;
+    while counter first smaller 100;
     int fl set 10;
     int vara set 6;
     int varb set 10;
+    int sum set vara add varb add 0;
+    if vara first smaller varb then
+        vara set 100;
+    else
+        vara set 500;
+    if 10 == false then
+        int f set 1;
+    else
+        int f set 2;
     if (fl add 1 sub 2 add 1) == 10 then
         bool flag1 set true;
     else
@@ -11,9 +24,6 @@ begin
         bool flag set true;
     else
         bool flag set false;
-    flag1 set false;
-    int sum set vara add varb add 0;
-    vara set varb;
     int a set 4 sub (10 sub 4) add 4;
     int kek set false add false add false;
     bool andTrue set true and a and 500 and true;

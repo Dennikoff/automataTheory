@@ -27,6 +27,7 @@ class InterpreterClass:
         self.variables = VariableList()
 
 
+
     def interprete(self):
         self.tree, self.functions, self.has_errors = self.parser.parse(self.program)
         if not self.has_errors:
@@ -69,8 +70,6 @@ class InterpreterClass:
                 variable2 = node.children[1]
                 try:
                     self.assign(variable1, variable2)
-                except KeyError as err:
-                    self.errorHandler.raise_err(self.err_type.KeyError.value, [err])
                 except Exception as err:
                     print(f"Something wrong in Assign {err}")
                     raise err
@@ -81,16 +80,26 @@ class InterpreterClass:
             elif node_type == 'if then else':
                 try:
                     self.if_statement(node.children[0], node.children[1], node.children[2])
-                except Exception:
+                except Exception as err:
+                    self.returnEnv()
                     print('Something wrong in IF statement')
+                    raise err
             elif node_type == 'call function':
                 pass
+            elif node_type == 'do while':
+                try:
+                    self.dowhile_statement(node.children[0], node.children[1])
+                except Exception as err:
+                    print('Something wrong in DO WHILE statement')
+                    raise err
             else:
                 print('Error in node building or not all cases checked')
         except errors.MyKeyError as err:
             self.errorHandler.raise_err(self.err_type.KeyError.value, [err])
         except errors.UnexpectedError:
             self.errorHandler.raise_err(self.err_type.UnexpectedError.value)
+        except errors.TypeError as err:
+            self.errorHandler.raise_err(self.err_type.TypeError.value, [err.args[0], err.args[1]])
 
     def declaration(self, type, var, flag_arr):
         if not flag_arr:
@@ -143,6 +152,30 @@ class InterpreterClass:
         self.returnEnv()
 
 
+    def dowhile_statement(self, body, expression):
+        self.createNewEnv()
+        counter = 0
+        condition = 'true'
+        while condition == 'true':
+            counter += 1
+            self.nodeHandle(body)
+            if expression.type == 'brackets expression':
+                expression = expression.children[0]
+            if expression.type == 'math expression':
+                variable = self.math_expression(expression)
+                condition = convertor.convert_type(variable, 'bool').value
+            elif expression.type == 'variable':
+                condition = self.get_variable(expression.data)
+            elif expression.type == 'bool':
+                condition = expression.data
+            elif expression.type == 'digit':
+                variable = Variable(expression.data, 'int')
+                condition = convertor.convert_type(variable, 'bool')
+            else:
+                raise errors.UnexpectedError
+            if counter > 10000:
+                raise errors.MyRuntimeError()
+        self.returnEnv()
 
 
     def get_variable(self, name):
@@ -181,33 +214,50 @@ class InterpreterClass:
 
     def math_expression(self, value):
         flag = False
-        if value.data == '==':
+        if value.data == '==' or value.data == 'first larger' or value.data == 'first smaller' or value.data == 'second larger' or value.data == 'second smaller':
             val1 = value.children[0]
             val2 = value.children[1]
             if val1.type == 'brackets expression':
                 val1 = val1.children[0]
             if val1.type == 'math expression':
-                value_1 = self.math_expression(val1).value
+                value_1 = self.math_expression(val1)
             elif val1.type == 'variable':
-                value_1 = self.get_variable(val1.data).value
-            elif val1.type == 'bool' or val1.type == 'digit':
-                value_1 = val1.data
+                value_1 = self.get_variable(val1.data)
+            elif val1.type == 'bool':
+                value_1 = Variable(val1.data, 'bool')
+            elif val1.type == 'digit':
+                value_1 = Variable(val1.data, 'int')
             else:
                 raise errors.UnexpectedError
             if val2.type == 'brackets expression':
                 val2 = val2.children[0]
             if val2.type == 'math expression':
-                value_2 = self.math_expression(val2).value
+                value_2 = self.math_expression(val2)
             elif val2.type == 'variable':
-                value_2 = self.get_variable(val2.data).value
-            elif val2.type == 'bool' or val2.type == 'digit':
-                value_2 = val2.data
+                value_2 = self.get_variable(val2.data)
+            elif val2.type == 'bool':
+                value_2 = Variable(val2.data, 'bool')
+            elif val2.type == 'digit':
+                value_2 = Variable(val2.data, 'int')
             else:
                 raise errors.UnexpectedError
-            if value_1 == value_2:
-                return Variable('true', 'bool')
-            else:
-                return Variable('false', 'bool')
+            if value_1.type != value_2.type:
+                raise errors.TypeError(value_1, value_2)
+            if value.data == '==':
+                if value_1.value == value_2.value:
+                    return Variable('true', 'bool')
+                else:
+                    return Variable('false', 'bool')
+            elif value.data == 'first larger' or value.data == 'second smaller':
+                if value_1.value > value_2.value:
+                    return Variable('true', 'bool')
+                else:
+                    return Variable('false', 'bool')
+            elif value.data == 'first smaller' or value.data == 'second larger':
+                if value_1.value < value_2.value:
+                    return Variable('true', 'bool')
+                else:
+                    return Variable('false', 'bool')
         if value.data == 'add' or value.data == 'sub':
             if value.children[1].type == 'math expression':
                 # if second child is math expression we create new math expression

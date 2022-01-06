@@ -1,5 +1,10 @@
 function work(int a, int b, int c)
 begin
+    int counter set 0;
+    do
+        counter set counter add 1;
+    while counter first smaller 10;
+    bool True set 10 second larger 50;
     int fl set 10;
     if (fl add 1 sub 2 add 1) == 10 then
         bool flag set true;
