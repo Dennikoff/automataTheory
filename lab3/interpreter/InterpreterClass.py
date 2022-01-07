@@ -125,6 +125,17 @@ class InterpreterClass:
         self.variables = self.variables.next
 
 
+    def sizeof(self, data):
+        if data is Variable:
+            data = data.type
+        if data == 'int':
+            return 4
+        elif data == 'bool':
+            return 1
+        elif data == 'short':
+            return 2
+
+
     def returnEnv(self):
         self.variables = self.variables.pre
 
