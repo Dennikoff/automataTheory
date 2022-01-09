@@ -19,6 +19,7 @@ class ErrType(Enum):
     SizeOfError = 8
     FunctionVarlistError = 9
     WrongArrayDeclaration = 10
+    EmptyRobotError = 11
 
 
 class ErrorHandler:
@@ -53,6 +54,8 @@ class ErrorHandler:
             print_err(f"[ERROR] Invalid number of parametern in calling function {data[0]} on line {data[1].lineno}\n")
         elif code == 10:
             print_err(f"[ERROR] Wrong array declaration on line {data[0].lineno}\n")
+        elif code == 11:
+            print_err(f"[ERROR] You dont have robot in your program\n")
 
 class MyRuntimeError(Exception):
     pass
@@ -85,4 +88,7 @@ class FunctionVarlistError(Exception):
     pass
 
 class WrongArrayDeclaration(Exception):
+    pass
+
+class EmptyRobotError(Exception):
     pass

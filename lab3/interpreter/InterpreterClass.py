@@ -1,6 +1,4 @@
-import copy
 import sys
-
 from Parser.ParserFile import ParserClass
 from interpreter import convertor
 from interpreter.errors import ErrorHandler
@@ -11,6 +9,172 @@ from interpreter.VariableClass import Variable
 from interpreter.VariableClass import ArrVariable
 
 
+
+
+
+
+
+
+
+
+cells = {
+    ' ': 'empty',  # четные
+    'E': 'exit',
+    '#': 'wall'
+}
+
+back_cells = {
+    'empty': ' ',
+    'exit': 'E',
+    'wall': '#'
+}
+''' MATRIX:
+ ▲▼ ☒ ☆ ☀
+    ☒☒☒☒☒☒☒☒☒☒☒☒
+    ☒▲▼▲▼▲▼▲▼▲▼☒
+    ☒▼▲▼▲▼▲▼▲☆▲☒
+    ☒▲▼☀▼▲▼▲▼▲▼☒
+    ☒▼▲▼▲▼▲▼▲▼▲☒
+    ☒☒☒☒☒☒☒☒☒☒☒☒
+'''
+
+
+
+class Cell:
+    def __init__(self, type):
+        self.type = type
+
+    def __repr__(self):
+        return f'{self.type}'
+
+class Robot:
+    def __init__(self, x, y, map):
+        self.x = x
+        self.y = y
+        self._right = True
+        self.map = map
+
+    def __repr__(self):
+        if self.right:
+            return f'x = {self.x}, y = {self.y}; side scan = right\n'
+        else:
+            return f'x = {self.x}, y = {self.y}; side scan = left\n'
+
+    def show(self):
+        for i in range(len(self.map)):
+            for j in range(len(self.map[0])):
+                if i == self.y and j == self.x:
+                    print('☆', end='')
+                else:
+                    if back_cells[self.map[i][j].type] == ' ':
+                        if (i+j) % 2 == 0:
+                            print('▲', end='')
+                        else:
+                            print('▼', end='')
+                    elif back_cells[self.map[i][j].type] == '#':
+                        print('☒', end='')
+                    else:
+                        print('☀', end='')
+            print()
+        print()
+        # time.sleep(1)
+
+    def move(self, direction):
+        if direction == 'move':
+            if (self.x+self.y) % 2 == 0:
+                return self.up()
+            else:
+                return self.down()
+        elif direction == 'left':
+            return self.left()
+        elif direction == 'right':
+            return self.right()
+        else:
+            return Variable(0, 'int')
+
+    def up(self):
+        if self.y <= 0:
+            return Variable(0, 'int')
+        if (self.x + self.y) % 2 == 0:
+            return Variable(0, 'int')
+        else:
+            if self.map[self.y - 1][self.x].type != 'wall':
+                self.y -= 1
+                return Variable(1, 'int')
+        return Variable(0, 'int')
+
+    def down(self):
+        if self.y >= len(self.map):
+            return Variable(0, 'int')
+        if (self.x + self.y) % 2 == 0:
+            if self.map[self.y + 1][self.x].type != 'wall':
+                self.y += 1
+                return Variable(-1, 'int')
+        return Variable(0, 'int')
+
+    def left(self):
+        if self.x <= 0:
+            return Variable(0, 'int')
+        else:
+            if self.map[self.y][self.x - 1].type != 'wall':
+                self.x -= 1
+                return Variable(-1, 'int')
+        return Variable(0, 'int')
+
+    def right(self):
+        if self.x >= len(self.map[0]):
+            return Variable(0, 'int')
+        else:
+            if self.map[self.y][self.x + 1].type != 'wall':
+                self.x += 1
+                return Variable(1, 'int')
+        return Variable(0, 'int')
+
+    def exit(self):
+        if self.map[self.y][self.x].type == 'exit':
+            return True
+        return False
+
+    def lms(self):
+        dist = 1
+        radius = 5
+        if self._right:
+            while self.map[self.y][self.x+dist].type == 'empty':
+                if radius == 0:
+                    return Variable(0, 'int')
+                dist += 1
+                radius -= 1
+            if self.map[self.y][self.x+dist].type == 'exit':
+                return Variable(-dist, 'int')
+            elif self.map[self.y][self.x+dist].type == 'wall':
+                return Variable(dist, 'int')
+        else:  # left side
+            while self.map[self.y][self.x-dist].type == 'empty':
+                if radius == 0:
+                    return Variable(0, 'int')
+                dist += 1
+                radius -= 1
+            if self.map[self.y][self.x+dist].type == 'exit':
+                return Variable(dist, 'int')
+            elif self.map[self.y][self.x+dist].type == 'wall':
+                return Variable(-dist, 'int')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class VariableList:
     def __init__(self):
         self.pre = None
@@ -19,16 +183,18 @@ class VariableList:
 
 
 class InterpreterClass:
-    def __init__(self, program):
+    def __init__(self, program, robot=None):
         self.parser = ParserClass()
         self.program = program
         self.tree = []
+        self.robot = robot
         self.functions = None
         self.has_errors = False
         self.errorHandler = ErrorHandler()
         self.err_type = ErrType
         self.curFunc = None
         self.variables = VariableList()
+        self.steps = 0
 
 
 
@@ -104,8 +270,20 @@ class InterpreterClass:
                     self.returnEnv()
                     print('Something wrong in DO WHILE statement')
                     raise err
+            elif node.type == 'Robot command':
+                if self.robot is None:
+                    raise errors.EmptyRobotError
+                if node.value == 'lms':
+                    return self.robot.lms()
+                else:
+                    if self.robot.exit():
+                        self.exit = True
+                        return Variable('true', 'bool', 'exit')
+                    self.steps += 1
+                    # self.robot.show()
+                    return self.robot.move(node.data)
             else:
-                print('Error in node building or not all cases checked')
+                raise errors.UnexpectedError(node)
         except errors.MyKeyError as err:
             self.errorHandler.raise_err(self.err_type.KeyError.value, [err.args[0]])
         except errors.UnexpectedError as err:
@@ -125,6 +303,8 @@ class InterpreterClass:
             self.errorHandler.raise_err(self.err_type.FunctionVarlistError.value, [err.args[0], err.args[1]])
         except errors.WrongArrayDeclaration as err:
             self.errorHandler.raise_err(self.err_type.WrongArrayDeclaration.value, [err.args[0]])
+        except errors.EmptyRobotError as err:
+            self.errorHandler.raise_err(self.err_type.EmptyRobotError.value)
 
     def get_indexes_arr(self, node, sizelist):
         for child in node.children:
@@ -204,6 +384,8 @@ class InterpreterClass:
             return Variable(self.sizeof(node.children[0]), 'int')
         elif node.type == 'brackets expression':
             return self.expression(node.children[0])
+        elif node.type == 'Robot command':
+            return self.nodeHandle(node)
         else:
             raise errors.UnexpectedError(node)
 
@@ -522,8 +704,34 @@ class InterpreterClass:
             raise errors.FunctionVarlistError(name.data, name)
 
 
+def create_robot():
+    with open('map.txt') as file:
+        text = file.read()
+    text = text.split('\n')
+    robot_info = text.pop(0).split(' ')
+    map_size = text.pop(0).split(' ')
+    x = int(robot_info[0])
+    y = int(robot_info[1])
+    mapp = [0] * int(map_size[0])
+
+    for i in range(int(map_size[0])):
+        mapp[i] = [0]*int(map_size[1])
+    for i in range(int(map_size[0])):
+        for j in range(int(map_size[1])):
+            mapp[i][j] = Cell("empty")
+    pos = 0
+    while len(text) > 0:
+        line = list(text.pop(0))
+        line = [Cell(cells[i]) for i in line]
+        mapp[pos] = line
+        pos += 1
+    return Robot(x, y, mapp)
+
+
 if __name__ == '__main__':
     f = open('check2.txt', 'r')      #errors_check.txt не забыть показать отсутствие функции work
     data = f.read()
-    my_interpreter = InterpreterClass(data)
+    robot = create_robot()
+    my_interpreter = InterpreterClass(data, robot)
     my_interpreter.interprete()
+

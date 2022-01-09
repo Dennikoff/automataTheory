@@ -127,23 +127,23 @@ class Robot:
 
     def lms(self):
         dist = 1
-        length = 5
+        radius = 5
         if self._right:
             while self.map[self.y][self.x+dist].type == 'empty':
-                if length == 0:
+                if radius == 0:
                     return Variable(0, 'int')
                 dist += 1
-                length -= 1
+                radius -= 1
             if self.map[self.y][self.x+dist].type == 'exit':
                 return Variable(-dist, 'int')
             elif self.map[self.y][self.x+dist].type == 'wall':
                 return Variable(dist, 'int')
         else:  # left side
             while self.map[self.y][self.x-dist].type == 'empty':
-                if length == 0:
+                if radius == 0:
                     return Variable(0, 'int')
                 dist += 1
-                length -= 1
+                radius -= 1
             if self.map[self.y][self.x+dist].type == 'exit':
                 return Variable(dist, 'int')
             elif self.map[self.y][self.x+dist].type == 'wall':

@@ -1,49 +1,6 @@
 function work(int a)
 begin
-    int adding set 1 add (1 add 10);
-    int a set b;
-    int summafunc set sum(10, 20);
-    bool checking set 1 add 2;
-    int firstparam set 1;
-    int secondparam set 2;
-    int thirdparam set 3;
-    maxx set 10;
-    int max set 10;
-    int counter set 0;
-    do
-        counter set counter add 12;
-    while counter first smaller 100;
-    int fl set 10;
-    int vara set 6;
-    int varb set 10;
-    if vara first smaller varb then
-        vara set 100;
-    else
-        vara set 500;
-    summ(10, 20);
-    int sizeofint set sizeof(int);
-    bool varbool set true;
-    int vardigit set 10;
-    if vardigit == varbool then
-        int f set 1;
-    else
-        int f set 2;
-    if (fl add 1 sub 2 add 1) == 10 then
-        bool flag1 set true;
-    else
-        bool flag1 set false;
-    if false then
-        bool flag set true;
-    else
-        bool flag set false;
-    int a set 4 sub (10 sub 4) add 4;
-    int kek set false add false add false;
-    bool andTrue set true and a and 500 and true;
-    bool andFalse set true and a and -1 and true;
-    bool NotAnd set true not and undefined;
-    bool orTrue set a or false or -1;
-    bool orFalse set false or false or -1;
-    bool notOr set false not or false not or false not or false;
+
 end
 return kek;
 

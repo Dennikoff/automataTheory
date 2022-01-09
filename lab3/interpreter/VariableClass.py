@@ -42,9 +42,7 @@ class ArrVariable:
                         for child in value:
                             if isinstance(child, Variable):
                                new_value.append(Variable(child.value, child.type))
-                            else:
-                                print('I did only AxA and A matrix')
-                                sys.exit(-1)
+
                         value = new_value
                     else:
                         value = convertor.convert_type(Variable(0, 'int'), type)
@@ -66,9 +64,7 @@ class ArrVariable:
                         for child in value:
                             if isinstance(child, Variable):
                                new_value.append(Variable(child.value, child.type))
-                            else:
-                                print('I did only AxA and A matrix')
-                                sys.exit(-1)
+
                         value = new_value
                     else:
                         value = convertor.convert_type(Variable(values[counter], 'int'), type)
