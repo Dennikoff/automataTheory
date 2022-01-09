@@ -51,7 +51,7 @@ class ParserClass:
                 | SHORT"""
         self.node_build.type(p)
 
-    def p_var(self, p): # индекс при объявлении
+    def p_var(self, p):
         """var : setting
                | var COMMA var"""
         self.node_build.var(p)
@@ -152,7 +152,7 @@ class ParserClass:
                    | varlist COMMA varlist"""
         self.node_build.varlist(p)
 
-    def p_if(self, p):
+    def p_if(self, p): # !!!!! второе убрать
         """if : IF expr THEN statement_gr ELSE statement_gr"""
         self.node_build.if_b(p)
 

@@ -1,17 +1,6 @@
 from interpreter.VariableClass import Variable
 
 
-class arr_variable:
-    def __init__(self, values, type, sizes, name =''):
-        if type == 'short int':
-            type = 'short'
-        self.type = type
-        self.array = []
-        for number in values:
-            pass
-
-
-
 def convert_type(value, type):
     if value.type == type:
         return value

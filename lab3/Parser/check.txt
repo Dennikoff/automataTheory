@@ -1,20 +1,8 @@
-function work(int a, int b, int c)
+function work(int a, bool b, int a)
 begin
-    int counter set 0;
-    do
-        counter set counter add 1;
-    while counter first smaller 10;
-    bool True set 10 second larger 50;
-    int fl set 10;
-    if (fl add 1 sub 2 add 1) == 10 then
-        bool flag set true;
-    else
-        bool flag set false;
-    int vara set 6;
-    int varb set 10;
-    int sum set vara add varb add 0;
-    int a set 4 add (4 sub 4) add 4;
-    bool True set true and a and 500 and true;
+    int lol;
+    vector of vector of int kek;
+    if 10 == 10 then
+        bool fl set true;
 end
 return 0;
-;

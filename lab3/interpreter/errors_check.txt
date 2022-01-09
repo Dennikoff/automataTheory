@@ -1,0 +1,32 @@
+function work(int a)
+begin
+    max set 5;
+    int vara;
+    if 10 == false then
+        vara set 100;
+    else
+        vara set 500;
+    summ(10, 20);
+    sum(10, 20, 30);
+    sum2(10, 20, 30);
+    do
+        int a;
+    while true;
+
+    max set 10;
+
+end
+return 0;
+
+function sum(int a, int b)
+begin
+    int summa set a add b;
+
+end
+return summa;
+
+function sum2(int a, int b, int b)
+begin
+    int kek;
+end
+return 1;

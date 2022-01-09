@@ -18,7 +18,7 @@ def compile_(string, flag=0):
     #except Exception:
     #    print("Something went wrong")
     #    sys.exit(-1)
-    print_tree(tree)
+    # print_tree(tree)
     # inversion(tree)
     # print_tree(tree)
     language = set()
@@ -26,7 +26,7 @@ def compile_(string, flag=0):
     nka.finish()
     #print_nka(nka)
     dka = make_dka(nka, language)
-    #Dka.print_dka(dka)
+    Dka.print_dka(dka)
     minDka = min_dka(dka, language)
     print('\n\n\n')
     Dka.print_dka(minDka)

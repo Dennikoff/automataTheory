@@ -1,3 +1,5 @@
+import sys
+
 from Parser.ParserFile import ParserClass
 from interpreter import convertor
 from interpreter.errors import ErrorHandler
@@ -36,7 +38,12 @@ class InterpreterClass:
             else:
                 self.curFunc = 'work'
                 self.nodeHandle(self.functions['work'].children[1])
-                print('Return:', self.functions['work'].children[2])
+                return_value = self.functions['work'].children[2]
+                if return_value.type == 'variable':
+                    return_value = self.get_variable(return_value).value
+                else:
+                    return_value = return_value.data
+                print('Return:', return_value)
         else:
             self.errorHandler.raise_err(self.err_type.SyntaxError.value)
 
@@ -71,7 +78,7 @@ class InterpreterClass:
                 try:
                     self.assign(variable1, variable2)
                 except Exception as err:
-                    print(f"Something wrong in Assign {err}")
+                    print(f"Something wrong in Assign")
                     raise err
             elif node_type == 'expression':
                 self.nodeHandle(node.children[1])
@@ -85,21 +92,39 @@ class InterpreterClass:
                     print('Something wrong in IF statement')
                     raise err
             elif node_type == 'call function':
-                pass
+                try:
+                    self.callfunc(node)
+                except Exception as err:
+                    if err != errors.KeyErrorFunc:
+                        self.returnEnv()
+                    print('Something wrong in Call function')
+                    raise err
             elif node_type == 'do while':
                 try:
-                    self.dowhile_statement(node.children[0], node.children[1])
+                    self.dowhile_statement(node)
                 except Exception as err:
+                    self.returnEnv()
                     print('Something wrong in DO WHILE statement')
                     raise err
             else:
                 print('Error in node building or not all cases checked')
         except errors.MyKeyError as err:
-            self.errorHandler.raise_err(self.err_type.KeyError.value, [err])
-        except errors.UnexpectedError:
-            self.errorHandler.raise_err(self.err_type.UnexpectedError.value)
+            self.errorHandler.raise_err(self.err_type.KeyError.value, [err.args[0]])
+        except errors.UnexpectedError as err:
+            self.errorHandler.raise_err(self.err_type.UnexpectedError.value, [err.args[0]])
         except errors.TypeError as err:
-            self.errorHandler.raise_err(self.err_type.TypeError.value, [err.args[0], err.args[1]])
+            self.errorHandler.raise_err(self.err_type.TypeError.value, [err.args[0], err.args[1], err.args[2]])
+        except errors.KeyErrorFunc as err:
+            self.errorHandler.raise_err(self.err_type.KeyErrorFunc.value, [err.args[0], err.args[1]])
+        except errors.RepeatingParam as err:
+            self.errorHandler.raise_err(self.err_type.RepeatingParam.value, [err.args[0], err.args[1]])
+        except errors.MyRuntimeError as err:
+            self.errorHandler.raise_err((self.err_type.RuntimeError.value))
+            sys.exit(self.err_type.RuntimeError.value)
+        except errors.SizeOfError as err:
+            self.errorHandler.raise_err(self.err_type.SizeOfError.value, [err.args[0], err.args[1]])
+        except errors.FunctionVarlistError as err:
+            self.errorHandler.raise_err(self.err_type.FunctionVarlistError.value, [err.args[0], err.args[1]])
 
     def declaration(self, type, var, flag_arr):
         if not flag_arr:
@@ -111,11 +136,37 @@ class InterpreterClass:
                 self.variables.variables[var.children[0].data] = variable
                 self.assign(var.children[0], var.children[1])
         else:
+            scope_count = self.arr_count(type, 0)
+            print(scope_count)
+
             print("[TODO]Vector declaration!!")
             #     variable = var.children[0]
             #     value = var.children[1]
             #     if value.type != 'math expression':
             #         variable = Variable(value.data, )
+
+
+    def arr_count(self, node, count):
+        if node.type == 'type':
+            return count
+        else:
+            count += 1
+            return self.arr_count(node.children[0], count)
+
+
+    def sizeof(self, node):
+        if node.type == 'variable':
+            data = self.get_variable(node).type
+        else:
+            data = node.data
+        if data == 'int':
+            return 4
+        elif data == 'bool':
+            return 1
+        elif data == 'short':
+            return 2
+        else:
+            raise errors.SizeOfError(data, node)
 
 
     def createNewEnv(self):
@@ -125,19 +176,68 @@ class InterpreterClass:
         self.variables = self.variables.next
 
 
-    def sizeof(self, data):
-        if data is Variable:
-            data = data.type
-        if data == 'int':
-            return 4
-        elif data == 'bool':
-            return 1
-        elif data == 'short':
-            return 2
-
-
     def returnEnv(self):
         self.variables = self.variables.pre
+
+
+    def varlist(self, node, varlist):
+        variable_1 = node.children[0]
+        if variable_1.type == 'variable':
+            variable_1 = self.get_variable(variable_1).value
+        elif variable_1.type == 'size of':
+            variable_1 = self.sizeof(variable_1)
+        else:
+            variable_1 = variable_1.data
+        varlist.append(variable_1)
+        if len(node.children) > 1:
+            variable_2 = node.children[1]
+            if variable_2.type == 'double varlist':
+                self.varlist(variable_2, varlist)
+                return
+            elif variable_2.type == 'variable':
+                variable_2 = self.get_variable(variable_2.data).value
+            elif variable_2.type == 'size of':
+                variable_2 = self.sizeof(variable_2)
+            else:
+                variable_2 = variable_2.data
+            varlist.append(variable_2)
+
+
+
+
+    def callfunc(self, node):
+        func_name = node.data
+        try:
+            func = self.functions[func_name]
+        except KeyError as err:
+            self.createNewEnv()
+            raise errors.KeyErrorFunc(err, node)
+        varlist = []
+        if node.children[0].type == 'double varlist':
+            self.varlist(node.children[0], varlist)
+        else:
+            self.varlist(node, varlist)
+        self.createNewEnv()
+        self.comma_variables(func.children[0], varlist, node)
+        self.nodeHandle(func.children[1])
+        return_value = func.children[2]
+        if return_value.type == 'variable':
+            value = self.get_variable(return_value)
+        elif return_value.type == 'math expression':
+            value = self.math_expression(return_value)
+        elif return_value.type == 'digit':
+            value = Variable(return_value.data, 'int')
+        elif return_value.type == 'bool':
+            value = Variable(return_value.data, 'bool')
+        else:
+            raise errors.UnexpectedError(node)
+        self.returnEnv()
+        return value
+
+
+
+
+
 
 
     def if_statement(self, expression, then_statement, else_statement):
@@ -148,7 +248,7 @@ class InterpreterClass:
             condition = expression.data
             condition = convertor.convert_type(Variable(condition, 'int'), 'bool').value
         elif expression.type == 'variable':
-            variable = self.get_variable(expression.data)
+            variable = self.get_variable(expression)
             condition = convertor.convert_type(variable, 'bool').value
         elif expression.type == 'math expression':
             condition = self.math_expression(expression)
@@ -163,7 +263,9 @@ class InterpreterClass:
         self.returnEnv()
 
 
-    def dowhile_statement(self, body, expression):
+    def dowhile_statement(self, node):
+        body = node.children[0]
+        expression = node.children[1]
         self.createNewEnv()
         counter = 0
         condition = 'true'
@@ -176,20 +278,21 @@ class InterpreterClass:
                 variable = self.math_expression(expression)
                 condition = convertor.convert_type(variable, 'bool').value
             elif expression.type == 'variable':
-                condition = self.get_variable(expression.data)
+                condition = self.get_variable(expression)
             elif expression.type == 'bool':
                 condition = expression.data
             elif expression.type == 'digit':
                 variable = Variable(expression.data, 'int')
                 condition = convertor.convert_type(variable, 'bool')
             else:
-                raise errors.UnexpectedError
-            if counter > 10000:
+                raise errors.UnexpectedError(node)
+            if counter > 100000:
                 raise errors.MyRuntimeError()
         self.returnEnv()
 
 
-    def get_variable(self, name):
+    def get_variable(self, node):
+        name = node.data
         current = self.variables
         variable = None
         while True:
@@ -201,15 +304,16 @@ class InterpreterClass:
                 if current == None:
                     break
         if not(variable):
-            raise KeyError(name)
+            raise errors.MyKeyError(node)
         return variable
 
     def assign(self, name, value):
         # self.errorHandler.set_node(name)
         # raise errors.MyKeyError
-        variable = self.get_variable(name.data)
+        variable = self.get_variable(name)
         if value.type == 'math expression':
-            cur_value = self.math_expression(value).value
+            cur_value = self.math_expression(value)
+            cur_value = convertor.convert_type(cur_value, variable.type).value
             variable.set_value(cur_value)
         elif value.type == 'digit':
             cur_value = value.data
@@ -220,8 +324,17 @@ class InterpreterClass:
             cur_value = convertor.convert_type(Variable(cur_value, 'bool'), variable.type).value
             variable.set_value(cur_value)
         elif value.type == 'variable':
-            variable_second = self.get_variable(value.data)
+            variable_second = self.get_variable(value)
+            variable_second = convertor.convert_type(variable_second, variable.type)
             variable.set_value(variable_second.value)
+        elif value.type == 'size of':
+            data = self.sizeof(value.children[0])
+            variable.set_value(data)
+        elif value.type == 'call function':
+            data = self.callfunc(value)
+            data = convertor.convert_type(data, variable.type).value
+            variable.set_value(data)
+
 
     def math_expression(self, value):
         flag = False
@@ -233,27 +346,27 @@ class InterpreterClass:
             if val1.type == 'math expression':
                 value_1 = self.math_expression(val1)
             elif val1.type == 'variable':
-                value_1 = self.get_variable(val1.data)
+                value_1 = self.get_variable(val1)
             elif val1.type == 'bool':
                 value_1 = Variable(val1.data, 'bool')
             elif val1.type == 'digit':
                 value_1 = Variable(val1.data, 'int')
             else:
-                raise errors.UnexpectedError
+                raise errors.UnexpectedError(value)
             if val2.type == 'brackets expression':
                 val2 = val2.children[0]
             if val2.type == 'math expression':
                 value_2 = self.math_expression(val2)
             elif val2.type == 'variable':
-                value_2 = self.get_variable(val2.data)
+                value_2 = self.get_variable(val2)
             elif val2.type == 'bool':
                 value_2 = Variable(val2.data, 'bool')
             elif val2.type == 'digit':
                 value_2 = Variable(val2.data, 'int')
             else:
-                raise errors.UnexpectedError
+                raise errors.UnexpectedError(value)
             if value_1.type != value_2.type:
-                raise errors.TypeError(value_1, value_2)
+                raise errors.TypeError(value_1, value_2, value)
             if value.data == '==':
                 if value_1.value == value_2.value:
                     return Variable('true', 'bool')
@@ -281,7 +394,7 @@ class InterpreterClass:
                     if value.children[0].type == 'math expression':
                         value_1 = self.math_expression(value.children[0]).value
                     elif value.children[0].type == 'variable':
-                        variable = self.get_variable(value.children[1].data)
+                        variable = self.get_variable(value.children[1])
                         value_1 = variable.value
                         if variable.type == 'bool':
                             value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
@@ -291,7 +404,7 @@ class InterpreterClass:
                             value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
                     value = saved_val
                 elif value.children[1].children[0].type == 'variable':
-                    variable = self.get_variable(value.children[1].children[0].data)
+                    variable = self.get_variable(value.children[1].children[0])
                     value_1 = variable.value
                     if variable.type == 'bool':
                         value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
@@ -302,7 +415,7 @@ class InterpreterClass:
                 flag = True
                 # value_1 = self.math_expression(value.children[1])
             elif value.children[1].type == 'variable':
-                variable = self.get_variable(value.children[1].data)
+                variable = self.get_variable(value.children[1])
                 value_1 = variable.value
                 if variable.type == 'bool':
                     value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
@@ -311,7 +424,7 @@ class InterpreterClass:
                 if value.children[1].children[0].type == 'math expression':
                     value_1 = self.math_expression(value.children[1].children[0]).value
                 elif value.children[1].children[0].type == 'variable':
-                    variable = self.get_variable(value.children[1].children[1].data)
+                    variable = self.get_variable(value.children[1].children[1])
                     value_1 = variable.value
                     if variable.type == 'bool':
                         value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
@@ -325,7 +438,7 @@ class InterpreterClass:
                     value_1 = convertor.convert_type(Variable(value_1, 'bool'), 'int').value
                     # convert_type returns tuple (value, type) so we take convert_type[0]
             if value.children[0].type == 'variable':
-                variable = self.get_variable(value.children[0].data)
+                variable = self.get_variable(value.children[0])
                 value_2 = variable.value
                 if variable.type == 'bool':
                     value_2 = convertor.convert_type(Variable(value_2, 'bool'), 'int').value
@@ -334,7 +447,7 @@ class InterpreterClass:
                 if value.children[0] == 'math expression':
                     value_2 = self.math_expression(value.children[0]).value
                 elif value.children[0] == 'variable':
-                    variable = self.get_variable(value.children[0].data)
+                    variable = self.get_variable(value.children[0])
                     value_2 = variable.value
                     if variable.type == 'bool':
                         value_2 = convertor.convert_type(Variable(value_2, 'bool'), 'int').value
@@ -351,7 +464,7 @@ class InterpreterClass:
             elif value.data == 'sub':
                 result = value_2 - value_1
             else:
-                raise errors.UnexpectedError
+                raise errors.UnexpectedError(value)
             if flag:
                 new_node = Node('math expression',
                      data=value.children[1].data,
@@ -372,7 +485,7 @@ class InterpreterClass:
                     if value.children[0].type == 'math expression':
                         value_1 = self.math_expression(value.children[0]).value
                     elif value.children[0].type == 'variable':
-                        variable = self.get_variable(value.children[1].data)
+                        variable = self.get_variable(value.children[1])
                         value_1 = variable.value
                         if variable.type == 'int':
                             value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
@@ -382,7 +495,7 @@ class InterpreterClass:
                             value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
                     value = saved_val
                 elif value.children[1].children[0].type == 'variable':
-                    variable = self.get_variable(value.children[1].children[0].data)
+                    variable = self.get_variable(value.children[1].children[0])
                     value_1 = variable.value
                     if variable.type == 'int':
                         value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
@@ -393,7 +506,7 @@ class InterpreterClass:
                 flag = True
                 # value_1 = self.math_expression(value.children[1])
             elif value.children[1].type == 'variable':
-                variable = self.get_variable(value.children[1].data)
+                variable = self.get_variable(value.children[1])
                 value_1 = variable.value
                 if variable.type == 'int':
                     value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
@@ -402,7 +515,7 @@ class InterpreterClass:
                 if value.children[1].children[0].type == 'math expression':
                     value_1 = self.math_expression(value.children[1].children[0]).value
                 elif value.children[1].children[0].type == 'variable':
-                    variable = self.get_variable(value.children[1].children[1].data)
+                    variable = self.get_variable(value.children[1].children[1])
                     value_1 = variable.value
                     if variable.type == 'int':
                         value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
@@ -416,7 +529,7 @@ class InterpreterClass:
                     value_1 = convertor.convert_type(Variable(value_1, 'int'), 'bool').value
                     # convert_type returns tuple (value, type) so we take convert_type[0]
             if value.children[0].type == 'variable':
-                variable = self.get_variable(value.children[0].data)
+                variable = self.get_variable(value.children[0])
                 value_2 = variable.value
                 if variable.type == 'int':
                     value_2 = convertor.convert_type(Variable(value_2, 'int'), 'bool').value
@@ -425,7 +538,7 @@ class InterpreterClass:
                 if value.children[0] == 'math expression':
                     value_2 = self.math_expression(value.children[0]).value
                 elif value.children[0] == 'variable':
-                    variable = self.get_variable(value.children[0].data)
+                    variable = self.get_variable(value.children[0])
                     value_2 = variable.value
                     if variable.type == 'int':
                         value_2 = convertor.convert_type(Variable(value_2, 'int'), 'bool').value
@@ -466,7 +579,7 @@ class InterpreterClass:
                 else:
                     result = 'true'
             else:
-                raise errors.UnexpectedError
+                raise errors.UnexpectedError(value)
             if flag:
                 new_node = Node('math expression',
                                 data=value.children[1].data,
@@ -477,8 +590,28 @@ class InterpreterClass:
             return Variable(result, 'bool')
 
 
+    def comma_variables(self, node, varlist, name):
+        for child in node.children:
+            if child.type == 'variable':
+                try:
+                    self.variables.variables[child.data]
+                    raise errors.RepeatingParam(child.data, child)
+                except KeyError:
+                    if len(varlist) != 0:
+                        value = varlist.pop(0)
+                    else:
+                        raise errors.FunctionVarlistError(name.data, name)
+                    self.variables.variables[child.data] = Variable(value, child.children[0].data, child.data)
+            elif child.type == 'comma variables':
+                self.comma_variables(child, varlist, name)
+            else:
+                raise errors.UnexpectedError(node)
+        if len(varlist) != 0:
+            raise errors.FunctionVarlistError(name.data, name)
+
+
 if __name__ == '__main__':
-    f = open('check.txt', 'r')
+    f = open('check2.txt', 'r')      #errors_check.txt не забыть показать отсутствие функции work
     data = f.read()
     my_interpreter = InterpreterClass(data)
     my_interpreter.interprete()

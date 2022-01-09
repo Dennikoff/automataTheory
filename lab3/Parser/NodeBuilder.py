@@ -78,7 +78,7 @@ class NodeBuilder:
             p[0] = Node('squared bracket', data=p[2], lineno=p.lineno(1))
 
     def sizeof(self, p):
-        p[0] = Node('size of ', data=p[1], children=[p[3]], lineno=p.lineno(1))
+        p[0] = Node('size of', data=p[1], children=[p[3]], lineno=p.lineno(1))
 
     def bool(self, p):
         p[0] = Node('bool', data=p[1], lineno=p.lineno(1))
@@ -88,7 +88,7 @@ class NodeBuilder:
 
     def math_expr(self, p):
         if len(p) == 4:
-            p[0] = Node('math expression', data=p[2], children=[p[1], p[3]], lineno=p.lineno(1))
+            p[0] = Node('math expression', data=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
         else:
             p[0] = Node('math expression', data=f"{p[2]} {p[3]}", children=[p[1], p[4]], lineno=p.lineno(1))
 
@@ -133,7 +133,7 @@ class NodeBuilder:
 
     def arrtype(self, p):
         if len(p) == 3:
-            p[0] = Node('variable', data=p[2], children=[p[1]], lineno=p.lineno(1))
+            p[0] = Node('variable', data=p[2], children=[p[1]], lineno=p.lineno(2))
         else:
             p[0] = Node('comma variables', children=[p[1], p[3]], lineno=p.lineno(1))
 

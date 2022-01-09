@@ -17,3 +17,13 @@ class Variable:
 
     def __repr__(self):
         return f"Name: {self.name}; Type: {self.type}; Value: {self.value};"
+
+
+class arr_variable:
+    def __init__(self, values, type, sizes, name =''):
+        if type == 'short int':
+            type = 'short'
+        self.type = type
+        self.array = []
+        for number in values:
+            pass

@@ -1,0 +1,5 @@
+function work(int a)
+begin
+    vector of vector of vector of int kek;
+end
+return 0;

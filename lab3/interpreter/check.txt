@@ -1,5 +1,12 @@
 function work(int a)
 begin
+    int summafunc set sum(10, 20);
+    bool checking set 1 add 2;
+    int firstparam set 1;
+    int secondparam set 2;
+    int thirdparam set 3;
+    maxx set 10;
+    int max set 10;
     int counter set 0;
     do
         counter set counter add 12;
@@ -7,12 +14,15 @@ begin
     int fl set 10;
     int vara set 6;
     int varb set 10;
-    int sum set vara add varb add 0;
     if vara first smaller varb then
         vara set 100;
     else
         vara set 500;
-    if 10 == false then
+    summ(10, 20);
+    int sizeofint set sizeof(int);
+    bool varbool set true;
+    int vardigit set 10;
+    if vardigit == varbool then
         int f set 1;
     else
         int f set 2;
@@ -33,4 +43,11 @@ begin
     bool orFalse set false or false or -1;
     bool notOr set false not or false not or false not or false;
 end
-return 0;
+return kek;
+
+function sum(int a, int b)
+begin
+    int summa set a add b;
+
+end
+return false;
