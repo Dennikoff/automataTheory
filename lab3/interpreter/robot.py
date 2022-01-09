@@ -19,7 +19,7 @@ back_cells = {
     'wall': '#'
 }
 ''' MATRIX:
-Δ ▲▼ ☒ ☆ ☀
+ ▲▼ ☒ ☆ ☀
     ☒☒☒☒☒☒☒☒☒☒☒☒
     ☒▲▼▲▼▲▼▲▼▲▼☒
     ☒▼▲▼▲▼▲▼▲☆▲☒
@@ -72,9 +72,9 @@ class Robot:
     def move(self, direction):
         if direction == 'move':
             if (self.x+self.y) % 2 == 0:
-                return self.down()
-            else:
                 return self.up()
+            else:
+                return self.down()
         elif direction == 'left':
             return self.left()
         elif direction == 'right':
