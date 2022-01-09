@@ -29,6 +29,6 @@ return arr;
 function work(int a)
 	begin
 	vector of int mas set {6, 3, 5, 1, 2, 1};
-	vector of int result set QuickSort(mas, 6);
+	mas set QuickSort(mas, 6);
 	end
 return 0;

@@ -29,9 +29,6 @@ class NodeBuilder:
         else:
             p[0] = Node('var', children=[p[1], p[3]], lineno=p.lineno(1))
 
-    def var_v(self, p):
-        p[0] = Node('variable', data=p[1], lineno=p.lineno(1))
-
     def setting(self, p):
         p[0] = Node('assign', data=p[2], children=[p[1], p[3]], lineno=p.lineno(1))
 
@@ -75,7 +72,7 @@ class NodeBuilder:
         if len(p) == 3:
             p[0] = Node('double index', children=[p[1], p[2]], lineno=p.lineno(1))
         else:
-            p[0] = Node('squared bracket', data=p[2], lineno=p.lineno(1))
+            p[0] = Node('squared bracket', children=[p[2]], lineno=p.lineno(1))
 
     def sizeof(self, p):
         p[0] = Node('size of', data=p[1], children=[p[3]], lineno=p.lineno(1))

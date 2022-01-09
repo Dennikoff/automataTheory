@@ -1,5 +1,7 @@
 function work(int a)
 begin
+    int adding set 1 add (1 add 10);
+    int a set b;
     int summafunc set sum(10, 20);
     bool checking set 1 add 2;
     int firstparam set 1;
@@ -50,4 +52,4 @@ begin
     int summa set a add b;
 
 end
-return false;
+return summa;

@@ -6,7 +6,7 @@ begin
         vara set 100;
     else
         vara set 500;
-    summ(10, 20);
+    summmmm(10, 20);
     sum(10, 20, 30);
     sum2(10, 20, 30);
     do

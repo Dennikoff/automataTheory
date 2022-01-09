@@ -23,9 +23,9 @@ Rule 13    type -> INT
 Rule 14    type -> BOOL
 Rule 15    type -> SHORT INT
 Rule 16    type -> SHORT
-Rule 17    var -> setting
-Rule 18    var -> var COMMA var
-Rule 19    var -> VARIABLE
+Rule 17    var -> variable
+Rule 18    var -> setting
+Rule 19    var -> var COMMA var
 Rule 20    setting -> variable SET expr
 Rule 21    expr -> variable
 Rule 22    expr -> const
@@ -95,7 +95,7 @@ AND                  : 56 58
 BEGIN                : 67
 BOOL                 : 14
 CLBR                 : 26 42 43 60 71
-COMMA                : 18 31 33 63 73
+COMMA                : 19 31 33 63 73
 CUCLBR               : 30 32
 CUOPBR               : 30 32
 DO                   : 69 70
@@ -131,7 +131,7 @@ SUB                  : 50
 THEN                 : 64 65
 TRUE                 : 44
 UNDEFINED            : 46
-VARIABLE             : 19 38 39 60 71 72
+VARIABLE             : 38 39 60 71 72
 VECTOROF             : 29
 WHILE                : 69
 error                : 65 66 70
@@ -155,14 +155,14 @@ index                : 39 41 41
 math_expr            : 23
 program              : 0
 setarr               : 27 30 31 31
-setting              : 5 17
+setting              : 5 18
 single_statement     : 2 3 68
 sizeof               : 37
 statement_gr         : 64 64 65 69 71
 statement_list       : 1 2 67
 type                 : 12 29 42 72
-var                  : 12 18 18
-variable             : 20 21 27 43 61
+var                  : 12 19 19
+variable             : 17 20 21 27 43 61
 varlist              : 60 63 63
 vectorof             : 28
 
@@ -455,26 +455,26 @@ state 11
 state 12
 
     (12) declaration -> type . var
-    (17) var -> . setting
-    (18) var -> . var COMMA var
-    (19) var -> . VARIABLE
-    (20) setting -> . variable SET expr
-    (27) setting -> . variable SET setarr
+    (17) var -> . variable
+    (18) var -> . setting
+    (19) var -> . var COMMA var
     (38) variable -> . VARIABLE
     (39) variable -> . VARIABLE index
+    (20) setting -> . variable SET expr
+    (27) setting -> . variable SET setarr
 
-    VARIABLE        shift and go to state 34
+    VARIABLE        shift and go to state 35
 
     var                            shift and go to state 32
-    setting                        shift and go to state 33
-    variable                       shift and go to state 13
+    variable                       shift and go to state 33
+    setting                        shift and go to state 34
 
 state 13
 
     (20) setting -> variable . SET expr
     (27) setting -> variable . SET setarr
 
-    SET             shift and go to state 35
+    SET             shift and go to state 36
 
 
 state 14
@@ -518,28 +518,28 @@ state 14
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 36
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    expr                           shift and go to state 37
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 15
 
@@ -579,8 +579,8 @@ state 15
     (39) variable -> . VARIABLE index
     (29) vectorof -> . VECTOROF type
 
-    error           shift and go to state 54
-    BEGIN           shift and go to state 55
+    error           shift and go to state 55
+    BEGIN           shift and go to state 56
     ENDSTR          shift and go to state 5
     IF              shift and go to state 14
     DO              shift and go to state 15
@@ -595,8 +595,8 @@ state 15
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_gr                   shift and go to state 53
-    single_statement               shift and go to state 56
+    statement_gr                   shift and go to state 54
+    single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
     if                             shift and go to state 7
@@ -612,7 +612,7 @@ state 16
 
     (71) function -> FUNCTION . VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
 
-    VARIABLE        shift and go to state 57
+    VARIABLE        shift and go to state 58
 
 
 state 17
@@ -623,11 +623,11 @@ state 17
     (40) index -> . SQOPBR expr SQCLBR
     (41) index -> . index index
 
-    OPBR            shift and go to state 58
+    OPBR            shift and go to state 59
     SET             reduce using rule 38 (variable -> VARIABLE .)
-    SQOPBR          shift and go to state 60
+    SQOPBR          shift and go to state 61
 
-    index                          shift and go to state 59
+    index                          shift and go to state 60
 
 state 18
 
@@ -651,10 +651,10 @@ state 18
     CLBR            reduce using rule 74 (cmd -> MOVE .)
     SQCLBR          reduce using rule 74 (cmd -> MOVE .)
     CUCLBR          reduce using rule 74 (cmd -> MOVE .)
-    RIGHT           shift and go to state 62
-    LEFT            shift and go to state 63
+    RIGHT           shift and go to state 63
+    LEFT            shift and go to state 64
 
-    dir                            shift and go to state 61
+    dir                            shift and go to state 62
 
 state 19
 
@@ -740,7 +740,7 @@ state 24
     (15) type -> SHORT . INT
     (16) type -> SHORT .
 
-    INT             shift and go to state 64
+    INT             shift and go to state 65
     VARIABLE        reduce using rule 16 (type -> SHORT .)
     CLBR            reduce using rule 16 (type -> SHORT .)
 
@@ -768,7 +768,7 @@ state 26
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    type                           shift and go to state 65
+    type                           shift and go to state 66
     vectorof                       shift and go to state 25
 
 state 27
@@ -895,36 +895,47 @@ state 31
 state 32
 
     (12) declaration -> type var .
-    (18) var -> var . COMMA var
+    (19) var -> var . COMMA var
 
     ENDSTR          reduce using rule 12 (declaration -> type var .)
-    COMMA           shift and go to state 66
+    COMMA           shift and go to state 67
 
 
 state 33
 
-    (17) var -> setting .
+    (17) var -> variable .
+    (20) setting -> variable . SET expr
+    (27) setting -> variable . SET setarr
 
-    COMMA           reduce using rule 17 (var -> setting .)
-    ENDSTR          reduce using rule 17 (var -> setting .)
+    COMMA           reduce using rule 17 (var -> variable .)
+    ENDSTR          reduce using rule 17 (var -> variable .)
+    SET             shift and go to state 36
 
 
 state 34
 
-    (19) var -> VARIABLE .
+    (18) var -> setting .
+
+    COMMA           reduce using rule 18 (var -> setting .)
+    ENDSTR          reduce using rule 18 (var -> setting .)
+
+
+state 35
+
     (38) variable -> VARIABLE .
     (39) variable -> VARIABLE . index
     (40) index -> . SQOPBR expr SQCLBR
     (41) index -> . index index
 
-    COMMA           reduce using rule 19 (var -> VARIABLE .)
-    ENDSTR          reduce using rule 19 (var -> VARIABLE .)
     SET             reduce using rule 38 (variable -> VARIABLE .)
-    SQOPBR          shift and go to state 60
+    COMMA           reduce using rule 38 (variable -> VARIABLE .)
+    ENDSTR          reduce using rule 38 (variable -> VARIABLE .)
+    CLBR            reduce using rule 38 (variable -> VARIABLE .)
+    SQOPBR          shift and go to state 61
 
-    index                          shift and go to state 59
+    index                          shift and go to state 60
 
-state 35
+state 36
 
     (20) setting -> variable SET . expr
     (27) setting -> variable SET . setarr
@@ -967,32 +978,32 @@ state 35
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    CUOPBR          shift and go to state 69
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    CUOPBR          shift and go to state 70
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
-    variable                       shift and go to state 37
-    expr                           shift and go to state 67
-    setarr                         shift and go to state 68
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    expr                           shift and go to state 68
+    setarr                         shift and go to state 69
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 36
+state 37
 
     (64) if -> IF expr . THEN statement_gr ELSE statement_gr
     (65) if -> IF expr . THEN statement_gr error
@@ -1009,19 +1020,19 @@ state 36
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
 
-    THEN            shift and go to state 70
-    error           shift and go to state 71
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    THEN            shift and go to state 71
+    error           shift and go to state 72
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
-state 37
+state 38
 
     (21) expr -> variable .
 
@@ -1042,7 +1053,7 @@ state 37
     CUCLBR          reduce using rule 21 (expr -> variable .)
 
 
-state 38
+state 39
 
     (22) expr -> const .
 
@@ -1063,7 +1074,7 @@ state 38
     CUCLBR          reduce using rule 22 (expr -> const .)
 
 
-state 39
+state 40
 
     (23) expr -> math_expr .
 
@@ -1084,7 +1095,7 @@ state 39
     CUCLBR          reduce using rule 23 (expr -> math_expr .)
 
 
-state 40
+state 41
 
     (24) expr -> callfunc .
 
@@ -1105,7 +1116,7 @@ state 40
     CUCLBR          reduce using rule 24 (expr -> callfunc .)
 
 
-state 41
+state 42
 
     (25) expr -> cmd .
 
@@ -1126,7 +1137,7 @@ state 41
     CUCLBR          reduce using rule 25 (expr -> cmd .)
 
 
-state 42
+state 43
 
     (26) expr -> OPBR . expr CLBR
     (21) expr -> . variable
@@ -1165,30 +1176,30 @@ state 42
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 80
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    expr                           shift and go to state 81
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 43
+state 44
 
     (38) variable -> VARIABLE .
     (39) variable -> VARIABLE . index
@@ -1211,12 +1222,12 @@ state 43
     CLBR            reduce using rule 38 (variable -> VARIABLE .)
     SQCLBR          reduce using rule 38 (variable -> VARIABLE .)
     CUCLBR          reduce using rule 38 (variable -> VARIABLE .)
-    OPBR            shift and go to state 58
-    SQOPBR          shift and go to state 60
+    OPBR            shift and go to state 59
+    SQOPBR          shift and go to state 61
 
-    index                          shift and go to state 59
+    index                          shift and go to state 60
 
-state 44
+state 45
 
     (35) const -> digit .
 
@@ -1237,7 +1248,7 @@ state 44
     CUCLBR          reduce using rule 35 (const -> digit .)
 
 
-state 45
+state 46
 
     (36) const -> bool .
 
@@ -1258,7 +1269,7 @@ state 45
     CUCLBR          reduce using rule 36 (const -> bool .)
 
 
-state 46
+state 47
 
     (37) const -> sizeof .
 
@@ -1279,7 +1290,7 @@ state 46
     CUCLBR          reduce using rule 37 (const -> sizeof .)
 
 
-state 47
+state 48
 
     (47) digit -> INTTYP .
 
@@ -1300,7 +1311,7 @@ state 47
     CUCLBR          reduce using rule 47 (digit -> INTTYP .)
 
 
-state 48
+state 49
 
     (48) digit -> SHORTTYP .
 
@@ -1321,7 +1332,7 @@ state 48
     CUCLBR          reduce using rule 48 (digit -> SHORTTYP .)
 
 
-state 49
+state 50
 
     (44) bool -> TRUE .
 
@@ -1342,7 +1353,7 @@ state 49
     CUCLBR          reduce using rule 44 (bool -> TRUE .)
 
 
-state 50
+state 51
 
     (45) bool -> FALSE .
 
@@ -1363,7 +1374,7 @@ state 50
     CUCLBR          reduce using rule 45 (bool -> FALSE .)
 
 
-state 51
+state 52
 
     (46) bool -> UNDEFINED .
 
@@ -1384,22 +1395,22 @@ state 51
     CUCLBR          reduce using rule 46 (bool -> UNDEFINED .)
 
 
-state 52
+state 53
 
     (42) sizeof -> SIZEOF . OPBR type CLBR
     (43) sizeof -> SIZEOF . OPBR variable CLBR
 
-    OPBR            shift and go to state 81
-
-
-state 53
-
-    (69) dowhile -> DO statement_gr . WHILE expr ENDSTR
-
-    WHILE           shift and go to state 82
+    OPBR            shift and go to state 82
 
 
 state 54
+
+    (69) dowhile -> DO statement_gr . WHILE expr ENDSTR
+
+    WHILE           shift and go to state 83
+
+
+state 55
 
     (70) dowhile -> DO error .
 
@@ -1424,7 +1435,7 @@ state 54
     RETURN          reduce using rule 70 (dowhile -> DO error .)
 
 
-state 55
+state 56
 
     (67) statement_gr -> BEGIN . statement_list END
     (2) statement_list -> . statement_list single_statement
@@ -1475,7 +1486,7 @@ state 55
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_list                 shift and go to state 83
+    statement_list                 shift and go to state 84
     single_statement               shift and go to state 3
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
@@ -1488,7 +1499,7 @@ state 55
     variable                       shift and go to state 13
     vectorof                       shift and go to state 25
 
-state 56
+state 57
 
     (68) statement_gr -> single_statement .
 
@@ -1513,14 +1524,14 @@ state 56
     RETURN          reduce using rule 68 (statement_gr -> single_statement .)
 
 
-state 57
+state 58
 
     (71) function -> FUNCTION VARIABLE . OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
 
-    OPBR            shift and go to state 84
+    OPBR            shift and go to state 85
 
 
-state 58
+state 59
 
     (60) callfunc -> VARIABLE OPBR . varlist CLBR
     (61) varlist -> . variable
@@ -1539,22 +1550,22 @@ state 58
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    VARIABLE        shift and go to state 85
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    VARIABLE        shift and go to state 35
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     varlist                        shift and go to state 86
     variable                       shift and go to state 87
     const                          shift and go to state 88
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 59
+state 60
 
     (39) variable -> VARIABLE index .
     (41) index -> index . index
@@ -1562,6 +1573,8 @@ state 59
     (41) index -> . index index
 
     SET             reduce using rule 39 (variable -> VARIABLE index .)
+    COMMA           reduce using rule 39 (variable -> VARIABLE index .)
+    ENDSTR          reduce using rule 39 (variable -> VARIABLE index .)
     THEN            reduce using rule 39 (variable -> VARIABLE index .)
     error           reduce using rule 39 (variable -> VARIABLE index .)
     EQUAL           reduce using rule 39 (variable -> VARIABLE index .)
@@ -1572,16 +1585,14 @@ state 59
     AND             reduce using rule 39 (variable -> VARIABLE index .)
     OR              reduce using rule 39 (variable -> VARIABLE index .)
     NOT             reduce using rule 39 (variable -> VARIABLE index .)
-    ENDSTR          reduce using rule 39 (variable -> VARIABLE index .)
-    COMMA           reduce using rule 39 (variable -> VARIABLE index .)
     CLBR            reduce using rule 39 (variable -> VARIABLE index .)
     SQCLBR          reduce using rule 39 (variable -> VARIABLE index .)
     CUCLBR          reduce using rule 39 (variable -> VARIABLE index .)
-    SQOPBR          shift and go to state 60
+    SQOPBR          shift and go to state 61
 
     index                          shift and go to state 89
 
-state 60
+state 61
 
     (40) index -> SQOPBR . expr SQCLBR
     (21) expr -> . variable
@@ -1620,30 +1631,30 @@ state 60
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 90
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 61
+state 62
 
     (75) cmd -> MOVE dir .
 
@@ -1664,7 +1675,7 @@ state 61
     CUCLBR          reduce using rule 75 (cmd -> MOVE dir .)
 
 
-state 62
+state 63
 
     (79) dir -> RIGHT .
 
@@ -1685,7 +1696,7 @@ state 62
     CUCLBR          reduce using rule 79 (dir -> RIGHT .)
 
 
-state 63
+state 64
 
     (80) dir -> LEFT .
 
@@ -1706,7 +1717,7 @@ state 63
     CUCLBR          reduce using rule 80 (dir -> LEFT .)
 
 
-state 64
+state 65
 
     (15) type -> SHORT INT .
 
@@ -1714,7 +1725,7 @@ state 64
     CLBR            reduce using rule 15 (type -> SHORT INT .)
 
 
-state 65
+state 66
 
     (29) vectorof -> VECTOROF type .
 
@@ -1722,24 +1733,24 @@ state 65
     CLBR            reduce using rule 29 (vectorof -> VECTOROF type .)
 
 
-state 66
+state 67
 
-    (18) var -> var COMMA . var
-    (17) var -> . setting
-    (18) var -> . var COMMA var
-    (19) var -> . VARIABLE
-    (20) setting -> . variable SET expr
-    (27) setting -> . variable SET setarr
+    (19) var -> var COMMA . var
+    (17) var -> . variable
+    (18) var -> . setting
+    (19) var -> . var COMMA var
     (38) variable -> . VARIABLE
     (39) variable -> . VARIABLE index
+    (20) setting -> . variable SET expr
+    (27) setting -> . variable SET setarr
 
-    VARIABLE        shift and go to state 34
+    VARIABLE        shift and go to state 35
 
     var                            shift and go to state 91
-    setting                        shift and go to state 33
-    variable                       shift and go to state 13
+    variable                       shift and go to state 33
+    setting                        shift and go to state 34
 
-state 67
+state 68
 
     (20) setting -> variable SET expr .
     (49) math_expr -> expr . EQUAL expr
@@ -1756,17 +1767,17 @@ state 67
 
     ENDSTR          reduce using rule 20 (setting -> variable SET expr .)
     COMMA           reduce using rule 20 (setting -> variable SET expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
-state 68
+state 69
 
     (27) setting -> variable SET setarr .
     (31) setarr -> setarr . COMMA setarr
@@ -1778,7 +1789,7 @@ state 68
   ! COMMA           [ reduce using rule 27 (setting -> variable SET setarr .) ]
 
 
-state 69
+state 70
 
     (30) setarr -> CUOPBR . setarr CUCLBR
     (32) setarr -> CUOPBR . exprarr CUCLBR
@@ -1823,33 +1834,33 @@ state 69
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    CUOPBR          shift and go to state 69
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    CUOPBR          shift and go to state 70
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     setarr                         shift and go to state 93
     exprarr                        shift and go to state 94
     expr                           shift and go to state 95
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 70
+state 71
 
     (64) if -> IF expr THEN . statement_gr ELSE statement_gr
     (65) if -> IF expr THEN . statement_gr error
@@ -1887,7 +1898,7 @@ state 70
     (39) variable -> . VARIABLE index
     (29) vectorof -> . VECTOROF type
 
-    BEGIN           shift and go to state 55
+    BEGIN           shift and go to state 56
     ENDSTR          shift and go to state 5
     IF              shift and go to state 14
     DO              shift and go to state 15
@@ -1903,7 +1914,7 @@ state 70
     VECTOROF        shift and go to state 26
 
     statement_gr                   shift and go to state 96
-    single_statement               shift and go to state 56
+    single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
     if                             shift and go to state 7
@@ -1915,7 +1926,7 @@ state 70
     variable                       shift and go to state 13
     vectorof                       shift and go to state 25
 
-state 71
+state 72
 
     (66) if -> IF expr error .
 
@@ -1940,7 +1951,7 @@ state 71
     RETURN          reduce using rule 66 (if -> IF expr error .)
 
 
-state 72
+state 73
 
     (49) math_expr -> expr EQUAL . expr
     (21) expr -> . variable
@@ -1979,30 +1990,30 @@ state 72
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 97
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 73
+state 74
 
     (50) math_expr -> expr SUB . expr
     (21) expr -> . variable
@@ -2041,30 +2052,30 @@ state 73
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 98
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 74
+state 75
 
     (51) math_expr -> expr ADD . expr
     (21) expr -> . variable
@@ -2103,30 +2114,30 @@ state 74
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 99
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 75
+state 76
 
     (52) math_expr -> expr SECOND . LARGER expr
     (53) math_expr -> expr SECOND . SMALLER expr
@@ -2135,7 +2146,7 @@ state 75
     SMALLER         shift and go to state 101
 
 
-state 76
+state 77
 
     (54) math_expr -> expr FIRST . LARGER expr
     (55) math_expr -> expr FIRST . SMALLER expr
@@ -2144,7 +2155,7 @@ state 76
     SMALLER         shift and go to state 103
 
 
-state 77
+state 78
 
     (56) math_expr -> expr AND . expr
     (21) expr -> . variable
@@ -2183,30 +2194,30 @@ state 77
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 104
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 78
+state 79
 
     (57) math_expr -> expr OR . expr
     (21) expr -> . variable
@@ -2245,30 +2256,30 @@ state 78
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 105
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 79
+state 80
 
     (58) math_expr -> expr NOT . AND expr
     (59) math_expr -> expr NOT . OR expr
@@ -2277,7 +2288,7 @@ state 79
     OR              shift and go to state 107
 
 
-state 80
+state 81
 
     (26) expr -> OPBR expr . CLBR
     (49) math_expr -> expr . EQUAL expr
@@ -2293,17 +2304,17 @@ state 80
     (59) math_expr -> expr . NOT OR expr
 
     CLBR            shift and go to state 108
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
-state 81
+state 82
 
     (42) sizeof -> SIZEOF OPBR . type CLBR
     (43) sizeof -> SIZEOF OPBR . variable CLBR
@@ -2319,14 +2330,14 @@ state 81
     INT             shift and go to state 22
     BOOL            shift and go to state 23
     SHORT           shift and go to state 24
-    VARIABLE        shift and go to state 85
+    VARIABLE        shift and go to state 35
     VECTOROF        shift and go to state 26
 
     type                           shift and go to state 109
     variable                       shift and go to state 110
     vectorof                       shift and go to state 25
 
-state 82
+state 83
 
     (69) dowhile -> DO statement_gr WHILE . expr ENDSTR
     (21) expr -> . variable
@@ -2365,30 +2376,30 @@ state 82
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 111
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 83
+state 84
 
     (67) statement_gr -> BEGIN statement_list . END
     (2) statement_list -> statement_list . single_statement
@@ -2451,7 +2462,7 @@ state 83
     variable                       shift and go to state 13
     vectorof                       shift and go to state 25
 
-state 84
+state 85
 
     (71) function -> FUNCTION VARIABLE OPBR . arrtype CLBR statement_gr RETURN expr ENDSTR
     (72) arrtype -> . type VARIABLE
@@ -2471,19 +2482,6 @@ state 84
     arrtype                        shift and go to state 113
     type                           shift and go to state 114
     vectorof                       shift and go to state 25
-
-state 85
-
-    (38) variable -> VARIABLE .
-    (39) variable -> VARIABLE . index
-    (40) index -> . SQOPBR expr SQCLBR
-    (41) index -> . index index
-
-    CLBR            reduce using rule 38 (variable -> VARIABLE .)
-    COMMA           reduce using rule 38 (variable -> VARIABLE .)
-    SQOPBR          shift and go to state 60
-
-    index                          shift and go to state 59
 
 state 86
 
@@ -2519,6 +2517,9 @@ state 89
 
   ! shift/reduce conflict for SQOPBR resolved as shift
     SET             reduce using rule 41 (index -> index index .)
+    COMMA           reduce using rule 41 (index -> index index .)
+    ENDSTR          reduce using rule 41 (index -> index index .)
+    CLBR            reduce using rule 41 (index -> index index .)
     THEN            reduce using rule 41 (index -> index index .)
     error           reduce using rule 41 (index -> index index .)
     EQUAL           reduce using rule 41 (index -> index index .)
@@ -2529,12 +2530,9 @@ state 89
     AND             reduce using rule 41 (index -> index index .)
     OR              reduce using rule 41 (index -> index index .)
     NOT             reduce using rule 41 (index -> index index .)
-    ENDSTR          reduce using rule 41 (index -> index index .)
-    COMMA           reduce using rule 41 (index -> index index .)
-    CLBR            reduce using rule 41 (index -> index index .)
     SQCLBR          reduce using rule 41 (index -> index index .)
     CUCLBR          reduce using rule 41 (index -> index index .)
-    SQOPBR          shift and go to state 60
+    SQOPBR          shift and go to state 61
 
   ! SQOPBR          [ reduce using rule 41 (index -> index index .) ]
 
@@ -2556,26 +2554,26 @@ state 90
     (59) math_expr -> expr . NOT OR expr
 
     SQCLBR          shift and go to state 117
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
 state 91
 
-    (18) var -> var COMMA var .
-    (18) var -> var . COMMA var
+    (19) var -> var COMMA var .
+    (19) var -> var . COMMA var
 
   ! shift/reduce conflict for COMMA resolved as shift
-    ENDSTR          reduce using rule 18 (var -> var COMMA var .)
-    COMMA           shift and go to state 66
+    ENDSTR          reduce using rule 19 (var -> var COMMA var .)
+    COMMA           shift and go to state 67
 
-  ! COMMA           [ reduce using rule 18 (var -> var COMMA var .) ]
+  ! COMMA           [ reduce using rule 19 (var -> var COMMA var .) ]
 
 
 state 92
@@ -2585,7 +2583,7 @@ state 92
     (31) setarr -> . setarr COMMA setarr
     (32) setarr -> . CUOPBR exprarr CUCLBR
 
-    CUOPBR          shift and go to state 69
+    CUOPBR          shift and go to state 70
 
     setarr                         shift and go to state 118
 
@@ -2624,14 +2622,14 @@ state 95
 
     CUCLBR          reduce using rule 34 (exprarr -> expr .)
     COMMA           reduce using rule 34 (exprarr -> expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
 state 96
@@ -2673,14 +2671,14 @@ state 97
     CLBR            reduce using rule 49 (math_expr -> expr EQUAL expr .)
     SQCLBR          reduce using rule 49 (math_expr -> expr EQUAL expr .)
     CUCLBR          reduce using rule 49 (math_expr -> expr EQUAL expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 49 (math_expr -> expr EQUAL expr .) ]
   ! SUB             [ reduce using rule 49 (math_expr -> expr EQUAL expr .) ]
@@ -2722,14 +2720,14 @@ state 98
     CLBR            reduce using rule 50 (math_expr -> expr SUB expr .)
     SQCLBR          reduce using rule 50 (math_expr -> expr SUB expr .)
     CUCLBR          reduce using rule 50 (math_expr -> expr SUB expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 50 (math_expr -> expr SUB expr .) ]
   ! SUB             [ reduce using rule 50 (math_expr -> expr SUB expr .) ]
@@ -2771,14 +2769,14 @@ state 99
     CLBR            reduce using rule 51 (math_expr -> expr ADD expr .)
     SQCLBR          reduce using rule 51 (math_expr -> expr ADD expr .)
     CUCLBR          reduce using rule 51 (math_expr -> expr ADD expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 51 (math_expr -> expr ADD expr .) ]
   ! SUB             [ reduce using rule 51 (math_expr -> expr ADD expr .) ]
@@ -2829,28 +2827,28 @@ state 100
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 124
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 101
 
@@ -2891,28 +2889,28 @@ state 101
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 125
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 102
 
@@ -2953,28 +2951,28 @@ state 102
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 126
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 103
 
@@ -3015,28 +3013,28 @@ state 103
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 127
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 104
 
@@ -3068,14 +3066,14 @@ state 104
     CLBR            reduce using rule 56 (math_expr -> expr AND expr .)
     SQCLBR          reduce using rule 56 (math_expr -> expr AND expr .)
     CUCLBR          reduce using rule 56 (math_expr -> expr AND expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 56 (math_expr -> expr AND expr .) ]
   ! SUB             [ reduce using rule 56 (math_expr -> expr AND expr .) ]
@@ -3117,14 +3115,14 @@ state 105
     CLBR            reduce using rule 57 (math_expr -> expr OR expr .)
     SQCLBR          reduce using rule 57 (math_expr -> expr OR expr .)
     CUCLBR          reduce using rule 57 (math_expr -> expr OR expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 57 (math_expr -> expr OR expr .) ]
   ! SUB             [ reduce using rule 57 (math_expr -> expr OR expr .) ]
@@ -3175,28 +3173,28 @@ state 106
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 128
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 107
 
@@ -3237,28 +3235,28 @@ state 107
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 129
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 108
 
@@ -3311,14 +3309,14 @@ state 111
     (59) math_expr -> expr . NOT OR expr
 
     ENDSTR          shift and go to state 132
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
 state 112
@@ -3402,20 +3400,20 @@ state 116
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    VARIABLE        shift and go to state 85
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    VARIABLE        shift and go to state 35
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     varlist                        shift and go to state 136
     variable                       shift and go to state 87
     const                          shift and go to state 88
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 117
 
@@ -3423,6 +3421,9 @@ state 117
 
     SQOPBR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     SET             reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
+    COMMA           reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
+    ENDSTR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
+    CLBR            reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     THEN            reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     error           reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     EQUAL           reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
@@ -3433,9 +3434,6 @@ state 117
     AND             reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     OR              reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     NOT             reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
-    ENDSTR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
-    COMMA           reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
-    CLBR            reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     SQCLBR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
     CUCLBR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
 
@@ -3512,29 +3510,29 @@ state 121
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     exprarr                        shift and go to state 137
     expr                           shift and go to state 95
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 122
 
@@ -3573,7 +3571,7 @@ state 122
     (39) variable -> . VARIABLE index
     (29) vectorof -> . VECTOROF type
 
-    BEGIN           shift and go to state 55
+    BEGIN           shift and go to state 56
     ENDSTR          shift and go to state 5
     IF              shift and go to state 14
     DO              shift and go to state 15
@@ -3589,7 +3587,7 @@ state 122
     VECTOROF        shift and go to state 26
 
     statement_gr                   shift and go to state 138
-    single_statement               shift and go to state 56
+    single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
     if                             shift and go to state 7
@@ -3656,14 +3654,14 @@ state 124
     CLBR            reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
     SQCLBR          reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
     CUCLBR          reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 52 (math_expr -> expr SECOND LARGER expr .) ]
   ! SUB             [ reduce using rule 52 (math_expr -> expr SECOND LARGER expr .) ]
@@ -3705,14 +3703,14 @@ state 125
     CLBR            reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
     SQCLBR          reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
     CUCLBR          reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .) ]
   ! SUB             [ reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .) ]
@@ -3754,14 +3752,14 @@ state 126
     CLBR            reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
     SQCLBR          reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
     CUCLBR          reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 54 (math_expr -> expr FIRST LARGER expr .) ]
   ! SUB             [ reduce using rule 54 (math_expr -> expr FIRST LARGER expr .) ]
@@ -3803,14 +3801,14 @@ state 127
     CLBR            reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
     SQCLBR          reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
     CUCLBR          reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .) ]
   ! SUB             [ reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .) ]
@@ -3852,14 +3850,14 @@ state 128
     CLBR            reduce using rule 58 (math_expr -> expr NOT AND expr .)
     SQCLBR          reduce using rule 58 (math_expr -> expr NOT AND expr .)
     CUCLBR          reduce using rule 58 (math_expr -> expr NOT AND expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 58 (math_expr -> expr NOT AND expr .) ]
   ! SUB             [ reduce using rule 58 (math_expr -> expr NOT AND expr .) ]
@@ -3901,14 +3899,14 @@ state 129
     CLBR            reduce using rule 59 (math_expr -> expr NOT OR expr .)
     SQCLBR          reduce using rule 59 (math_expr -> expr NOT OR expr .)
     CUCLBR          reduce using rule 59 (math_expr -> expr NOT OR expr .)
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
   ! EQUAL           [ reduce using rule 59 (math_expr -> expr NOT OR expr .) ]
   ! SUB             [ reduce using rule 59 (math_expr -> expr NOT OR expr .) ]
@@ -4024,7 +4022,7 @@ state 133
     (39) variable -> . VARIABLE index
     (29) vectorof -> . VECTOROF type
 
-    BEGIN           shift and go to state 55
+    BEGIN           shift and go to state 56
     ENDSTR          shift and go to state 5
     IF              shift and go to state 14
     DO              shift and go to state 15
@@ -4040,7 +4038,7 @@ state 133
     VECTOROF        shift and go to state 26
 
     statement_gr                   shift and go to state 139
-    single_statement               shift and go to state 56
+    single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
     if                             shift and go to state 7
@@ -4188,28 +4186,28 @@ state 141
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
-    OPBR            shift and go to state 42
-    VARIABLE        shift and go to state 43
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
     MOVE            shift and go to state 18
     RIGHT           shift and go to state 19
     LEFT            shift and go to state 20
     LMS             shift and go to state 21
-    INTTYP          shift and go to state 47
-    SHORTTYP        shift and go to state 48
-    TRUE            shift and go to state 49
-    FALSE           shift and go to state 50
-    UNDEFINED       shift and go to state 51
-    SIZEOF          shift and go to state 52
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
     expr                           shift and go to state 142
-    variable                       shift and go to state 37
-    const                          shift and go to state 38
-    math_expr                      shift and go to state 39
-    callfunc                       shift and go to state 40
-    cmd                            shift and go to state 41
-    digit                          shift and go to state 44
-    bool                           shift and go to state 45
-    sizeof                         shift and go to state 46
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
 state 142
 
@@ -4227,14 +4225,14 @@ state 142
     (59) math_expr -> expr . NOT OR expr
 
     ENDSTR          shift and go to state 143
-    EQUAL           shift and go to state 72
-    SUB             shift and go to state 73
-    ADD             shift and go to state 74
-    SECOND          shift and go to state 75
-    FIRST           shift and go to state 76
-    AND             shift and go to state 77
-    OR              shift and go to state 78
-    NOT             shift and go to state 79
+    EQUAL           shift and go to state 73
+    SUB             shift and go to state 74
+    ADD             shift and go to state 75
+    SECOND          shift and go to state 76
+    FIRST           shift and go to state 77
+    AND             shift and go to state 78
+    OR              shift and go to state 79
+    NOT             shift and go to state 80
 
 
 state 143
@@ -4264,7 +4262,7 @@ state 143
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for COMMA in state 68 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 69 resolved as shift
 WARNING: shift/reduce conflict for SQOPBR in state 89 resolved as shift
 WARNING: shift/reduce conflict for COMMA in state 91 resolved as shift
 WARNING: shift/reduce conflict for EQUAL in state 97 resolved as shift

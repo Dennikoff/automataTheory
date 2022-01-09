@@ -18,6 +18,7 @@ class ErrType(Enum):
     KeyErrorFunc = 7
     SizeOfError = 8
     FunctionVarlistError = 9
+    WrongArrayDeclaration = 10
 
 
 class ErrorHandler:
@@ -50,6 +51,8 @@ class ErrorHandler:
             print_err(f"[ERROR] Size of Error, invalid argument {data[0]} on line {data[1].lineno}\n")
         elif code == 9:
             print_err(f"[ERROR] Invalid number of parametern in calling function {data[0]} on line {data[1].lineno}\n")
+        elif code == 10:
+            print_err(f"[ERROR] Wrong array declaration on line {data[0].lineno}\n")
 
 class MyRuntimeError(Exception):
     pass
@@ -81,3 +84,5 @@ class SizeOfError(Exception):
 class FunctionVarlistError(Exception):
     pass
 
+class WrongArrayDeclaration(Exception):
+    pass
