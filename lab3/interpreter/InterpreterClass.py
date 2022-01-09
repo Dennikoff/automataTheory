@@ -136,7 +136,7 @@ class InterpreterClass:
                 self.variables.variables[var.children[0].data] = variable
                 self.assign(var.children[0], var.children[1])
         else:
-            scope_count = self.arr_count(type, 0)
+            scope_count = self.arr_count(type, 0) #гит хаб
             print(scope_count)
 
             print("[TODO]Vector declaration!!")
