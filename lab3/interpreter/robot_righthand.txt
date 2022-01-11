@@ -17,9 +17,9 @@ return 0;
 function go(int dir)
 begin
     if i == 0 then
-        begin
-
-        end
+    begin
+        int result set move;
+    end
     else
     begin
         if i == 1 then

@@ -1,37 +1,17 @@
-function QuickSort(vector of int arr, int n)
-	begin
-	int i;
-	int j;
-	int sw set i;
-	int min set i;
-	do
-		begin
-		min set i;
-		j set (i add 1);
-		do
-			begin
-			if arr[j] first smaller arr[min] then
-			    min set j;
-			else;
-			j set (j add 1);
-			end
-		while j first smaller n;
-		sw set arr[i];
-		arr[i] set arr[min];
-		arr[min] set sw;
-		i set (i add 1);
-		end
-	while i first smaller (n sub 1);
-	end
-return arr;
+function work()
+begin
+    int flag;
+    if 1 == 1 then
+        flag set 10;
+    else;
+end
+return 0;
 
 
+function kek()
+begin
+    int a;
 
 
-function work(int a)
-	begin
-	vector of vector of int arr [4][10];
-	vector of int mas set {65, 32, 51, 18, 20, 47};
-	vector of int result set QuickSort(mas, 6);
-	end
+end
 return 0;

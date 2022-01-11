@@ -86,7 +86,7 @@ class ParserClass:
     def p_setarr(self, p):
         """setarr : CUOPBR setarr CUCLBR
                   | setarr COMMA setarr
-                  | CUOPBR exprarr CUCLBR"""
+                  | exprarr"""
         self.node_build.setarr(p)
 
     def p_exprarr(self, p):
@@ -147,7 +147,8 @@ class ParserClass:
     def p_varlist(self, p):
         """varlist : variable
                    | const
-                   | varlist COMMA varlist"""
+                   | varlist COMMA varlist
+                   | """
         self.node_build.varlist(p)
 
     def p_if(self, p): # !!!!! второе убрать
@@ -181,7 +182,8 @@ class ParserClass:
 
     def p_arrtype(self, p):
         """arrtype : type VARIABLE
-                   | arrtype COMMA arrtype"""
+                   | arrtype COMMA arrtype
+                   | """
         self.node_build.arrtype(p)
 
     def p_cmd(self, p):

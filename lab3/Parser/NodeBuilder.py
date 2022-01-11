@@ -48,7 +48,9 @@ class NodeBuilder:
         p[0] = Node('Vector of', data=p[1], children=[p[2]], lineno=p.lineno(1))
 
     def setarr(self, p):
-        if p[2] == ',':
+        if len(p) == 2:
+            p[0] = p[1]
+        elif p[2] == ',':
             p[0] = Node('arr comma', children=[p[1], p[3]], lineno=p.lineno(1))
         else:
             p[0] = Node('arr count', children=[p[2]], lineno=p.lineno(1))
@@ -93,7 +95,9 @@ class NodeBuilder:
         p[0] = Node('call function', data=p[1], children=[p[3]], lineno=p.lineno(1))
 
     def varlist(self, p):
-        if len(p) == 2:
+        if len(p) == 1:
+            p[0] = Node('none variable')
+        elif len(p) == 2:
             p[0] = p[1]
         else:
             p[0] = Node('double varlist', children=[p[1], p[3]], lineno=p.lineno(1))
@@ -129,7 +133,9 @@ class NodeBuilder:
         return False
 
     def arrtype(self, p):
-        if len(p) == 3:
+        if len(p) == 1:
+            p[0] = Node('none variable')
+        elif len(p) == 3:
             p[0] = Node('variable', data=p[2], children=[p[1]], lineno=p.lineno(2))
         else:
             p[0] = Node('comma variables', children=[p[1], p[3]], lineno=p.lineno(1))

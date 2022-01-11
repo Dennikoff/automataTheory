@@ -1,0 +1,25 @@
+function work(int a)
+begin
+    int n set 2;
+    int fibb set fib(n);
+end
+return fibb;
+
+function fib(int n)
+begin
+    int a;
+    if n == 0 then
+       a set 1;
+    else
+    begin
+        if n == 1 then
+           a set 1;
+        else
+        begin
+           int firstparam set n sub 1;
+           int secondparam set n sub 2;
+           a set fib(firstparam) add fib(secondparam);
+        end
+    end
+end
+return a;

@@ -71,7 +71,7 @@ class LexerClass:
         return t
 
     def t_VARIABLE(self, t):
-        r'[a-zA-Z][a-zA-Z0-9]*'
+        r'[a-zA-Z][a-zA-Z0-9\_]*'
         t.type = self.reserved.get(t.value, 'VARIABLE')
         return t
 

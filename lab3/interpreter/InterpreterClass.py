@@ -29,13 +29,13 @@ back_cells = {
     'wall': '#'
 }
 ''' MATRIX:
- ▲▼ ☒ ☆ ☀
-    ☒☒☒☒☒☒☒☒☒☒☒☒
-    ☒▲▼▲▼▲▼▲▼▲▼☒
-    ☒▼▲▼▲▼▲▼▲☆▲☒
-    ☒▲▼☀▼▲▼▲▼▲▼☒
-    ☒▼▲▼▲▼▲▼▲▼▲☒
-    ☒☒☒☒☒☒☒☒☒☒☒☒
+ ▲▼ ᩔ 🤖 🏰
+    ᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔ
+    ᩔ▲▼▲▼▲▼▲▼▲▼ᩔ
+    ᩔ▼▲▼▲▼▲▼▲🤖▲ᩔ
+    ᩔ▲▼🏰▼▲▼▲▼▲▼ᩔ
+    ᩔ▼▲▼▲▼▲▼▲▼▲ᩔ
+    ᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔ
 '''
 
 
@@ -51,40 +51,40 @@ class Robot:
     def __init__(self, x, y, map):
         self.x = x
         self.y = y
-        self._right = True
+        self.scan_right = True
         self.map = map
 
     def __repr__(self):
-        if self.right:
+        if self.scan_right:
             return f'x = {self.x}, y = {self.y}; side scan = right\n'
         else:
             return f'x = {self.x}, y = {self.y}; side scan = left\n'
 
     def show(self):
+        print(self)
         for i in range(len(self.map)):
             for j in range(len(self.map[0])):
                 if i == self.y and j == self.x:
-                    print('☆', end='')
+                    print('🤖', end='')
                 else:
                     if back_cells[self.map[i][j].type] == ' ':
                         if (i+j) % 2 == 0:
-                            print('▲', end='')
-                        else:
                             print('▼', end='')
+                        else:
+                            print('▲', end='')
                     elif back_cells[self.map[i][j].type] == '#':
-                        print('☒', end='')
+                        print('ᩔ', end='')
                     else:
-                        print('☀', end='')
+                        print('🏰', end='')
             print()
         print()
-        # time.sleep(1)
 
     def move(self, direction):
         if direction == 'move':
             if (self.x+self.y) % 2 == 0:
-                return self.up()
-            else:
                 return self.down()
+            else:
+                return self.up()
         elif direction == 'left':
             return self.left()
         elif direction == 'right':
@@ -137,8 +137,9 @@ class Robot:
 
     def lms(self):
         dist = 1
-        radius = 5
-        if self._right:
+        radius = 3
+        if self.scan_right:
+            self.scan_right = False
             while self.map[self.y][self.x+dist].type == 'empty':
                 if radius == 0:
                     return Variable(0, 'int')
@@ -149,14 +150,15 @@ class Robot:
             elif self.map[self.y][self.x+dist].type == 'wall':
                 return Variable(dist, 'int')
         else:  # left side
+            self.scan_right = True
             while self.map[self.y][self.x-dist].type == 'empty':
                 if radius == 0:
                     return Variable(0, 'int')
                 dist += 1
                 radius -= 1
-            if self.map[self.y][self.x+dist].type == 'exit':
+            if self.map[self.y][self.x-dist].type == 'exit':
                 return Variable(dist, 'int')
-            elif self.map[self.y][self.x+dist].type == 'wall':
+            elif self.map[self.y][self.x-dist].type == 'wall':
                 return Variable(-dist, 'int')
 
 
@@ -194,6 +196,7 @@ class InterpreterClass:
         self.err_type = ErrType
         self.curFunc = None
         self.variables = VariableList()
+        self.exit = False
         self.steps = 0
 
 
@@ -273,14 +276,14 @@ class InterpreterClass:
             elif node.type == 'Robot command':
                 if self.robot is None:
                     raise errors.EmptyRobotError
-                if node.value == 'lms':
+                if node.data == 'lms':
                     return self.robot.lms()
                 else:
                     if self.robot.exit():
                         self.exit = True
                         return Variable('true', 'bool', 'exit')
                     self.steps += 1
-                    # self.robot.show()
+                    self.robot.show()
                     return self.robot.move(node.data)
             else:
                 raise errors.UnexpectedError(node)
@@ -323,8 +326,17 @@ class InterpreterClass:
                     values.append(self.expression(child).value)
                 elif child.type == 'expr comma':
                     self.get_values(child, values)
+        elif node.type == 'arr comma':
+            for child in node.children:
+                self.get_values(child, values)
+        elif node.type == 'arr count':
+            self.get_values(node.children[0], values)
         else:
             errors.UnexpectedError(node)
+
+
+    def get_sizes(self, node):
+        pass
 
 
     def declaration(self, type, var, flag_arr):
@@ -349,8 +361,10 @@ class InterpreterClass:
             elif var.type == 'assign array':
                 name = var.children[0].data
                 values = []
+                sizelist = []
+                self.get_indexes_arr(var.children[0], sizelist)
                 self.get_values(var.children[1].children[0], values)
-                variable = ArrVariable([len(values)], arr_type, values, name=name)
+                variable = ArrVariable(sizelist, arr_type, values, name=name)
                 self.variables.variables[name] = variable
             elif var.type == 'assign':
                 name = var.children[0].data
@@ -361,7 +375,6 @@ class InterpreterClass:
                         self.variables.variables[name] = variable
                     else:
                         raise errors.WrongArrayDeclaration(var)
-
 
 
 
@@ -466,10 +479,11 @@ class InterpreterClass:
             self.createNewEnv()
             raise errors.KeyErrorFunc(err, node)
         varlist = []
-        if node.children[0].type == 'double varlist':
-            self.varlist(node.children[0], varlist)
-        else:
-            self.varlist(node, varlist)
+        if node.children[0].type != 'none variable':
+            if node.children[0].type == 'double varlist':
+                self.varlist(node.children[0], varlist)
+            else:
+                self.varlist(node, varlist)
         self.createNewEnv()
         self.comma_variables(func.children[0], varlist, node)
         self.nodeHandle(func.children[1])
@@ -548,25 +562,26 @@ class InterpreterClass:
             var.set_value(cur_value)
 
 
-
     def math_expression(self, value):
         flag = False
         if value.data == '==' or value.data == 'first larger' or value.data == 'first smaller' or value.data == 'second larger' or value.data == 'second smaller':
             value_1 = self.expression(value.children[0])
             value_2 = self.expression(value.children[1])
-            if value_1.type != value_2.type:
-                raise errors.TypeError(value_1, value_2, value)
             if value.data == '==':
+                if value_1.type != value_2.type:
+                    raise errors.TypeError(value_1, value_2, value)
                 if value_1.value == value_2.value:
                     return Variable('true', 'bool')
                 else:
                     return Variable('false', 'bool')
             elif value.data == 'first larger' or value.data == 'second smaller':
+                value_1 = convertor.convert_type(value_1, value_2.type)
                 if value_1.value > value_2.value:
                     return Variable('true', 'bool')
                 else:
                     return Variable('false', 'bool')
             elif value.data == 'first smaller' or value.data == 'second larger':
+                value_1 = convertor.convert_type(value_1, value_2.type)
                 if value_1.value < value_2.value:
                     return Variable('true', 'bool')
                 else:
@@ -588,6 +603,9 @@ class InterpreterClass:
             elif value.children[1].type == 'array variable':
                 return self.get_Variable_arr(self.get_variable(value.children[1]), value.children[1].children[0])
             elif value.children[1].type == 'brackets expression':
+                value_1 = self.expression(value.children[1])
+                value_1 = convertor.convert_type(value_1, 'int').value
+            elif value.children[1].type == 'call function':
                 value_1 = self.expression(value.children[1])
                 value_1 = convertor.convert_type(value_1, 'int').value
             else:
@@ -677,6 +695,14 @@ class InterpreterClass:
 
 
     def comma_variables(self, node, varlist, name):
+        if node.type == 'none variable':
+            if len(varlist) == 0:
+                return
+            else:
+                raise errors.FunctionVarlistError(name.data, name)
+        if node.type == 'variable':
+            current = Node('placeholder', 'placeholder',[node], lineno=node.lineno)
+            node = current
         for child in node.children:
             if child.type == 'variable':
                 try:
@@ -705,33 +731,31 @@ class InterpreterClass:
 
 
 def create_robot():
-    with open('map.txt') as file:
+    with open('map_check.txt') as file:
         text = file.read()
     text = text.split('\n')
     robot_info = text.pop(0).split(' ')
     map_size = text.pop(0).split(' ')
     x = int(robot_info[0])
     y = int(robot_info[1])
-    mapp = [0] * int(map_size[0])
+    map = ['empty'] * int(map_size[0])
 
     for i in range(int(map_size[0])):
-        mapp[i] = [0]*int(map_size[1])
-    for i in range(int(map_size[0])):
-        for j in range(int(map_size[1])):
-            mapp[i][j] = Cell("empty")
-    pos = 0
+        map[i] = ['empty']*int(map_size[1])
+    index = 0
     while len(text) > 0:
         line = list(text.pop(0))
         line = [Cell(cells[i]) for i in line]
-        mapp[pos] = line
-        pos += 1
-    return Robot(x, y, mapp)
+        map[index] = line
+        index += 1
+    return Robot(x, y, map)
 
 
 if __name__ == '__main__':
-    f = open('check2.txt', 'r')      #errors_check.txt не забыть показать отсутствие функции work
+    f = open('check2.txt', 'r')
     data = f.read()
     robot = create_robot()
     my_interpreter = InterpreterClass(data, robot)
-    my_interpreter.interprete()
-
+    result = my_interpreter.interprete()
+    if result == True:
+        print(f"Robot find exit;\nNumber of steps:{my_interpreter.steps}")

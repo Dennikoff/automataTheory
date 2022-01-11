@@ -1,8 +1,17 @@
-function work(int a)
+function work()
 begin
-	int a set left;
-    right;
-    lms;
+    int flag;
+    if 1 == 1 then
+        flag set 10;
+    else;
+end
+return 0;
+
+
+function kek()
+begin
+    int a;
+
 
 end
 return 0;

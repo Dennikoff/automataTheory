@@ -38,7 +38,7 @@ Rule 28    type -> vectorof
 Rule 29    vectorof -> VECTOROF type
 Rule 30    setarr -> CUOPBR setarr CUCLBR
 Rule 31    setarr -> setarr COMMA setarr
-Rule 32    setarr -> CUOPBR exprarr CUCLBR
+Rule 32    setarr -> exprarr
 Rule 33    exprarr -> exprarr COMMA exprarr
 Rule 34    exprarr -> expr
 Rule 35    const -> digit
@@ -70,55 +70,57 @@ Rule 60    callfunc -> VARIABLE OPBR varlist CLBR
 Rule 61    varlist -> variable
 Rule 62    varlist -> const
 Rule 63    varlist -> varlist COMMA varlist
-Rule 64    if -> IF expr THEN statement_gr ELSE statement_gr
-Rule 65    if -> IF expr THEN statement_gr error
-Rule 66    if -> IF expr error
-Rule 67    statement_gr -> BEGIN statement_list END
-Rule 68    statement_gr -> single_statement
-Rule 69    dowhile -> DO statement_gr WHILE expr ENDSTR
-Rule 70    dowhile -> DO error
-Rule 71    function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
-Rule 72    arrtype -> type VARIABLE
-Rule 73    arrtype -> arrtype COMMA arrtype
-Rule 74    cmd -> MOVE
-Rule 75    cmd -> MOVE dir
-Rule 76    cmd -> RIGHT
-Rule 77    cmd -> LEFT
-Rule 78    cmd -> LMS
-Rule 79    dir -> RIGHT
-Rule 80    dir -> LEFT
+Rule 64    varlist -> <empty>
+Rule 65    if -> IF expr THEN statement_gr ELSE statement_gr
+Rule 66    if -> IF expr THEN statement_gr error
+Rule 67    if -> IF expr error
+Rule 68    statement_gr -> BEGIN statement_list END
+Rule 69    statement_gr -> single_statement
+Rule 70    dowhile -> DO statement_gr WHILE expr ENDSTR
+Rule 71    dowhile -> DO error
+Rule 72    function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+Rule 73    arrtype -> type VARIABLE
+Rule 74    arrtype -> arrtype COMMA arrtype
+Rule 75    arrtype -> <empty>
+Rule 76    cmd -> MOVE
+Rule 77    cmd -> MOVE dir
+Rule 78    cmd -> RIGHT
+Rule 79    cmd -> LEFT
+Rule 80    cmd -> LMS
+Rule 81    dir -> RIGHT
+Rule 82    dir -> LEFT
 
 Terminals, with rules where they appear
 
 ADD                  : 51
 AND                  : 56 58
-BEGIN                : 67
+BEGIN                : 68
 BOOL                 : 14
-CLBR                 : 26 42 43 60 71
-COMMA                : 19 31 33 63 73
-CUCLBR               : 30 32
-CUOPBR               : 30 32
-DO                   : 69 70
-ELSE                 : 64
-END                  : 67
-ENDSTR               : 4 5 9 10 11 69 71
+CLBR                 : 26 42 43 60 72
+COMMA                : 19 31 33 63 74
+CUCLBR               : 30
+CUOPBR               : 30
+DO                   : 70 71
+ELSE                 : 65
+END                  : 68
+ENDSTR               : 4 5 9 10 11 70 72
 EQUAL                : 49
 FALSE                : 45
 FIRST                : 54 55
-FUNCTION             : 71
-IF                   : 64 65 66
+FUNCTION             : 72
+IF                   : 65 66 67
 INT                  : 13 15
 INTTYP               : 47
 LARGER               : 52 54
-LEFT                 : 77 80
-LMS                  : 78
-MOVE                 : 74 75
+LEFT                 : 79 82
+LMS                  : 80
+MOVE                 : 76 77
 NEWLINE              : 
 NOT                  : 58 59
-OPBR                 : 26 42 43 60 71
+OPBR                 : 26 42 43 60 72
 OR                   : 57 59
-RETURN               : 71
-RIGHT                : 76 79
+RETURN               : 72
+RIGHT                : 78 81
 SECOND               : 52 53
 SET                  : 20 27
 SHORT                : 15 16
@@ -128,26 +130,26 @@ SMALLER              : 53 55
 SQCLBR               : 40
 SQOPBR               : 40
 SUB                  : 50
-THEN                 : 64 65
+THEN                 : 65 66
 TRUE                 : 44
 UNDEFINED            : 46
-VARIABLE             : 38 39 60 71 72
+VARIABLE             : 38 39 60 72 73
 VECTOROF             : 29
-WHILE                : 69
-error                : 65 66 70
+WHILE                : 70
+error                : 66 67 71
 
 Nonterminals, with rules where they appear
 
-arrtype              : 71 73 73
+arrtype              : 72 74 74
 bool                 : 36
 callfunc             : 9 24
 cmd                  : 10 25
 const                : 22 62
 declaration          : 4
 digit                : 35
-dir                  : 75
+dir                  : 77
 dowhile              : 7
-expr                 : 20 26 34 40 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 64 65 66 69 71
+expr                 : 20 26 34 40 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 65 66 67 70 72
 exprarr              : 32 33 33
 function             : 8
 if                   : 6
@@ -156,11 +158,11 @@ math_expr            : 23
 program              : 0
 setarr               : 27 30 31 31
 setting              : 5 18
-single_statement     : 2 3 68
+single_statement     : 2 3 69
 sizeof               : 37
-statement_gr         : 64 64 65 69 71
-statement_list       : 1 2 67
-type                 : 12 29 42 72
+statement_gr         : 65 65 66 70 72
+statement_list       : 1 2 68
+type                 : 12 29 42 73
 var                  : 12 19 19
 variable             : 17 20 21 27 43 61
 varlist              : 60 63 63
@@ -185,18 +187,18 @@ state 0
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -255,18 +257,18 @@ state 2
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -479,9 +481,9 @@ state 13
 
 state 14
 
-    (64) if -> IF . expr THEN statement_gr ELSE statement_gr
-    (65) if -> IF . expr THEN statement_gr error
-    (66) if -> IF . expr error
+    (65) if -> IF . expr THEN statement_gr ELSE statement_gr
+    (66) if -> IF . expr THEN statement_gr error
+    (67) if -> IF . expr error
     (21) expr -> . variable
     (22) expr -> . const
     (23) expr -> . math_expr
@@ -505,11 +507,11 @@ state 14
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -543,10 +545,10 @@ state 14
 
 state 15
 
-    (69) dowhile -> DO . statement_gr WHILE expr ENDSTR
-    (70) dowhile -> DO . error
-    (67) statement_gr -> . BEGIN statement_list END
-    (68) statement_gr -> . single_statement
+    (70) dowhile -> DO . statement_gr WHILE expr ENDSTR
+    (71) dowhile -> DO . error
+    (68) statement_gr -> . BEGIN statement_list END
+    (69) statement_gr -> . single_statement
     (4) single_statement -> . declaration ENDSTR
     (5) single_statement -> . setting ENDSTR
     (6) single_statement -> . if
@@ -558,18 +560,18 @@ state 15
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -610,7 +612,7 @@ state 15
 
 state 16
 
-    (71) function -> FUNCTION . VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (72) function -> FUNCTION . VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
 
     VARIABLE        shift and go to state 58
 
@@ -631,26 +633,26 @@ state 17
 
 state 18
 
-    (74) cmd -> MOVE .
-    (75) cmd -> MOVE . dir
-    (79) dir -> . RIGHT
-    (80) dir -> . LEFT
+    (76) cmd -> MOVE .
+    (77) cmd -> MOVE . dir
+    (81) dir -> . RIGHT
+    (82) dir -> . LEFT
 
-    ENDSTR          reduce using rule 74 (cmd -> MOVE .)
-    THEN            reduce using rule 74 (cmd -> MOVE .)
-    error           reduce using rule 74 (cmd -> MOVE .)
-    EQUAL           reduce using rule 74 (cmd -> MOVE .)
-    SUB             reduce using rule 74 (cmd -> MOVE .)
-    ADD             reduce using rule 74 (cmd -> MOVE .)
-    SECOND          reduce using rule 74 (cmd -> MOVE .)
-    FIRST           reduce using rule 74 (cmd -> MOVE .)
-    AND             reduce using rule 74 (cmd -> MOVE .)
-    OR              reduce using rule 74 (cmd -> MOVE .)
-    NOT             reduce using rule 74 (cmd -> MOVE .)
-    COMMA           reduce using rule 74 (cmd -> MOVE .)
-    CLBR            reduce using rule 74 (cmd -> MOVE .)
-    SQCLBR          reduce using rule 74 (cmd -> MOVE .)
-    CUCLBR          reduce using rule 74 (cmd -> MOVE .)
+    ENDSTR          reduce using rule 76 (cmd -> MOVE .)
+    THEN            reduce using rule 76 (cmd -> MOVE .)
+    error           reduce using rule 76 (cmd -> MOVE .)
+    EQUAL           reduce using rule 76 (cmd -> MOVE .)
+    SUB             reduce using rule 76 (cmd -> MOVE .)
+    ADD             reduce using rule 76 (cmd -> MOVE .)
+    SECOND          reduce using rule 76 (cmd -> MOVE .)
+    FIRST           reduce using rule 76 (cmd -> MOVE .)
+    AND             reduce using rule 76 (cmd -> MOVE .)
+    OR              reduce using rule 76 (cmd -> MOVE .)
+    NOT             reduce using rule 76 (cmd -> MOVE .)
+    COMMA           reduce using rule 76 (cmd -> MOVE .)
+    CLBR            reduce using rule 76 (cmd -> MOVE .)
+    SQCLBR          reduce using rule 76 (cmd -> MOVE .)
+    CUCLBR          reduce using rule 76 (cmd -> MOVE .)
     RIGHT           shift and go to state 63
     LEFT            shift and go to state 64
 
@@ -658,65 +660,65 @@ state 18
 
 state 19
 
-    (76) cmd -> RIGHT .
+    (78) cmd -> RIGHT .
 
-    ENDSTR          reduce using rule 76 (cmd -> RIGHT .)
-    THEN            reduce using rule 76 (cmd -> RIGHT .)
-    error           reduce using rule 76 (cmd -> RIGHT .)
-    EQUAL           reduce using rule 76 (cmd -> RIGHT .)
-    SUB             reduce using rule 76 (cmd -> RIGHT .)
-    ADD             reduce using rule 76 (cmd -> RIGHT .)
-    SECOND          reduce using rule 76 (cmd -> RIGHT .)
-    FIRST           reduce using rule 76 (cmd -> RIGHT .)
-    AND             reduce using rule 76 (cmd -> RIGHT .)
-    OR              reduce using rule 76 (cmd -> RIGHT .)
-    NOT             reduce using rule 76 (cmd -> RIGHT .)
-    COMMA           reduce using rule 76 (cmd -> RIGHT .)
-    CLBR            reduce using rule 76 (cmd -> RIGHT .)
-    SQCLBR          reduce using rule 76 (cmd -> RIGHT .)
-    CUCLBR          reduce using rule 76 (cmd -> RIGHT .)
+    ENDSTR          reduce using rule 78 (cmd -> RIGHT .)
+    THEN            reduce using rule 78 (cmd -> RIGHT .)
+    error           reduce using rule 78 (cmd -> RIGHT .)
+    EQUAL           reduce using rule 78 (cmd -> RIGHT .)
+    SUB             reduce using rule 78 (cmd -> RIGHT .)
+    ADD             reduce using rule 78 (cmd -> RIGHT .)
+    SECOND          reduce using rule 78 (cmd -> RIGHT .)
+    FIRST           reduce using rule 78 (cmd -> RIGHT .)
+    AND             reduce using rule 78 (cmd -> RIGHT .)
+    OR              reduce using rule 78 (cmd -> RIGHT .)
+    NOT             reduce using rule 78 (cmd -> RIGHT .)
+    COMMA           reduce using rule 78 (cmd -> RIGHT .)
+    CLBR            reduce using rule 78 (cmd -> RIGHT .)
+    SQCLBR          reduce using rule 78 (cmd -> RIGHT .)
+    CUCLBR          reduce using rule 78 (cmd -> RIGHT .)
 
 
 state 20
 
-    (77) cmd -> LEFT .
+    (79) cmd -> LEFT .
 
-    ENDSTR          reduce using rule 77 (cmd -> LEFT .)
-    THEN            reduce using rule 77 (cmd -> LEFT .)
-    error           reduce using rule 77 (cmd -> LEFT .)
-    EQUAL           reduce using rule 77 (cmd -> LEFT .)
-    SUB             reduce using rule 77 (cmd -> LEFT .)
-    ADD             reduce using rule 77 (cmd -> LEFT .)
-    SECOND          reduce using rule 77 (cmd -> LEFT .)
-    FIRST           reduce using rule 77 (cmd -> LEFT .)
-    AND             reduce using rule 77 (cmd -> LEFT .)
-    OR              reduce using rule 77 (cmd -> LEFT .)
-    NOT             reduce using rule 77 (cmd -> LEFT .)
-    COMMA           reduce using rule 77 (cmd -> LEFT .)
-    CLBR            reduce using rule 77 (cmd -> LEFT .)
-    SQCLBR          reduce using rule 77 (cmd -> LEFT .)
-    CUCLBR          reduce using rule 77 (cmd -> LEFT .)
+    ENDSTR          reduce using rule 79 (cmd -> LEFT .)
+    THEN            reduce using rule 79 (cmd -> LEFT .)
+    error           reduce using rule 79 (cmd -> LEFT .)
+    EQUAL           reduce using rule 79 (cmd -> LEFT .)
+    SUB             reduce using rule 79 (cmd -> LEFT .)
+    ADD             reduce using rule 79 (cmd -> LEFT .)
+    SECOND          reduce using rule 79 (cmd -> LEFT .)
+    FIRST           reduce using rule 79 (cmd -> LEFT .)
+    AND             reduce using rule 79 (cmd -> LEFT .)
+    OR              reduce using rule 79 (cmd -> LEFT .)
+    NOT             reduce using rule 79 (cmd -> LEFT .)
+    COMMA           reduce using rule 79 (cmd -> LEFT .)
+    CLBR            reduce using rule 79 (cmd -> LEFT .)
+    SQCLBR          reduce using rule 79 (cmd -> LEFT .)
+    CUCLBR          reduce using rule 79 (cmd -> LEFT .)
 
 
 state 21
 
-    (78) cmd -> LMS .
+    (80) cmd -> LMS .
 
-    ENDSTR          reduce using rule 78 (cmd -> LMS .)
-    THEN            reduce using rule 78 (cmd -> LMS .)
-    error           reduce using rule 78 (cmd -> LMS .)
-    EQUAL           reduce using rule 78 (cmd -> LMS .)
-    SUB             reduce using rule 78 (cmd -> LMS .)
-    ADD             reduce using rule 78 (cmd -> LMS .)
-    SECOND          reduce using rule 78 (cmd -> LMS .)
-    FIRST           reduce using rule 78 (cmd -> LMS .)
-    AND             reduce using rule 78 (cmd -> LMS .)
-    OR              reduce using rule 78 (cmd -> LMS .)
-    NOT             reduce using rule 78 (cmd -> LMS .)
-    COMMA           reduce using rule 78 (cmd -> LMS .)
-    CLBR            reduce using rule 78 (cmd -> LMS .)
-    SQCLBR          reduce using rule 78 (cmd -> LMS .)
-    CUCLBR          reduce using rule 78 (cmd -> LMS .)
+    ENDSTR          reduce using rule 80 (cmd -> LMS .)
+    THEN            reduce using rule 80 (cmd -> LMS .)
+    error           reduce using rule 80 (cmd -> LMS .)
+    EQUAL           reduce using rule 80 (cmd -> LMS .)
+    SUB             reduce using rule 80 (cmd -> LMS .)
+    ADD             reduce using rule 80 (cmd -> LMS .)
+    SECOND          reduce using rule 80 (cmd -> LMS .)
+    FIRST           reduce using rule 80 (cmd -> LMS .)
+    AND             reduce using rule 80 (cmd -> LMS .)
+    OR              reduce using rule 80 (cmd -> LMS .)
+    NOT             reduce using rule 80 (cmd -> LMS .)
+    COMMA           reduce using rule 80 (cmd -> LMS .)
+    CLBR            reduce using rule 80 (cmd -> LMS .)
+    SQCLBR          reduce using rule 80 (cmd -> LMS .)
+    CUCLBR          reduce using rule 80 (cmd -> LMS .)
 
 
 state 22
@@ -947,7 +949,7 @@ state 36
     (26) expr -> . OPBR expr CLBR
     (30) setarr -> . CUOPBR setarr CUCLBR
     (31) setarr -> . setarr COMMA setarr
-    (32) setarr -> . CUOPBR exprarr CUCLBR
+    (32) setarr -> . exprarr
     (38) variable -> . VARIABLE
     (39) variable -> . VARIABLE index
     (35) const -> . digit
@@ -965,11 +967,13 @@ state 36
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
+    (33) exprarr -> . exprarr COMMA exprarr
+    (34) exprarr -> . expr
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -999,15 +1003,16 @@ state 36
     math_expr                      shift and go to state 40
     callfunc                       shift and go to state 41
     cmd                            shift and go to state 42
+    exprarr                        shift and go to state 71
     digit                          shift and go to state 45
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
 state 37
 
-    (64) if -> IF expr . THEN statement_gr ELSE statement_gr
-    (65) if -> IF expr . THEN statement_gr error
-    (66) if -> IF expr . error
+    (65) if -> IF expr . THEN statement_gr ELSE statement_gr
+    (66) if -> IF expr . THEN statement_gr error
+    (67) if -> IF expr . error
     (49) math_expr -> expr . EQUAL expr
     (50) math_expr -> expr . SUB expr
     (51) math_expr -> expr . ADD expr
@@ -1020,16 +1025,16 @@ state 37
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
 
-    THEN            shift and go to state 71
-    error           shift and go to state 72
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    THEN            shift and go to state 72
+    error           shift and go to state 73
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
 
 state 38
@@ -1163,11 +1168,11 @@ state 43
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -1189,7 +1194,7 @@ state 43
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 81
+    expr                           shift and go to state 82
     variable                       shift and go to state 38
     const                          shift and go to state 39
     math_expr                      shift and go to state 40
@@ -1400,44 +1405,44 @@ state 53
     (42) sizeof -> SIZEOF . OPBR type CLBR
     (43) sizeof -> SIZEOF . OPBR variable CLBR
 
-    OPBR            shift and go to state 82
+    OPBR            shift and go to state 83
 
 
 state 54
 
-    (69) dowhile -> DO statement_gr . WHILE expr ENDSTR
+    (70) dowhile -> DO statement_gr . WHILE expr ENDSTR
 
-    WHILE           shift and go to state 83
+    WHILE           shift and go to state 84
 
 
 state 55
 
-    (70) dowhile -> DO error .
+    (71) dowhile -> DO error .
 
-    ENDSTR          reduce using rule 70 (dowhile -> DO error .)
-    IF              reduce using rule 70 (dowhile -> DO error .)
-    DO              reduce using rule 70 (dowhile -> DO error .)
-    FUNCTION        reduce using rule 70 (dowhile -> DO error .)
-    VARIABLE        reduce using rule 70 (dowhile -> DO error .)
-    MOVE            reduce using rule 70 (dowhile -> DO error .)
-    RIGHT           reduce using rule 70 (dowhile -> DO error .)
-    LEFT            reduce using rule 70 (dowhile -> DO error .)
-    LMS             reduce using rule 70 (dowhile -> DO error .)
-    INT             reduce using rule 70 (dowhile -> DO error .)
-    BOOL            reduce using rule 70 (dowhile -> DO error .)
-    SHORT           reduce using rule 70 (dowhile -> DO error .)
-    VECTOROF        reduce using rule 70 (dowhile -> DO error .)
-    $end            reduce using rule 70 (dowhile -> DO error .)
-    WHILE           reduce using rule 70 (dowhile -> DO error .)
-    END             reduce using rule 70 (dowhile -> DO error .)
-    ELSE            reduce using rule 70 (dowhile -> DO error .)
-    error           reduce using rule 70 (dowhile -> DO error .)
-    RETURN          reduce using rule 70 (dowhile -> DO error .)
+    ENDSTR          reduce using rule 71 (dowhile -> DO error .)
+    IF              reduce using rule 71 (dowhile -> DO error .)
+    DO              reduce using rule 71 (dowhile -> DO error .)
+    FUNCTION        reduce using rule 71 (dowhile -> DO error .)
+    VARIABLE        reduce using rule 71 (dowhile -> DO error .)
+    MOVE            reduce using rule 71 (dowhile -> DO error .)
+    RIGHT           reduce using rule 71 (dowhile -> DO error .)
+    LEFT            reduce using rule 71 (dowhile -> DO error .)
+    LMS             reduce using rule 71 (dowhile -> DO error .)
+    INT             reduce using rule 71 (dowhile -> DO error .)
+    BOOL            reduce using rule 71 (dowhile -> DO error .)
+    SHORT           reduce using rule 71 (dowhile -> DO error .)
+    VECTOROF        reduce using rule 71 (dowhile -> DO error .)
+    $end            reduce using rule 71 (dowhile -> DO error .)
+    WHILE           reduce using rule 71 (dowhile -> DO error .)
+    END             reduce using rule 71 (dowhile -> DO error .)
+    ELSE            reduce using rule 71 (dowhile -> DO error .)
+    error           reduce using rule 71 (dowhile -> DO error .)
+    RETURN          reduce using rule 71 (dowhile -> DO error .)
 
 
 state 56
 
-    (67) statement_gr -> BEGIN . statement_list END
+    (68) statement_gr -> BEGIN . statement_list END
     (2) statement_list -> . statement_list single_statement
     (3) statement_list -> . single_statement
     (4) single_statement -> . declaration ENDSTR
@@ -1451,18 +1456,18 @@ state 56
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -1486,7 +1491,7 @@ state 56
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_list                 shift and go to state 84
+    statement_list                 shift and go to state 85
     single_statement               shift and go to state 3
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
@@ -1501,34 +1506,34 @@ state 56
 
 state 57
 
-    (68) statement_gr -> single_statement .
+    (69) statement_gr -> single_statement .
 
-    WHILE           reduce using rule 68 (statement_gr -> single_statement .)
-    ELSE            reduce using rule 68 (statement_gr -> single_statement .)
-    error           reduce using rule 68 (statement_gr -> single_statement .)
-    ENDSTR          reduce using rule 68 (statement_gr -> single_statement .)
-    IF              reduce using rule 68 (statement_gr -> single_statement .)
-    DO              reduce using rule 68 (statement_gr -> single_statement .)
-    FUNCTION        reduce using rule 68 (statement_gr -> single_statement .)
-    VARIABLE        reduce using rule 68 (statement_gr -> single_statement .)
-    MOVE            reduce using rule 68 (statement_gr -> single_statement .)
-    RIGHT           reduce using rule 68 (statement_gr -> single_statement .)
-    LEFT            reduce using rule 68 (statement_gr -> single_statement .)
-    LMS             reduce using rule 68 (statement_gr -> single_statement .)
-    INT             reduce using rule 68 (statement_gr -> single_statement .)
-    BOOL            reduce using rule 68 (statement_gr -> single_statement .)
-    SHORT           reduce using rule 68 (statement_gr -> single_statement .)
-    VECTOROF        reduce using rule 68 (statement_gr -> single_statement .)
-    $end            reduce using rule 68 (statement_gr -> single_statement .)
-    END             reduce using rule 68 (statement_gr -> single_statement .)
-    RETURN          reduce using rule 68 (statement_gr -> single_statement .)
+    WHILE           reduce using rule 69 (statement_gr -> single_statement .)
+    ELSE            reduce using rule 69 (statement_gr -> single_statement .)
+    error           reduce using rule 69 (statement_gr -> single_statement .)
+    ENDSTR          reduce using rule 69 (statement_gr -> single_statement .)
+    IF              reduce using rule 69 (statement_gr -> single_statement .)
+    DO              reduce using rule 69 (statement_gr -> single_statement .)
+    FUNCTION        reduce using rule 69 (statement_gr -> single_statement .)
+    VARIABLE        reduce using rule 69 (statement_gr -> single_statement .)
+    MOVE            reduce using rule 69 (statement_gr -> single_statement .)
+    RIGHT           reduce using rule 69 (statement_gr -> single_statement .)
+    LEFT            reduce using rule 69 (statement_gr -> single_statement .)
+    LMS             reduce using rule 69 (statement_gr -> single_statement .)
+    INT             reduce using rule 69 (statement_gr -> single_statement .)
+    BOOL            reduce using rule 69 (statement_gr -> single_statement .)
+    SHORT           reduce using rule 69 (statement_gr -> single_statement .)
+    VECTOROF        reduce using rule 69 (statement_gr -> single_statement .)
+    $end            reduce using rule 69 (statement_gr -> single_statement .)
+    END             reduce using rule 69 (statement_gr -> single_statement .)
+    RETURN          reduce using rule 69 (statement_gr -> single_statement .)
 
 
 state 58
 
-    (71) function -> FUNCTION VARIABLE . OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (72) function -> FUNCTION VARIABLE . OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
 
-    OPBR            shift and go to state 85
+    OPBR            shift and go to state 86
 
 
 state 59
@@ -1537,6 +1542,7 @@ state 59
     (61) varlist -> . variable
     (62) varlist -> . const
     (63) varlist -> . varlist COMMA varlist
+    (64) varlist -> .
     (38) variable -> . VARIABLE
     (39) variable -> . VARIABLE index
     (35) const -> . digit
@@ -1550,6 +1556,8 @@ state 59
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
+    CLBR            reduce using rule 64 (varlist -> .)
+    COMMA           reduce using rule 64 (varlist -> .)
     VARIABLE        shift and go to state 35
     INTTYP          shift and go to state 48
     SHORTTYP        shift and go to state 49
@@ -1558,9 +1566,9 @@ state 59
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    varlist                        shift and go to state 86
-    variable                       shift and go to state 87
-    const                          shift and go to state 88
+    varlist                        shift and go to state 87
+    variable                       shift and go to state 88
+    const                          shift and go to state 89
     digit                          shift and go to state 45
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
@@ -1590,7 +1598,7 @@ state 60
     CUCLBR          reduce using rule 39 (variable -> VARIABLE index .)
     SQOPBR          shift and go to state 61
 
-    index                          shift and go to state 89
+    index                          shift and go to state 90
 
 state 61
 
@@ -1618,11 +1626,11 @@ state 61
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -1644,7 +1652,7 @@ state 61
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 90
+    expr                           shift and go to state 91
     variable                       shift and go to state 38
     const                          shift and go to state 39
     math_expr                      shift and go to state 40
@@ -1656,65 +1664,65 @@ state 61
 
 state 62
 
-    (75) cmd -> MOVE dir .
+    (77) cmd -> MOVE dir .
 
-    ENDSTR          reduce using rule 75 (cmd -> MOVE dir .)
-    THEN            reduce using rule 75 (cmd -> MOVE dir .)
-    error           reduce using rule 75 (cmd -> MOVE dir .)
-    EQUAL           reduce using rule 75 (cmd -> MOVE dir .)
-    SUB             reduce using rule 75 (cmd -> MOVE dir .)
-    ADD             reduce using rule 75 (cmd -> MOVE dir .)
-    SECOND          reduce using rule 75 (cmd -> MOVE dir .)
-    FIRST           reduce using rule 75 (cmd -> MOVE dir .)
-    AND             reduce using rule 75 (cmd -> MOVE dir .)
-    OR              reduce using rule 75 (cmd -> MOVE dir .)
-    NOT             reduce using rule 75 (cmd -> MOVE dir .)
-    COMMA           reduce using rule 75 (cmd -> MOVE dir .)
-    CLBR            reduce using rule 75 (cmd -> MOVE dir .)
-    SQCLBR          reduce using rule 75 (cmd -> MOVE dir .)
-    CUCLBR          reduce using rule 75 (cmd -> MOVE dir .)
+    ENDSTR          reduce using rule 77 (cmd -> MOVE dir .)
+    THEN            reduce using rule 77 (cmd -> MOVE dir .)
+    error           reduce using rule 77 (cmd -> MOVE dir .)
+    EQUAL           reduce using rule 77 (cmd -> MOVE dir .)
+    SUB             reduce using rule 77 (cmd -> MOVE dir .)
+    ADD             reduce using rule 77 (cmd -> MOVE dir .)
+    SECOND          reduce using rule 77 (cmd -> MOVE dir .)
+    FIRST           reduce using rule 77 (cmd -> MOVE dir .)
+    AND             reduce using rule 77 (cmd -> MOVE dir .)
+    OR              reduce using rule 77 (cmd -> MOVE dir .)
+    NOT             reduce using rule 77 (cmd -> MOVE dir .)
+    COMMA           reduce using rule 77 (cmd -> MOVE dir .)
+    CLBR            reduce using rule 77 (cmd -> MOVE dir .)
+    SQCLBR          reduce using rule 77 (cmd -> MOVE dir .)
+    CUCLBR          reduce using rule 77 (cmd -> MOVE dir .)
 
 
 state 63
 
-    (79) dir -> RIGHT .
+    (81) dir -> RIGHT .
 
-    ENDSTR          reduce using rule 79 (dir -> RIGHT .)
-    THEN            reduce using rule 79 (dir -> RIGHT .)
-    error           reduce using rule 79 (dir -> RIGHT .)
-    EQUAL           reduce using rule 79 (dir -> RIGHT .)
-    SUB             reduce using rule 79 (dir -> RIGHT .)
-    ADD             reduce using rule 79 (dir -> RIGHT .)
-    SECOND          reduce using rule 79 (dir -> RIGHT .)
-    FIRST           reduce using rule 79 (dir -> RIGHT .)
-    AND             reduce using rule 79 (dir -> RIGHT .)
-    OR              reduce using rule 79 (dir -> RIGHT .)
-    NOT             reduce using rule 79 (dir -> RIGHT .)
-    COMMA           reduce using rule 79 (dir -> RIGHT .)
-    CLBR            reduce using rule 79 (dir -> RIGHT .)
-    SQCLBR          reduce using rule 79 (dir -> RIGHT .)
-    CUCLBR          reduce using rule 79 (dir -> RIGHT .)
+    ENDSTR          reduce using rule 81 (dir -> RIGHT .)
+    THEN            reduce using rule 81 (dir -> RIGHT .)
+    error           reduce using rule 81 (dir -> RIGHT .)
+    EQUAL           reduce using rule 81 (dir -> RIGHT .)
+    SUB             reduce using rule 81 (dir -> RIGHT .)
+    ADD             reduce using rule 81 (dir -> RIGHT .)
+    SECOND          reduce using rule 81 (dir -> RIGHT .)
+    FIRST           reduce using rule 81 (dir -> RIGHT .)
+    AND             reduce using rule 81 (dir -> RIGHT .)
+    OR              reduce using rule 81 (dir -> RIGHT .)
+    NOT             reduce using rule 81 (dir -> RIGHT .)
+    COMMA           reduce using rule 81 (dir -> RIGHT .)
+    CLBR            reduce using rule 81 (dir -> RIGHT .)
+    SQCLBR          reduce using rule 81 (dir -> RIGHT .)
+    CUCLBR          reduce using rule 81 (dir -> RIGHT .)
 
 
 state 64
 
-    (80) dir -> LEFT .
+    (82) dir -> LEFT .
 
-    ENDSTR          reduce using rule 80 (dir -> LEFT .)
-    THEN            reduce using rule 80 (dir -> LEFT .)
-    error           reduce using rule 80 (dir -> LEFT .)
-    EQUAL           reduce using rule 80 (dir -> LEFT .)
-    SUB             reduce using rule 80 (dir -> LEFT .)
-    ADD             reduce using rule 80 (dir -> LEFT .)
-    SECOND          reduce using rule 80 (dir -> LEFT .)
-    FIRST           reduce using rule 80 (dir -> LEFT .)
-    AND             reduce using rule 80 (dir -> LEFT .)
-    OR              reduce using rule 80 (dir -> LEFT .)
-    NOT             reduce using rule 80 (dir -> LEFT .)
-    COMMA           reduce using rule 80 (dir -> LEFT .)
-    CLBR            reduce using rule 80 (dir -> LEFT .)
-    SQCLBR          reduce using rule 80 (dir -> LEFT .)
-    CUCLBR          reduce using rule 80 (dir -> LEFT .)
+    ENDSTR          reduce using rule 82 (dir -> LEFT .)
+    THEN            reduce using rule 82 (dir -> LEFT .)
+    error           reduce using rule 82 (dir -> LEFT .)
+    EQUAL           reduce using rule 82 (dir -> LEFT .)
+    SUB             reduce using rule 82 (dir -> LEFT .)
+    ADD             reduce using rule 82 (dir -> LEFT .)
+    SECOND          reduce using rule 82 (dir -> LEFT .)
+    FIRST           reduce using rule 82 (dir -> LEFT .)
+    AND             reduce using rule 82 (dir -> LEFT .)
+    OR              reduce using rule 82 (dir -> LEFT .)
+    NOT             reduce using rule 82 (dir -> LEFT .)
+    COMMA           reduce using rule 82 (dir -> LEFT .)
+    CLBR            reduce using rule 82 (dir -> LEFT .)
+    SQCLBR          reduce using rule 82 (dir -> LEFT .)
+    CUCLBR          reduce using rule 82 (dir -> LEFT .)
 
 
 state 65
@@ -1746,7 +1754,7 @@ state 67
 
     VARIABLE        shift and go to state 35
 
-    var                            shift and go to state 91
+    var                            shift and go to state 92
     variable                       shift and go to state 33
     setting                        shift and go to state 34
 
@@ -1764,17 +1772,23 @@ state 68
     (57) math_expr -> expr . OR expr
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
+    (34) exprarr -> expr .
 
+  ! reduce/reduce conflict for COMMA resolved using rule 20 (setting -> variable SET expr .)
+  ! reduce/reduce conflict for ENDSTR resolved using rule 20 (setting -> variable SET expr .)
     ENDSTR          reduce using rule 20 (setting -> variable SET expr .)
     COMMA           reduce using rule 20 (setting -> variable SET expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
+
+  ! COMMA           [ reduce using rule 34 (exprarr -> expr .) ]
+  ! ENDSTR          [ reduce using rule 34 (exprarr -> expr .) ]
 
 
 state 69
@@ -1784,7 +1798,7 @@ state 69
 
   ! shift/reduce conflict for COMMA resolved as shift
     ENDSTR          reduce using rule 27 (setting -> variable SET setarr .)
-    COMMA           shift and go to state 92
+    COMMA           shift and go to state 93
 
   ! COMMA           [ reduce using rule 27 (setting -> variable SET setarr .) ]
 
@@ -1792,10 +1806,9 @@ state 69
 state 70
 
     (30) setarr -> CUOPBR . setarr CUCLBR
-    (32) setarr -> CUOPBR . exprarr CUCLBR
     (30) setarr -> . CUOPBR setarr CUCLBR
     (31) setarr -> . setarr COMMA setarr
-    (32) setarr -> . CUOPBR exprarr CUCLBR
+    (32) setarr -> . exprarr
     (33) exprarr -> . exprarr COMMA exprarr
     (34) exprarr -> . expr
     (21) expr -> . variable
@@ -1821,11 +1834,11 @@ state 70
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -1848,8 +1861,8 @@ state 70
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    setarr                         shift and go to state 93
-    exprarr                        shift and go to state 94
+    setarr                         shift and go to state 94
+    exprarr                        shift and go to state 71
     expr                           shift and go to state 95
     variable                       shift and go to state 38
     const                          shift and go to state 39
@@ -1862,10 +1875,23 @@ state 70
 
 state 71
 
-    (64) if -> IF expr THEN . statement_gr ELSE statement_gr
-    (65) if -> IF expr THEN . statement_gr error
-    (67) statement_gr -> . BEGIN statement_list END
-    (68) statement_gr -> . single_statement
+    (32) setarr -> exprarr .
+    (33) exprarr -> exprarr . COMMA exprarr
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    ENDSTR          reduce using rule 32 (setarr -> exprarr .)
+    CUCLBR          reduce using rule 32 (setarr -> exprarr .)
+    COMMA           shift and go to state 96
+
+  ! COMMA           [ reduce using rule 32 (setarr -> exprarr .) ]
+
+
+state 72
+
+    (65) if -> IF expr THEN . statement_gr ELSE statement_gr
+    (66) if -> IF expr THEN . statement_gr error
+    (68) statement_gr -> . BEGIN statement_list END
+    (69) statement_gr -> . single_statement
     (4) single_statement -> . declaration ENDSTR
     (5) single_statement -> . setting ENDSTR
     (6) single_statement -> . if
@@ -1877,18 +1903,18 @@ state 71
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -1913,7 +1939,7 @@ state 71
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_gr                   shift and go to state 96
+    statement_gr                   shift and go to state 97
     single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
@@ -1926,32 +1952,32 @@ state 71
     variable                       shift and go to state 13
     vectorof                       shift and go to state 25
 
-state 72
-
-    (66) if -> IF expr error .
-
-    ENDSTR          reduce using rule 66 (if -> IF expr error .)
-    IF              reduce using rule 66 (if -> IF expr error .)
-    DO              reduce using rule 66 (if -> IF expr error .)
-    FUNCTION        reduce using rule 66 (if -> IF expr error .)
-    VARIABLE        reduce using rule 66 (if -> IF expr error .)
-    MOVE            reduce using rule 66 (if -> IF expr error .)
-    RIGHT           reduce using rule 66 (if -> IF expr error .)
-    LEFT            reduce using rule 66 (if -> IF expr error .)
-    LMS             reduce using rule 66 (if -> IF expr error .)
-    INT             reduce using rule 66 (if -> IF expr error .)
-    BOOL            reduce using rule 66 (if -> IF expr error .)
-    SHORT           reduce using rule 66 (if -> IF expr error .)
-    VECTOROF        reduce using rule 66 (if -> IF expr error .)
-    $end            reduce using rule 66 (if -> IF expr error .)
-    WHILE           reduce using rule 66 (if -> IF expr error .)
-    END             reduce using rule 66 (if -> IF expr error .)
-    ELSE            reduce using rule 66 (if -> IF expr error .)
-    error           reduce using rule 66 (if -> IF expr error .)
-    RETURN          reduce using rule 66 (if -> IF expr error .)
-
-
 state 73
+
+    (67) if -> IF expr error .
+
+    ENDSTR          reduce using rule 67 (if -> IF expr error .)
+    IF              reduce using rule 67 (if -> IF expr error .)
+    DO              reduce using rule 67 (if -> IF expr error .)
+    FUNCTION        reduce using rule 67 (if -> IF expr error .)
+    VARIABLE        reduce using rule 67 (if -> IF expr error .)
+    MOVE            reduce using rule 67 (if -> IF expr error .)
+    RIGHT           reduce using rule 67 (if -> IF expr error .)
+    LEFT            reduce using rule 67 (if -> IF expr error .)
+    LMS             reduce using rule 67 (if -> IF expr error .)
+    INT             reduce using rule 67 (if -> IF expr error .)
+    BOOL            reduce using rule 67 (if -> IF expr error .)
+    SHORT           reduce using rule 67 (if -> IF expr error .)
+    VECTOROF        reduce using rule 67 (if -> IF expr error .)
+    $end            reduce using rule 67 (if -> IF expr error .)
+    WHILE           reduce using rule 67 (if -> IF expr error .)
+    END             reduce using rule 67 (if -> IF expr error .)
+    ELSE            reduce using rule 67 (if -> IF expr error .)
+    error           reduce using rule 67 (if -> IF expr error .)
+    RETURN          reduce using rule 67 (if -> IF expr error .)
+
+
+state 74
 
     (49) math_expr -> expr EQUAL . expr
     (21) expr -> . variable
@@ -1977,73 +2003,11 @@ state 73
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
-    (47) digit -> . INTTYP
-    (48) digit -> . SHORTTYP
-    (44) bool -> . TRUE
-    (45) bool -> . FALSE
-    (46) bool -> . UNDEFINED
-    (42) sizeof -> . SIZEOF OPBR type CLBR
-    (43) sizeof -> . SIZEOF OPBR variable CLBR
-
-    OPBR            shift and go to state 43
-    VARIABLE        shift and go to state 44
-    MOVE            shift and go to state 18
-    RIGHT           shift and go to state 19
-    LEFT            shift and go to state 20
-    LMS             shift and go to state 21
-    INTTYP          shift and go to state 48
-    SHORTTYP        shift and go to state 49
-    TRUE            shift and go to state 50
-    FALSE           shift and go to state 51
-    UNDEFINED       shift and go to state 52
-    SIZEOF          shift and go to state 53
-
-    expr                           shift and go to state 97
-    variable                       shift and go to state 38
-    const                          shift and go to state 39
-    math_expr                      shift and go to state 40
-    callfunc                       shift and go to state 41
-    cmd                            shift and go to state 42
-    digit                          shift and go to state 45
-    bool                           shift and go to state 46
-    sizeof                         shift and go to state 47
-
-state 74
-
-    (50) math_expr -> expr SUB . expr
-    (21) expr -> . variable
-    (22) expr -> . const
-    (23) expr -> . math_expr
-    (24) expr -> . callfunc
-    (25) expr -> . cmd
-    (26) expr -> . OPBR expr CLBR
-    (38) variable -> . VARIABLE
-    (39) variable -> . VARIABLE index
-    (35) const -> . digit
-    (36) const -> . bool
-    (37) const -> . sizeof
-    (49) math_expr -> . expr EQUAL expr
-    (50) math_expr -> . expr SUB expr
-    (51) math_expr -> . expr ADD expr
-    (52) math_expr -> . expr SECOND LARGER expr
-    (53) math_expr -> . expr SECOND SMALLER expr
-    (54) math_expr -> . expr FIRST LARGER expr
-    (55) math_expr -> . expr FIRST SMALLER expr
-    (56) math_expr -> . expr AND expr
-    (57) math_expr -> . expr OR expr
-    (58) math_expr -> . expr NOT AND expr
-    (59) math_expr -> . expr NOT OR expr
-    (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2077,7 +2041,7 @@ state 74
 
 state 75
 
-    (51) math_expr -> expr ADD . expr
+    (50) math_expr -> expr SUB . expr
     (21) expr -> . variable
     (22) expr -> . const
     (23) expr -> . math_expr
@@ -2101,11 +2065,11 @@ state 75
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2139,23 +2103,85 @@ state 75
 
 state 76
 
+    (51) math_expr -> expr ADD . expr
+    (21) expr -> . variable
+    (22) expr -> . const
+    (23) expr -> . math_expr
+    (24) expr -> . callfunc
+    (25) expr -> . cmd
+    (26) expr -> . OPBR expr CLBR
+    (38) variable -> . VARIABLE
+    (39) variable -> . VARIABLE index
+    (35) const -> . digit
+    (36) const -> . bool
+    (37) const -> . sizeof
+    (49) math_expr -> . expr EQUAL expr
+    (50) math_expr -> . expr SUB expr
+    (51) math_expr -> . expr ADD expr
+    (52) math_expr -> . expr SECOND LARGER expr
+    (53) math_expr -> . expr SECOND SMALLER expr
+    (54) math_expr -> . expr FIRST LARGER expr
+    (55) math_expr -> . expr FIRST SMALLER expr
+    (56) math_expr -> . expr AND expr
+    (57) math_expr -> . expr OR expr
+    (58) math_expr -> . expr NOT AND expr
+    (59) math_expr -> . expr NOT OR expr
+    (60) callfunc -> . VARIABLE OPBR varlist CLBR
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
+    (47) digit -> . INTTYP
+    (48) digit -> . SHORTTYP
+    (44) bool -> . TRUE
+    (45) bool -> . FALSE
+    (46) bool -> . UNDEFINED
+    (42) sizeof -> . SIZEOF OPBR type CLBR
+    (43) sizeof -> . SIZEOF OPBR variable CLBR
+
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
+    MOVE            shift and go to state 18
+    RIGHT           shift and go to state 19
+    LEFT            shift and go to state 20
+    LMS             shift and go to state 21
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
+
+    expr                           shift and go to state 100
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
+
+state 77
+
     (52) math_expr -> expr SECOND . LARGER expr
     (53) math_expr -> expr SECOND . SMALLER expr
 
-    LARGER          shift and go to state 100
-    SMALLER         shift and go to state 101
+    LARGER          shift and go to state 101
+    SMALLER         shift and go to state 102
 
 
-state 77
+state 78
 
     (54) math_expr -> expr FIRST . LARGER expr
     (55) math_expr -> expr FIRST . SMALLER expr
 
-    LARGER          shift and go to state 102
-    SMALLER         shift and go to state 103
+    LARGER          shift and go to state 103
+    SMALLER         shift and go to state 104
 
 
-state 78
+state 79
 
     (56) math_expr -> expr AND . expr
     (21) expr -> . variable
@@ -2181,73 +2207,11 @@ state 78
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
-    (47) digit -> . INTTYP
-    (48) digit -> . SHORTTYP
-    (44) bool -> . TRUE
-    (45) bool -> . FALSE
-    (46) bool -> . UNDEFINED
-    (42) sizeof -> . SIZEOF OPBR type CLBR
-    (43) sizeof -> . SIZEOF OPBR variable CLBR
-
-    OPBR            shift and go to state 43
-    VARIABLE        shift and go to state 44
-    MOVE            shift and go to state 18
-    RIGHT           shift and go to state 19
-    LEFT            shift and go to state 20
-    LMS             shift and go to state 21
-    INTTYP          shift and go to state 48
-    SHORTTYP        shift and go to state 49
-    TRUE            shift and go to state 50
-    FALSE           shift and go to state 51
-    UNDEFINED       shift and go to state 52
-    SIZEOF          shift and go to state 53
-
-    expr                           shift and go to state 104
-    variable                       shift and go to state 38
-    const                          shift and go to state 39
-    math_expr                      shift and go to state 40
-    callfunc                       shift and go to state 41
-    cmd                            shift and go to state 42
-    digit                          shift and go to state 45
-    bool                           shift and go to state 46
-    sizeof                         shift and go to state 47
-
-state 79
-
-    (57) math_expr -> expr OR . expr
-    (21) expr -> . variable
-    (22) expr -> . const
-    (23) expr -> . math_expr
-    (24) expr -> . callfunc
-    (25) expr -> . cmd
-    (26) expr -> . OPBR expr CLBR
-    (38) variable -> . VARIABLE
-    (39) variable -> . VARIABLE index
-    (35) const -> . digit
-    (36) const -> . bool
-    (37) const -> . sizeof
-    (49) math_expr -> . expr EQUAL expr
-    (50) math_expr -> . expr SUB expr
-    (51) math_expr -> . expr ADD expr
-    (52) math_expr -> . expr SECOND LARGER expr
-    (53) math_expr -> . expr SECOND SMALLER expr
-    (54) math_expr -> . expr FIRST LARGER expr
-    (55) math_expr -> . expr FIRST SMALLER expr
-    (56) math_expr -> . expr AND expr
-    (57) math_expr -> . expr OR expr
-    (58) math_expr -> . expr NOT AND expr
-    (59) math_expr -> . expr NOT OR expr
-    (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2281,65 +2245,7 @@ state 79
 
 state 80
 
-    (58) math_expr -> expr NOT . AND expr
-    (59) math_expr -> expr NOT . OR expr
-
-    AND             shift and go to state 106
-    OR              shift and go to state 107
-
-
-state 81
-
-    (26) expr -> OPBR expr . CLBR
-    (49) math_expr -> expr . EQUAL expr
-    (50) math_expr -> expr . SUB expr
-    (51) math_expr -> expr . ADD expr
-    (52) math_expr -> expr . SECOND LARGER expr
-    (53) math_expr -> expr . SECOND SMALLER expr
-    (54) math_expr -> expr . FIRST LARGER expr
-    (55) math_expr -> expr . FIRST SMALLER expr
-    (56) math_expr -> expr . AND expr
-    (57) math_expr -> expr . OR expr
-    (58) math_expr -> expr . NOT AND expr
-    (59) math_expr -> expr . NOT OR expr
-
-    CLBR            shift and go to state 108
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
-
-
-state 82
-
-    (42) sizeof -> SIZEOF OPBR . type CLBR
-    (43) sizeof -> SIZEOF OPBR . variable CLBR
-    (13) type -> . INT
-    (14) type -> . BOOL
-    (15) type -> . SHORT INT
-    (16) type -> . SHORT
-    (28) type -> . vectorof
-    (38) variable -> . VARIABLE
-    (39) variable -> . VARIABLE index
-    (29) vectorof -> . VECTOROF type
-
-    INT             shift and go to state 22
-    BOOL            shift and go to state 23
-    SHORT           shift and go to state 24
-    VARIABLE        shift and go to state 35
-    VECTOROF        shift and go to state 26
-
-    type                           shift and go to state 109
-    variable                       shift and go to state 110
-    vectorof                       shift and go to state 25
-
-state 83
-
-    (69) dowhile -> DO statement_gr WHILE . expr ENDSTR
+    (57) math_expr -> expr OR . expr
     (21) expr -> . variable
     (22) expr -> . const
     (23) expr -> . math_expr
@@ -2363,11 +2269,11 @@ state 83
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2389,7 +2295,7 @@ state 83
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 111
+    expr                           shift and go to state 106
     variable                       shift and go to state 38
     const                          shift and go to state 39
     math_expr                      shift and go to state 40
@@ -2399,9 +2305,129 @@ state 83
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
+state 81
+
+    (58) math_expr -> expr NOT . AND expr
+    (59) math_expr -> expr NOT . OR expr
+
+    AND             shift and go to state 107
+    OR              shift and go to state 108
+
+
+state 82
+
+    (26) expr -> OPBR expr . CLBR
+    (49) math_expr -> expr . EQUAL expr
+    (50) math_expr -> expr . SUB expr
+    (51) math_expr -> expr . ADD expr
+    (52) math_expr -> expr . SECOND LARGER expr
+    (53) math_expr -> expr . SECOND SMALLER expr
+    (54) math_expr -> expr . FIRST LARGER expr
+    (55) math_expr -> expr . FIRST SMALLER expr
+    (56) math_expr -> expr . AND expr
+    (57) math_expr -> expr . OR expr
+    (58) math_expr -> expr . NOT AND expr
+    (59) math_expr -> expr . NOT OR expr
+
+    CLBR            shift and go to state 109
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
+
+
+state 83
+
+    (42) sizeof -> SIZEOF OPBR . type CLBR
+    (43) sizeof -> SIZEOF OPBR . variable CLBR
+    (13) type -> . INT
+    (14) type -> . BOOL
+    (15) type -> . SHORT INT
+    (16) type -> . SHORT
+    (28) type -> . vectorof
+    (38) variable -> . VARIABLE
+    (39) variable -> . VARIABLE index
+    (29) vectorof -> . VECTOROF type
+
+    INT             shift and go to state 22
+    BOOL            shift and go to state 23
+    SHORT           shift and go to state 24
+    VARIABLE        shift and go to state 35
+    VECTOROF        shift and go to state 26
+
+    type                           shift and go to state 110
+    variable                       shift and go to state 111
+    vectorof                       shift and go to state 25
+
 state 84
 
-    (67) statement_gr -> BEGIN statement_list . END
+    (70) dowhile -> DO statement_gr WHILE . expr ENDSTR
+    (21) expr -> . variable
+    (22) expr -> . const
+    (23) expr -> . math_expr
+    (24) expr -> . callfunc
+    (25) expr -> . cmd
+    (26) expr -> . OPBR expr CLBR
+    (38) variable -> . VARIABLE
+    (39) variable -> . VARIABLE index
+    (35) const -> . digit
+    (36) const -> . bool
+    (37) const -> . sizeof
+    (49) math_expr -> . expr EQUAL expr
+    (50) math_expr -> . expr SUB expr
+    (51) math_expr -> . expr ADD expr
+    (52) math_expr -> . expr SECOND LARGER expr
+    (53) math_expr -> . expr SECOND SMALLER expr
+    (54) math_expr -> . expr FIRST LARGER expr
+    (55) math_expr -> . expr FIRST SMALLER expr
+    (56) math_expr -> . expr AND expr
+    (57) math_expr -> . expr OR expr
+    (58) math_expr -> . expr NOT AND expr
+    (59) math_expr -> . expr NOT OR expr
+    (60) callfunc -> . VARIABLE OPBR varlist CLBR
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
+    (47) digit -> . INTTYP
+    (48) digit -> . SHORTTYP
+    (44) bool -> . TRUE
+    (45) bool -> . FALSE
+    (46) bool -> . UNDEFINED
+    (42) sizeof -> . SIZEOF OPBR type CLBR
+    (43) sizeof -> . SIZEOF OPBR variable CLBR
+
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
+    MOVE            shift and go to state 18
+    RIGHT           shift and go to state 19
+    LEFT            shift and go to state 20
+    LMS             shift and go to state 21
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
+
+    expr                           shift and go to state 112
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
+
+state 85
+
+    (68) statement_gr -> BEGIN statement_list . END
     (2) statement_list -> statement_list . single_statement
     (4) single_statement -> . declaration ENDSTR
     (5) single_statement -> . setting ENDSTR
@@ -2414,18 +2440,18 @@ state 84
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -2435,7 +2461,7 @@ state 84
     (39) variable -> . VARIABLE index
     (29) vectorof -> . VECTOROF type
 
-    END             shift and go to state 112
+    END             shift and go to state 113
     ENDSTR          shift and go to state 5
     IF              shift and go to state 14
     DO              shift and go to state 15
@@ -2462,11 +2488,12 @@ state 84
     variable                       shift and go to state 13
     vectorof                       shift and go to state 25
 
-state 85
+state 86
 
-    (71) function -> FUNCTION VARIABLE OPBR . arrtype CLBR statement_gr RETURN expr ENDSTR
-    (72) arrtype -> . type VARIABLE
-    (73) arrtype -> . arrtype COMMA arrtype
+    (72) function -> FUNCTION VARIABLE OPBR . arrtype CLBR statement_gr RETURN expr ENDSTR
+    (73) arrtype -> . type VARIABLE
+    (74) arrtype -> . arrtype COMMA arrtype
+    (75) arrtype -> .
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -2474,25 +2501,27 @@ state 85
     (28) type -> . vectorof
     (29) vectorof -> . VECTOROF type
 
+    CLBR            reduce using rule 75 (arrtype -> .)
+    COMMA           reduce using rule 75 (arrtype -> .)
     INT             shift and go to state 22
     BOOL            shift and go to state 23
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    arrtype                        shift and go to state 113
-    type                           shift and go to state 114
+    arrtype                        shift and go to state 114
+    type                           shift and go to state 115
     vectorof                       shift and go to state 25
 
-state 86
+state 87
 
     (60) callfunc -> VARIABLE OPBR varlist . CLBR
     (63) varlist -> varlist . COMMA varlist
 
-    CLBR            shift and go to state 115
-    COMMA           shift and go to state 116
+    CLBR            shift and go to state 116
+    COMMA           shift and go to state 117
 
 
-state 87
+state 88
 
     (61) varlist -> variable .
 
@@ -2500,7 +2529,7 @@ state 87
     COMMA           reduce using rule 61 (varlist -> variable .)
 
 
-state 88
+state 89
 
     (62) varlist -> const .
 
@@ -2508,7 +2537,7 @@ state 88
     COMMA           reduce using rule 62 (varlist -> const .)
 
 
-state 89
+state 90
 
     (41) index -> index index .
     (41) index -> index . index
@@ -2536,9 +2565,9 @@ state 89
 
   ! SQOPBR          [ reduce using rule 41 (index -> index index .) ]
 
-    index                          shift and go to state 89
+    index                          shift and go to state 90
 
-state 90
+state 91
 
     (40) index -> SQOPBR expr . SQCLBR
     (49) math_expr -> expr . EQUAL expr
@@ -2553,18 +2582,18 @@ state 90
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
 
-    SQCLBR          shift and go to state 117
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    SQCLBR          shift and go to state 118
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
 
-state 91
+state 92
 
     (19) var -> var COMMA var .
     (19) var -> var . COMMA var
@@ -2576,33 +2605,83 @@ state 91
   ! COMMA           [ reduce using rule 19 (var -> var COMMA var .) ]
 
 
-state 92
+state 93
 
     (31) setarr -> setarr COMMA . setarr
     (30) setarr -> . CUOPBR setarr CUCLBR
     (31) setarr -> . setarr COMMA setarr
-    (32) setarr -> . CUOPBR exprarr CUCLBR
+    (32) setarr -> . exprarr
+    (33) exprarr -> . exprarr COMMA exprarr
+    (34) exprarr -> . expr
+    (21) expr -> . variable
+    (22) expr -> . const
+    (23) expr -> . math_expr
+    (24) expr -> . callfunc
+    (25) expr -> . cmd
+    (26) expr -> . OPBR expr CLBR
+    (38) variable -> . VARIABLE
+    (39) variable -> . VARIABLE index
+    (35) const -> . digit
+    (36) const -> . bool
+    (37) const -> . sizeof
+    (49) math_expr -> . expr EQUAL expr
+    (50) math_expr -> . expr SUB expr
+    (51) math_expr -> . expr ADD expr
+    (52) math_expr -> . expr SECOND LARGER expr
+    (53) math_expr -> . expr SECOND SMALLER expr
+    (54) math_expr -> . expr FIRST LARGER expr
+    (55) math_expr -> . expr FIRST SMALLER expr
+    (56) math_expr -> . expr AND expr
+    (57) math_expr -> . expr OR expr
+    (58) math_expr -> . expr NOT AND expr
+    (59) math_expr -> . expr NOT OR expr
+    (60) callfunc -> . VARIABLE OPBR varlist CLBR
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
+    (47) digit -> . INTTYP
+    (48) digit -> . SHORTTYP
+    (44) bool -> . TRUE
+    (45) bool -> . FALSE
+    (46) bool -> . UNDEFINED
+    (42) sizeof -> . SIZEOF OPBR type CLBR
+    (43) sizeof -> . SIZEOF OPBR variable CLBR
 
     CUOPBR          shift and go to state 70
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
+    MOVE            shift and go to state 18
+    RIGHT           shift and go to state 19
+    LEFT            shift and go to state 20
+    LMS             shift and go to state 21
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
 
-    setarr                         shift and go to state 118
+    setarr                         shift and go to state 119
+    exprarr                        shift and go to state 71
+    expr                           shift and go to state 95
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
 
-state 93
+state 94
 
     (30) setarr -> CUOPBR setarr . CUCLBR
     (31) setarr -> setarr . COMMA setarr
 
-    CUCLBR          shift and go to state 119
-    COMMA           shift and go to state 92
-
-
-state 94
-
-    (32) setarr -> CUOPBR exprarr . CUCLBR
-    (33) exprarr -> exprarr . COMMA exprarr
-
     CUCLBR          shift and go to state 120
-    COMMA           shift and go to state 121
+    COMMA           shift and go to state 93
 
 
 state 95
@@ -2620,28 +2699,94 @@ state 95
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
 
-    CUCLBR          reduce using rule 34 (exprarr -> expr .)
     COMMA           reduce using rule 34 (exprarr -> expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    CUCLBR          reduce using rule 34 (exprarr -> expr .)
+    ENDSTR          reduce using rule 34 (exprarr -> expr .)
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
 
 state 96
 
-    (64) if -> IF expr THEN statement_gr . ELSE statement_gr
-    (65) if -> IF expr THEN statement_gr . error
+    (33) exprarr -> exprarr COMMA . exprarr
+    (33) exprarr -> . exprarr COMMA exprarr
+    (34) exprarr -> . expr
+    (21) expr -> . variable
+    (22) expr -> . const
+    (23) expr -> . math_expr
+    (24) expr -> . callfunc
+    (25) expr -> . cmd
+    (26) expr -> . OPBR expr CLBR
+    (38) variable -> . VARIABLE
+    (39) variable -> . VARIABLE index
+    (35) const -> . digit
+    (36) const -> . bool
+    (37) const -> . sizeof
+    (49) math_expr -> . expr EQUAL expr
+    (50) math_expr -> . expr SUB expr
+    (51) math_expr -> . expr ADD expr
+    (52) math_expr -> . expr SECOND LARGER expr
+    (53) math_expr -> . expr SECOND SMALLER expr
+    (54) math_expr -> . expr FIRST LARGER expr
+    (55) math_expr -> . expr FIRST SMALLER expr
+    (56) math_expr -> . expr AND expr
+    (57) math_expr -> . expr OR expr
+    (58) math_expr -> . expr NOT AND expr
+    (59) math_expr -> . expr NOT OR expr
+    (60) callfunc -> . VARIABLE OPBR varlist CLBR
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
+    (47) digit -> . INTTYP
+    (48) digit -> . SHORTTYP
+    (44) bool -> . TRUE
+    (45) bool -> . FALSE
+    (46) bool -> . UNDEFINED
+    (42) sizeof -> . SIZEOF OPBR type CLBR
+    (43) sizeof -> . SIZEOF OPBR variable CLBR
+
+    OPBR            shift and go to state 43
+    VARIABLE        shift and go to state 44
+    MOVE            shift and go to state 18
+    RIGHT           shift and go to state 19
+    LEFT            shift and go to state 20
+    LMS             shift and go to state 21
+    INTTYP          shift and go to state 48
+    SHORTTYP        shift and go to state 49
+    TRUE            shift and go to state 50
+    FALSE           shift and go to state 51
+    UNDEFINED       shift and go to state 52
+    SIZEOF          shift and go to state 53
+
+    exprarr                        shift and go to state 121
+    expr                           shift and go to state 95
+    variable                       shift and go to state 38
+    const                          shift and go to state 39
+    math_expr                      shift and go to state 40
+    callfunc                       shift and go to state 41
+    cmd                            shift and go to state 42
+    digit                          shift and go to state 45
+    bool                           shift and go to state 46
+    sizeof                         shift and go to state 47
+
+state 97
+
+    (65) if -> IF expr THEN statement_gr . ELSE statement_gr
+    (66) if -> IF expr THEN statement_gr . error
 
     ELSE            shift and go to state 122
     error           shift and go to state 123
 
 
-state 97
+state 98
 
     (49) math_expr -> expr EQUAL expr .
     (49) math_expr -> expr . EQUAL expr
@@ -2671,14 +2816,14 @@ state 97
     CLBR            reduce using rule 49 (math_expr -> expr EQUAL expr .)
     SQCLBR          reduce using rule 49 (math_expr -> expr EQUAL expr .)
     CUCLBR          reduce using rule 49 (math_expr -> expr EQUAL expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 49 (math_expr -> expr EQUAL expr .) ]
   ! SUB             [ reduce using rule 49 (math_expr -> expr EQUAL expr .) ]
@@ -2690,7 +2835,7 @@ state 97
   ! NOT             [ reduce using rule 49 (math_expr -> expr EQUAL expr .) ]
 
 
-state 98
+state 99
 
     (50) math_expr -> expr SUB expr .
     (49) math_expr -> expr . EQUAL expr
@@ -2720,14 +2865,14 @@ state 98
     CLBR            reduce using rule 50 (math_expr -> expr SUB expr .)
     SQCLBR          reduce using rule 50 (math_expr -> expr SUB expr .)
     CUCLBR          reduce using rule 50 (math_expr -> expr SUB expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 50 (math_expr -> expr SUB expr .) ]
   ! SUB             [ reduce using rule 50 (math_expr -> expr SUB expr .) ]
@@ -2739,7 +2884,7 @@ state 98
   ! NOT             [ reduce using rule 50 (math_expr -> expr SUB expr .) ]
 
 
-state 99
+state 100
 
     (51) math_expr -> expr ADD expr .
     (49) math_expr -> expr . EQUAL expr
@@ -2769,14 +2914,14 @@ state 99
     CLBR            reduce using rule 51 (math_expr -> expr ADD expr .)
     SQCLBR          reduce using rule 51 (math_expr -> expr ADD expr .)
     CUCLBR          reduce using rule 51 (math_expr -> expr ADD expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 51 (math_expr -> expr ADD expr .) ]
   ! SUB             [ reduce using rule 51 (math_expr -> expr ADD expr .) ]
@@ -2788,7 +2933,7 @@ state 99
   ! NOT             [ reduce using rule 51 (math_expr -> expr ADD expr .) ]
 
 
-state 100
+state 101
 
     (52) math_expr -> expr SECOND LARGER . expr
     (21) expr -> . variable
@@ -2814,11 +2959,11 @@ state 100
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2850,7 +2995,7 @@ state 100
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 101
+state 102
 
     (53) math_expr -> expr SECOND SMALLER . expr
     (21) expr -> . variable
@@ -2876,11 +3021,11 @@ state 101
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2912,7 +3057,7 @@ state 101
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 102
+state 103
 
     (54) math_expr -> expr FIRST LARGER . expr
     (21) expr -> . variable
@@ -2938,11 +3083,11 @@ state 102
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -2974,7 +3119,7 @@ state 102
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 103
+state 104
 
     (55) math_expr -> expr FIRST SMALLER . expr
     (21) expr -> . variable
@@ -3000,11 +3145,11 @@ state 103
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -3036,7 +3181,7 @@ state 103
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 104
+state 105
 
     (56) math_expr -> expr AND expr .
     (49) math_expr -> expr . EQUAL expr
@@ -3066,14 +3211,14 @@ state 104
     CLBR            reduce using rule 56 (math_expr -> expr AND expr .)
     SQCLBR          reduce using rule 56 (math_expr -> expr AND expr .)
     CUCLBR          reduce using rule 56 (math_expr -> expr AND expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 56 (math_expr -> expr AND expr .) ]
   ! SUB             [ reduce using rule 56 (math_expr -> expr AND expr .) ]
@@ -3085,7 +3230,7 @@ state 104
   ! NOT             [ reduce using rule 56 (math_expr -> expr AND expr .) ]
 
 
-state 105
+state 106
 
     (57) math_expr -> expr OR expr .
     (49) math_expr -> expr . EQUAL expr
@@ -3115,14 +3260,14 @@ state 105
     CLBR            reduce using rule 57 (math_expr -> expr OR expr .)
     SQCLBR          reduce using rule 57 (math_expr -> expr OR expr .)
     CUCLBR          reduce using rule 57 (math_expr -> expr OR expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 57 (math_expr -> expr OR expr .) ]
   ! SUB             [ reduce using rule 57 (math_expr -> expr OR expr .) ]
@@ -3134,7 +3279,7 @@ state 105
   ! NOT             [ reduce using rule 57 (math_expr -> expr OR expr .) ]
 
 
-state 106
+state 107
 
     (58) math_expr -> expr NOT AND . expr
     (21) expr -> . variable
@@ -3160,11 +3305,11 @@ state 106
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -3196,7 +3341,7 @@ state 106
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 107
+state 108
 
     (59) math_expr -> expr NOT OR . expr
     (21) expr -> . variable
@@ -3222,11 +3367,11 @@ state 107
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -3258,7 +3403,7 @@ state 107
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 108
+state 109
 
     (26) expr -> OPBR expr CLBR .
 
@@ -3279,23 +3424,23 @@ state 108
     CUCLBR          reduce using rule 26 (expr -> OPBR expr CLBR .)
 
 
-state 109
+state 110
 
     (42) sizeof -> SIZEOF OPBR type . CLBR
 
     CLBR            shift and go to state 130
 
 
-state 110
+state 111
 
     (43) sizeof -> SIZEOF OPBR variable . CLBR
 
     CLBR            shift and go to state 131
 
 
-state 111
+state 112
 
-    (69) dowhile -> DO statement_gr WHILE expr . ENDSTR
+    (70) dowhile -> DO statement_gr WHILE expr . ENDSTR
     (49) math_expr -> expr . EQUAL expr
     (50) math_expr -> expr . SUB expr
     (51) math_expr -> expr . ADD expr
@@ -3309,58 +3454,58 @@ state 111
     (59) math_expr -> expr . NOT OR expr
 
     ENDSTR          shift and go to state 132
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
-
-
-state 112
-
-    (67) statement_gr -> BEGIN statement_list END .
-
-    WHILE           reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    ELSE            reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    error           reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    ENDSTR          reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    IF              reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    DO              reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    FUNCTION        reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    VARIABLE        reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    MOVE            reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    RIGHT           reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    LEFT            reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    LMS             reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    INT             reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    BOOL            reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    SHORT           reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    VECTOROF        reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    $end            reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    END             reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
-    RETURN          reduce using rule 67 (statement_gr -> BEGIN statement_list END .)
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
 
 state 113
 
-    (71) function -> FUNCTION VARIABLE OPBR arrtype . CLBR statement_gr RETURN expr ENDSTR
-    (73) arrtype -> arrtype . COMMA arrtype
+    (68) statement_gr -> BEGIN statement_list END .
+
+    WHILE           reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    ELSE            reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    error           reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    ENDSTR          reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    IF              reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    DO              reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    FUNCTION        reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    VARIABLE        reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    MOVE            reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    RIGHT           reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    LEFT            reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    LMS             reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    INT             reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    BOOL            reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    SHORT           reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    VECTOROF        reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    $end            reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    END             reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+    RETURN          reduce using rule 68 (statement_gr -> BEGIN statement_list END .)
+
+
+state 114
+
+    (72) function -> FUNCTION VARIABLE OPBR arrtype . CLBR statement_gr RETURN expr ENDSTR
+    (74) arrtype -> arrtype . COMMA arrtype
 
     CLBR            shift and go to state 133
     COMMA           shift and go to state 134
 
 
-state 114
+state 115
 
-    (72) arrtype -> type . VARIABLE
+    (73) arrtype -> type . VARIABLE
 
     VARIABLE        shift and go to state 135
 
 
-state 115
+state 116
 
     (60) callfunc -> VARIABLE OPBR varlist CLBR .
 
@@ -3381,12 +3526,13 @@ state 115
     CUCLBR          reduce using rule 60 (callfunc -> VARIABLE OPBR varlist CLBR .)
 
 
-state 116
+state 117
 
     (63) varlist -> varlist COMMA . varlist
     (61) varlist -> . variable
     (62) varlist -> . const
     (63) varlist -> . varlist COMMA varlist
+    (64) varlist -> .
     (38) variable -> . VARIABLE
     (39) variable -> . VARIABLE index
     (35) const -> . digit
@@ -3400,6 +3546,8 @@ state 116
     (42) sizeof -> . SIZEOF OPBR type CLBR
     (43) sizeof -> . SIZEOF OPBR variable CLBR
 
+    COMMA           reduce using rule 64 (varlist -> .)
+    CLBR            reduce using rule 64 (varlist -> .)
     VARIABLE        shift and go to state 35
     INTTYP          shift and go to state 48
     SHORTTYP        shift and go to state 49
@@ -3409,13 +3557,13 @@ state 116
     SIZEOF          shift and go to state 53
 
     varlist                        shift and go to state 136
-    variable                       shift and go to state 87
-    const                          shift and go to state 88
+    variable                       shift and go to state 88
+    const                          shift and go to state 89
     digit                          shift and go to state 45
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 117
+state 118
 
     (40) index -> SQOPBR expr SQCLBR .
 
@@ -3438,7 +3586,7 @@ state 117
     CUCLBR          reduce using rule 40 (index -> SQOPBR expr SQCLBR .)
 
 
-state 118
+state 119
 
     (31) setarr -> setarr COMMA setarr .
     (31) setarr -> setarr . COMMA setarr
@@ -3446,12 +3594,12 @@ state 118
   ! shift/reduce conflict for COMMA resolved as shift
     ENDSTR          reduce using rule 31 (setarr -> setarr COMMA setarr .)
     CUCLBR          reduce using rule 31 (setarr -> setarr COMMA setarr .)
-    COMMA           shift and go to state 92
+    COMMA           shift and go to state 93
 
   ! COMMA           [ reduce using rule 31 (setarr -> setarr COMMA setarr .) ]
 
 
-state 119
+state 120
 
     (30) setarr -> CUOPBR setarr CUCLBR .
 
@@ -3460,85 +3608,24 @@ state 119
     CUCLBR          reduce using rule 30 (setarr -> CUOPBR setarr CUCLBR .)
 
 
-state 120
-
-    (32) setarr -> CUOPBR exprarr CUCLBR .
-
-    COMMA           reduce using rule 32 (setarr -> CUOPBR exprarr CUCLBR .)
-    ENDSTR          reduce using rule 32 (setarr -> CUOPBR exprarr CUCLBR .)
-    CUCLBR          reduce using rule 32 (setarr -> CUOPBR exprarr CUCLBR .)
-
-
 state 121
 
-    (33) exprarr -> exprarr COMMA . exprarr
-    (33) exprarr -> . exprarr COMMA exprarr
-    (34) exprarr -> . expr
-    (21) expr -> . variable
-    (22) expr -> . const
-    (23) expr -> . math_expr
-    (24) expr -> . callfunc
-    (25) expr -> . cmd
-    (26) expr -> . OPBR expr CLBR
-    (38) variable -> . VARIABLE
-    (39) variable -> . VARIABLE index
-    (35) const -> . digit
-    (36) const -> . bool
-    (37) const -> . sizeof
-    (49) math_expr -> . expr EQUAL expr
-    (50) math_expr -> . expr SUB expr
-    (51) math_expr -> . expr ADD expr
-    (52) math_expr -> . expr SECOND LARGER expr
-    (53) math_expr -> . expr SECOND SMALLER expr
-    (54) math_expr -> . expr FIRST LARGER expr
-    (55) math_expr -> . expr FIRST SMALLER expr
-    (56) math_expr -> . expr AND expr
-    (57) math_expr -> . expr OR expr
-    (58) math_expr -> . expr NOT AND expr
-    (59) math_expr -> . expr NOT OR expr
-    (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
-    (47) digit -> . INTTYP
-    (48) digit -> . SHORTTYP
-    (44) bool -> . TRUE
-    (45) bool -> . FALSE
-    (46) bool -> . UNDEFINED
-    (42) sizeof -> . SIZEOF OPBR type CLBR
-    (43) sizeof -> . SIZEOF OPBR variable CLBR
+    (33) exprarr -> exprarr COMMA exprarr .
+    (33) exprarr -> exprarr . COMMA exprarr
 
-    OPBR            shift and go to state 43
-    VARIABLE        shift and go to state 44
-    MOVE            shift and go to state 18
-    RIGHT           shift and go to state 19
-    LEFT            shift and go to state 20
-    LMS             shift and go to state 21
-    INTTYP          shift and go to state 48
-    SHORTTYP        shift and go to state 49
-    TRUE            shift and go to state 50
-    FALSE           shift and go to state 51
-    UNDEFINED       shift and go to state 52
-    SIZEOF          shift and go to state 53
+  ! shift/reduce conflict for COMMA resolved as shift
+    ENDSTR          reduce using rule 33 (exprarr -> exprarr COMMA exprarr .)
+    CUCLBR          reduce using rule 33 (exprarr -> exprarr COMMA exprarr .)
+    COMMA           shift and go to state 96
 
-    exprarr                        shift and go to state 137
-    expr                           shift and go to state 95
-    variable                       shift and go to state 38
-    const                          shift and go to state 39
-    math_expr                      shift and go to state 40
-    callfunc                       shift and go to state 41
-    cmd                            shift and go to state 42
-    digit                          shift and go to state 45
-    bool                           shift and go to state 46
-    sizeof                         shift and go to state 47
+  ! COMMA           [ reduce using rule 33 (exprarr -> exprarr COMMA exprarr .) ]
+
 
 state 122
 
-    (64) if -> IF expr THEN statement_gr ELSE . statement_gr
-    (67) statement_gr -> . BEGIN statement_list END
-    (68) statement_gr -> . single_statement
+    (65) if -> IF expr THEN statement_gr ELSE . statement_gr
+    (68) statement_gr -> . BEGIN statement_list END
+    (69) statement_gr -> . single_statement
     (4) single_statement -> . declaration ENDSTR
     (5) single_statement -> . setting ENDSTR
     (6) single_statement -> . if
@@ -3550,18 +3637,18 @@ state 122
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -3586,7 +3673,7 @@ state 122
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_gr                   shift and go to state 138
+    statement_gr                   shift and go to state 137
     single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
@@ -3601,27 +3688,27 @@ state 122
 
 state 123
 
-    (65) if -> IF expr THEN statement_gr error .
+    (66) if -> IF expr THEN statement_gr error .
 
-    ENDSTR          reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    IF              reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    DO              reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    FUNCTION        reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    VARIABLE        reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    MOVE            reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    RIGHT           reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    LEFT            reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    LMS             reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    INT             reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    BOOL            reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    SHORT           reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    VECTOROF        reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    $end            reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    WHILE           reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    END             reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    ELSE            reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    error           reduce using rule 65 (if -> IF expr THEN statement_gr error .)
-    RETURN          reduce using rule 65 (if -> IF expr THEN statement_gr error .)
+    ENDSTR          reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    IF              reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    DO              reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    FUNCTION        reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    VARIABLE        reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    MOVE            reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    RIGHT           reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    LEFT            reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    LMS             reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    INT             reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    BOOL            reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    SHORT           reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    VECTOROF        reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    $end            reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    WHILE           reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    END             reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    ELSE            reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    error           reduce using rule 66 (if -> IF expr THEN statement_gr error .)
+    RETURN          reduce using rule 66 (if -> IF expr THEN statement_gr error .)
 
 
 state 124
@@ -3654,14 +3741,14 @@ state 124
     CLBR            reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
     SQCLBR          reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
     CUCLBR          reduce using rule 52 (math_expr -> expr SECOND LARGER expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 52 (math_expr -> expr SECOND LARGER expr .) ]
   ! SUB             [ reduce using rule 52 (math_expr -> expr SECOND LARGER expr .) ]
@@ -3703,14 +3790,14 @@ state 125
     CLBR            reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
     SQCLBR          reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
     CUCLBR          reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .) ]
   ! SUB             [ reduce using rule 53 (math_expr -> expr SECOND SMALLER expr .) ]
@@ -3752,14 +3839,14 @@ state 126
     CLBR            reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
     SQCLBR          reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
     CUCLBR          reduce using rule 54 (math_expr -> expr FIRST LARGER expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 54 (math_expr -> expr FIRST LARGER expr .) ]
   ! SUB             [ reduce using rule 54 (math_expr -> expr FIRST LARGER expr .) ]
@@ -3801,14 +3888,14 @@ state 127
     CLBR            reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
     SQCLBR          reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
     CUCLBR          reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .) ]
   ! SUB             [ reduce using rule 55 (math_expr -> expr FIRST SMALLER expr .) ]
@@ -3850,14 +3937,14 @@ state 128
     CLBR            reduce using rule 58 (math_expr -> expr NOT AND expr .)
     SQCLBR          reduce using rule 58 (math_expr -> expr NOT AND expr .)
     CUCLBR          reduce using rule 58 (math_expr -> expr NOT AND expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 58 (math_expr -> expr NOT AND expr .) ]
   ! SUB             [ reduce using rule 58 (math_expr -> expr NOT AND expr .) ]
@@ -3899,14 +3986,14 @@ state 129
     CLBR            reduce using rule 59 (math_expr -> expr NOT OR expr .)
     SQCLBR          reduce using rule 59 (math_expr -> expr NOT OR expr .)
     CUCLBR          reduce using rule 59 (math_expr -> expr NOT OR expr .)
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
   ! EQUAL           [ reduce using rule 59 (math_expr -> expr NOT OR expr .) ]
   ! SUB             [ reduce using rule 59 (math_expr -> expr NOT OR expr .) ]
@@ -3962,34 +4049,34 @@ state 131
 
 state 132
 
-    (69) dowhile -> DO statement_gr WHILE expr ENDSTR .
+    (70) dowhile -> DO statement_gr WHILE expr ENDSTR .
 
-    ENDSTR          reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    IF              reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    DO              reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    FUNCTION        reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    VARIABLE        reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    MOVE            reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    RIGHT           reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    LEFT            reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    LMS             reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    INT             reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    BOOL            reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    SHORT           reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    VECTOROF        reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    $end            reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    WHILE           reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    END             reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    ELSE            reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    error           reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
-    RETURN          reduce using rule 69 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    ENDSTR          reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    IF              reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    DO              reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    FUNCTION        reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    VARIABLE        reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    MOVE            reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    RIGHT           reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    LEFT            reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    LMS             reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    INT             reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    BOOL            reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    SHORT           reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    VECTOROF        reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    $end            reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    WHILE           reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    END             reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    ELSE            reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    error           reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
+    RETURN          reduce using rule 70 (dowhile -> DO statement_gr WHILE expr ENDSTR .)
 
 
 state 133
 
-    (71) function -> FUNCTION VARIABLE OPBR arrtype CLBR . statement_gr RETURN expr ENDSTR
-    (67) statement_gr -> . BEGIN statement_list END
-    (68) statement_gr -> . single_statement
+    (72) function -> FUNCTION VARIABLE OPBR arrtype CLBR . statement_gr RETURN expr ENDSTR
+    (68) statement_gr -> . BEGIN statement_list END
+    (69) statement_gr -> . single_statement
     (4) single_statement -> . declaration ENDSTR
     (5) single_statement -> . setting ENDSTR
     (6) single_statement -> . if
@@ -4001,18 +4088,18 @@ state 133
     (12) declaration -> . type var
     (20) setting -> . variable SET expr
     (27) setting -> . variable SET setarr
-    (64) if -> . IF expr THEN statement_gr ELSE statement_gr
-    (65) if -> . IF expr THEN statement_gr error
-    (66) if -> . IF expr error
-    (69) dowhile -> . DO statement_gr WHILE expr ENDSTR
-    (70) dowhile -> . DO error
-    (71) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
+    (65) if -> . IF expr THEN statement_gr ELSE statement_gr
+    (66) if -> . IF expr THEN statement_gr error
+    (67) if -> . IF expr error
+    (70) dowhile -> . DO statement_gr WHILE expr ENDSTR
+    (71) dowhile -> . DO error
+    (72) function -> . FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -4037,7 +4124,7 @@ state 133
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    statement_gr                   shift and go to state 139
+    statement_gr                   shift and go to state 138
     single_statement               shift and go to state 57
     declaration                    shift and go to state 4
     setting                        shift and go to state 6
@@ -4052,9 +4139,10 @@ state 133
 
 state 134
 
-    (73) arrtype -> arrtype COMMA . arrtype
-    (72) arrtype -> . type VARIABLE
-    (73) arrtype -> . arrtype COMMA arrtype
+    (74) arrtype -> arrtype COMMA . arrtype
+    (73) arrtype -> . type VARIABLE
+    (74) arrtype -> . arrtype COMMA arrtype
+    (75) arrtype -> .
     (13) type -> . INT
     (14) type -> . BOOL
     (15) type -> . SHORT INT
@@ -4062,21 +4150,23 @@ state 134
     (28) type -> . vectorof
     (29) vectorof -> . VECTOROF type
 
+    COMMA           reduce using rule 75 (arrtype -> .)
+    CLBR            reduce using rule 75 (arrtype -> .)
     INT             shift and go to state 22
     BOOL            shift and go to state 23
     SHORT           shift and go to state 24
     VECTOROF        shift and go to state 26
 
-    arrtype                        shift and go to state 140
-    type                           shift and go to state 114
+    arrtype                        shift and go to state 139
+    type                           shift and go to state 115
     vectorof                       shift and go to state 25
 
 state 135
 
-    (72) arrtype -> type VARIABLE .
+    (73) arrtype -> type VARIABLE .
 
-    CLBR            reduce using rule 72 (arrtype -> type VARIABLE .)
-    COMMA           reduce using rule 72 (arrtype -> type VARIABLE .)
+    CLBR            reduce using rule 73 (arrtype -> type VARIABLE .)
+    COMMA           reduce using rule 73 (arrtype -> type VARIABLE .)
 
 
 state 136
@@ -4086,70 +4176,58 @@ state 136
 
   ! shift/reduce conflict for COMMA resolved as shift
     CLBR            reduce using rule 63 (varlist -> varlist COMMA varlist .)
-    COMMA           shift and go to state 116
+    COMMA           shift and go to state 117
 
   ! COMMA           [ reduce using rule 63 (varlist -> varlist COMMA varlist .) ]
 
 
 state 137
 
-    (33) exprarr -> exprarr COMMA exprarr .
-    (33) exprarr -> exprarr . COMMA exprarr
+    (65) if -> IF expr THEN statement_gr ELSE statement_gr .
 
-  ! shift/reduce conflict for COMMA resolved as shift
-    CUCLBR          reduce using rule 33 (exprarr -> exprarr COMMA exprarr .)
-    COMMA           shift and go to state 121
-
-  ! COMMA           [ reduce using rule 33 (exprarr -> exprarr COMMA exprarr .) ]
+    ENDSTR          reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    IF              reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    DO              reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    FUNCTION        reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    VARIABLE        reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    MOVE            reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    RIGHT           reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    LEFT            reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    LMS             reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    INT             reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    BOOL            reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    SHORT           reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    VECTOROF        reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    $end            reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    WHILE           reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    END             reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    ELSE            reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    error           reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    RETURN          reduce using rule 65 (if -> IF expr THEN statement_gr ELSE statement_gr .)
 
 
 state 138
 
-    (64) if -> IF expr THEN statement_gr ELSE statement_gr .
+    (72) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr . RETURN expr ENDSTR
 
-    ENDSTR          reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    IF              reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    DO              reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    FUNCTION        reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    VARIABLE        reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    MOVE            reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    RIGHT           reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    LEFT            reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    LMS             reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    INT             reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    BOOL            reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    SHORT           reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    VECTOROF        reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    $end            reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    WHILE           reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    END             reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    ELSE            reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    error           reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
-    RETURN          reduce using rule 64 (if -> IF expr THEN statement_gr ELSE statement_gr .)
+    RETURN          shift and go to state 140
 
 
 state 139
 
-    (71) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr . RETURN expr ENDSTR
+    (74) arrtype -> arrtype COMMA arrtype .
+    (74) arrtype -> arrtype . COMMA arrtype
 
-    RETURN          shift and go to state 141
+  ! shift/reduce conflict for COMMA resolved as shift
+    CLBR            reduce using rule 74 (arrtype -> arrtype COMMA arrtype .)
+    COMMA           shift and go to state 134
+
+  ! COMMA           [ reduce using rule 74 (arrtype -> arrtype COMMA arrtype .) ]
 
 
 state 140
 
-    (73) arrtype -> arrtype COMMA arrtype .
-    (73) arrtype -> arrtype . COMMA arrtype
-
-  ! shift/reduce conflict for COMMA resolved as shift
-    CLBR            reduce using rule 73 (arrtype -> arrtype COMMA arrtype .)
-    COMMA           shift and go to state 134
-
-  ! COMMA           [ reduce using rule 73 (arrtype -> arrtype COMMA arrtype .) ]
-
-
-state 141
-
-    (71) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN . expr ENDSTR
+    (72) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN . expr ENDSTR
     (21) expr -> . variable
     (22) expr -> . const
     (23) expr -> . math_expr
@@ -4173,11 +4251,11 @@ state 141
     (58) math_expr -> . expr NOT AND expr
     (59) math_expr -> . expr NOT OR expr
     (60) callfunc -> . VARIABLE OPBR varlist CLBR
-    (74) cmd -> . MOVE
-    (75) cmd -> . MOVE dir
-    (76) cmd -> . RIGHT
-    (77) cmd -> . LEFT
-    (78) cmd -> . LMS
+    (76) cmd -> . MOVE
+    (77) cmd -> . MOVE dir
+    (78) cmd -> . RIGHT
+    (79) cmd -> . LEFT
+    (80) cmd -> . LMS
     (47) digit -> . INTTYP
     (48) digit -> . SHORTTYP
     (44) bool -> . TRUE
@@ -4199,7 +4277,7 @@ state 141
     UNDEFINED       shift and go to state 52
     SIZEOF          shift and go to state 53
 
-    expr                           shift and go to state 142
+    expr                           shift and go to state 141
     variable                       shift and go to state 38
     const                          shift and go to state 39
     math_expr                      shift and go to state 40
@@ -4209,9 +4287,9 @@ state 141
     bool                           shift and go to state 46
     sizeof                         shift and go to state 47
 
-state 142
+state 141
 
-    (71) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr . ENDSTR
+    (72) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr . ENDSTR
     (49) math_expr -> expr . EQUAL expr
     (50) math_expr -> expr . SUB expr
     (51) math_expr -> expr . ADD expr
@@ -4224,55 +4302,48 @@ state 142
     (58) math_expr -> expr . NOT AND expr
     (59) math_expr -> expr . NOT OR expr
 
-    ENDSTR          shift and go to state 143
-    EQUAL           shift and go to state 73
-    SUB             shift and go to state 74
-    ADD             shift and go to state 75
-    SECOND          shift and go to state 76
-    FIRST           shift and go to state 77
-    AND             shift and go to state 78
-    OR              shift and go to state 79
-    NOT             shift and go to state 80
+    ENDSTR          shift and go to state 142
+    EQUAL           shift and go to state 74
+    SUB             shift and go to state 75
+    ADD             shift and go to state 76
+    SECOND          shift and go to state 77
+    FIRST           shift and go to state 78
+    AND             shift and go to state 79
+    OR              shift and go to state 80
+    NOT             shift and go to state 81
 
 
-state 143
+state 142
 
-    (71) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .
+    (72) function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .
 
-    ENDSTR          reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    IF              reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    DO              reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    FUNCTION        reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    VARIABLE        reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    MOVE            reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    RIGHT           reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    LEFT            reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    LMS             reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    INT             reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    BOOL            reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    SHORT           reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    VECTOROF        reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    $end            reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    WHILE           reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    END             reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    ELSE            reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    error           reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
-    RETURN          reduce using rule 71 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    ENDSTR          reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    IF              reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    DO              reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    FUNCTION        reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    VARIABLE        reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    MOVE            reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    RIGHT           reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    LEFT            reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    LMS             reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    INT             reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    BOOL            reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    SHORT           reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    VECTOROF        reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    $end            reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    WHILE           reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    END             reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    ELSE            reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    error           reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
+    RETURN          reduce using rule 72 (function -> FUNCTION VARIABLE OPBR arrtype CLBR statement_gr RETURN expr ENDSTR .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for COMMA in state 69 resolved as shift
-WARNING: shift/reduce conflict for SQOPBR in state 89 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 91 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 97 resolved as shift
-WARNING: shift/reduce conflict for SUB in state 97 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 97 resolved as shift
-WARNING: shift/reduce conflict for SECOND in state 97 resolved as shift
-WARNING: shift/reduce conflict for FIRST in state 97 resolved as shift
-WARNING: shift/reduce conflict for AND in state 97 resolved as shift
-WARNING: shift/reduce conflict for OR in state 97 resolved as shift
-WARNING: shift/reduce conflict for NOT in state 97 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 71 resolved as shift
+WARNING: shift/reduce conflict for SQOPBR in state 90 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 92 resolved as shift
 WARNING: shift/reduce conflict for EQUAL in state 98 resolved as shift
 WARNING: shift/reduce conflict for SUB in state 98 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 98 resolved as shift
@@ -4289,14 +4360,14 @@ WARNING: shift/reduce conflict for FIRST in state 99 resolved as shift
 WARNING: shift/reduce conflict for AND in state 99 resolved as shift
 WARNING: shift/reduce conflict for OR in state 99 resolved as shift
 WARNING: shift/reduce conflict for NOT in state 99 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 104 resolved as shift
-WARNING: shift/reduce conflict for SUB in state 104 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 104 resolved as shift
-WARNING: shift/reduce conflict for SECOND in state 104 resolved as shift
-WARNING: shift/reduce conflict for FIRST in state 104 resolved as shift
-WARNING: shift/reduce conflict for AND in state 104 resolved as shift
-WARNING: shift/reduce conflict for OR in state 104 resolved as shift
-WARNING: shift/reduce conflict for NOT in state 104 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 100 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 100 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 100 resolved as shift
+WARNING: shift/reduce conflict for SECOND in state 100 resolved as shift
+WARNING: shift/reduce conflict for FIRST in state 100 resolved as shift
+WARNING: shift/reduce conflict for AND in state 100 resolved as shift
+WARNING: shift/reduce conflict for OR in state 100 resolved as shift
+WARNING: shift/reduce conflict for NOT in state 100 resolved as shift
 WARNING: shift/reduce conflict for EQUAL in state 105 resolved as shift
 WARNING: shift/reduce conflict for SUB in state 105 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 105 resolved as shift
@@ -4305,7 +4376,16 @@ WARNING: shift/reduce conflict for FIRST in state 105 resolved as shift
 WARNING: shift/reduce conflict for AND in state 105 resolved as shift
 WARNING: shift/reduce conflict for OR in state 105 resolved as shift
 WARNING: shift/reduce conflict for NOT in state 105 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 118 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 106 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 106 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 106 resolved as shift
+WARNING: shift/reduce conflict for SECOND in state 106 resolved as shift
+WARNING: shift/reduce conflict for FIRST in state 106 resolved as shift
+WARNING: shift/reduce conflict for AND in state 106 resolved as shift
+WARNING: shift/reduce conflict for OR in state 106 resolved as shift
+WARNING: shift/reduce conflict for NOT in state 106 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 119 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 121 resolved as shift
 WARNING: shift/reduce conflict for EQUAL in state 124 resolved as shift
 WARNING: shift/reduce conflict for SUB in state 124 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 124 resolved as shift
@@ -4355,5 +4435,6 @@ WARNING: shift/reduce conflict for AND in state 129 resolved as shift
 WARNING: shift/reduce conflict for OR in state 129 resolved as shift
 WARNING: shift/reduce conflict for NOT in state 129 resolved as shift
 WARNING: shift/reduce conflict for COMMA in state 136 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 137 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 140 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 139 resolved as shift
+WARNING: reduce/reduce conflict in state 68 resolved using rule (setting -> variable SET expr)
+WARNING: rejected rule (exprarr -> expr) in state 68
