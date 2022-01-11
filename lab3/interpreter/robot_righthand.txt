@@ -1,41 +1,138 @@
 function work(int a)
 begin
-    findexit();
+    find_exit();
 end
-return 0;
+return exit;
 
-function findexit()
+
+function find_exit()
 begin
-    int i set 0;
-    int x set 1;
-    int y set 1;
-    go(i)
+    int i set 2;
+    int result;
+    do
+    begin
+        result set go(i);
+        if i == 0 then
+        begin
+            if result == 1 then
+                i set 1;
+            else
+                i set 3;
+        end
+        else
+        begin
+            if i == 1 then
+            begin
+                if result == 1 then
+                    i set 2;
+                else
+                    i set 0;
+            end
+            else
+            begin
+                if i == 2 then
+                begin
+                    if result == -1 then
+                        i set 3;
+                    else
+                        i set 1;
+                end
+                else
+                begin
+                    if i == 3 then
+                    begin
+                        if result == -1 then
+                            i set 0;
+                        else
+                            i set 2;
+                    end
+                    else;
+                    end
+                end
+            end
+    end
+    while exit == false;
 end
 return 0;
 
 
 function go(int dir)
 begin
-    if i == 0 then
+    int flag;
+    if dir == 0 then
+        flag set go_up();
+    else
+        if dir == 1 then
+            flag set go_right();
+        else
+            if dir == 2 then
+                flag set go_down();
+            else
+                if dir == 3 then
+                    flag set go_left();
+                else;
+end
+return flag;
+
+
+function go_up()
+begin
+    int flag set 1;
+    int fl set move;
+    if fl == -1 then
     begin
-        int result set move;
+         flag set 0;
+         move;
     end
     else
-    begin
-        if i == 1 then
-
-        else
-            if i == 2 then
-
-            else
-                if i == 3 then
-
-
-                else;
-
-    end
-
+        if fl == 0 then
+            flag set 0;
+        else;
+    mylms();
 end
+return flag;
+
+
+function go_right()
+begin
+    int flag set 1;
+    int fl set right;
+    if fl == 0 then
+         flag set 0;
+    else;
+    mylms();
+end
+return flag;
+
+
+function go_down()
+begin
+    int flag set -1;
+    int fl set move;
+    if fl == 1 then
+    begin
+         flag set 0;
+         move;
+    end
+    else
+        if fl == 0 then
+            flag set 0;
+        else;
+    mylms();
+end
+return flag;
+
+
+function go_left()
+begin
+    int flag set -1;
+    int fl set left;
+    if fl == 0 then
+         flag set 0;
+    else;
+    mylms();
+end
+return flag;
 
 
 function mylms()
@@ -44,7 +141,7 @@ begin
     int r set lms;
     if r first smaller 0 then
     begin
-        go_right(r);
+        go_rig(r);
         flag set true;
     end
     else
@@ -52,7 +149,7 @@ begin
         int l set lms;
         if l first larger 0 then
         begin
-            go_left(l);
+            go_lef(l);
             flag set false;
         end
         else
@@ -62,7 +159,7 @@ end
 return flag;
 
 
-function go_right(int steps)
+function go_rig(int steps)
 begin
     do
     begin
@@ -74,7 +171,7 @@ end
 return 0;
 
 
-function go_left(int steps)
+function go_lef(int steps)
 begin
     do
     begin

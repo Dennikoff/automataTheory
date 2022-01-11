@@ -28,14 +28,15 @@ back_cells = {
     'exit': 'E',
     'wall': '#'
 }
-''' MATRIX:
- ▲▼ ᩔ 🤖 🏰
-    ᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔ
-    ᩔ▲▼▲▼▲▼▲▼▲▼ᩔ
-    ᩔ▼▲▼▲▼▲▼▲🤖▲ᩔ
-    ᩔ▲▼🏰▼▲▼▲▼▲▼ᩔ
-    ᩔ▼▲▼▲▼▲▼▲▼▲ᩔ
-    ᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔᩔ
+'''
+example:
+ ▲ ▼ ᩔ 🤖 🏰
+    ᩔᩔᩔᩔᩔᩔᩔᩔ
+    ᩔ▼▲▼▲▼▲ᩔ
+    ᩔ▲▼▲🤖▲▼ᩔ
+    ᩔ▼🏰▼▲▼▲ᩔ
+    ᩔ▲▼▲▼▲▼ᩔ
+    ᩔᩔᩔᩔᩔᩔᩔᩔᩔ
 '''
 
 
@@ -48,11 +49,13 @@ class Cell:
         return f'{self.type}'
 
 class Robot:
-    def __init__(self, x, y, map):
+    def __init__(self, x, y, map, map_int):
+        self.map_int = map_int
         self.x = x
         self.y = y
         self.scan_right = True
         self.map = map
+        self.counte = 1
 
     def __repr__(self):
         if self.scan_right:
@@ -99,6 +102,9 @@ class Robot:
             return Variable(0, 'int')
         else:
             if self.map[self.y - 1][self.x].type != 'wall':
+                if self.map_int[self.y][self.x] == 0:
+                    self.map_int[self.y][self.x] = self.counte
+                    self.counte += 1
                 self.y -= 1
                 return Variable(1, 'int')
         return Variable(0, 'int')
@@ -108,6 +114,9 @@ class Robot:
             return Variable(0, 'int')
         if (self.x + self.y) % 2 == 0:
             if self.map[self.y + 1][self.x].type != 'wall':
+                if self.map_int[self.y][self.x] == 0:
+                    self.map_int[self.y][self.x] = self.counte
+                    self.counte += 1
                 self.y += 1
                 return Variable(-1, 'int')
         return Variable(0, 'int')
@@ -117,6 +126,9 @@ class Robot:
             return Variable(0, 'int')
         else:
             if self.map[self.y][self.x - 1].type != 'wall':
+                if self.map_int[self.y][self.x] == 0:
+                    self.map_int[self.y][self.x] = self.counte
+                    self.counte += 1
                 self.x -= 1
                 return Variable(-1, 'int')
         return Variable(0, 'int')
@@ -126,6 +138,9 @@ class Robot:
             return Variable(0, 'int')
         else:
             if self.map[self.y][self.x + 1].type != 'wall':
+                if self.map_int[self.y][self.x] == 0:
+                    self.map_int[self.y][self.x] = self.counte
+                    self.counte += 1
                 self.x += 1
                 return Variable(1, 'int')
         return Variable(0, 'int')
@@ -137,7 +152,7 @@ class Robot:
 
     def lms(self):
         dist = 1
-        radius = 3
+        radius = 5
         if self.scan_right:
             self.scan_right = False
             while self.map[self.y][self.x+dist].type == 'empty':
@@ -196,8 +211,10 @@ class InterpreterClass:
         self.err_type = ErrType
         self.curFunc = None
         self.variables = VariableList()
-        self.exit = False
+        self.exit = Variable('false', 'bool', 'exit')
+        self.variables.variables['exit'] = self.exit
         self.steps = 0
+
 
 
 
@@ -210,7 +227,7 @@ class InterpreterClass:
                 self.curFunc = 'work'
                 self.nodeHandle(self.functions['work'].children[1])
                 return_value = self.expression(self.functions['work'].children[2]).value
-                print('Return:', return_value)
+                return return_value
         else:
             self.errorHandler.raise_err(self.err_type.SyntaxError.value)
 
@@ -281,6 +298,8 @@ class InterpreterClass:
                 else:
                     if self.robot.exit():
                         self.exit = True
+                        exit = self.get_variable(Node('', data='exit'))
+                        exit.set_value('true')
                         return Variable('true', 'bool', 'exit')
                     self.steps += 1
                     self.robot.show()
@@ -299,7 +318,7 @@ class InterpreterClass:
             self.errorHandler.raise_err(self.err_type.RepeatingParam.value, [err.args[0], err.args[1]])
         except errors.MyRuntimeError as err:
             self.errorHandler.raise_err((self.err_type.RuntimeError.value))
-            sys.exit(self.err_type.RuntimeError.value)
+            return False
         except errors.SizeOfError as err:
             self.errorHandler.raise_err(self.err_type.SizeOfError.value, [err.args[0], err.args[1]])
         except errors.FunctionVarlistError as err:
@@ -515,7 +534,7 @@ class InterpreterClass:
             self.nodeHandle(body)
             condition = self.expression(expression)
             condition = convertor.convert_type(condition, 'bool').value
-            if counter > 100000:
+            if counter > 1000:
                 raise errors.MyRuntimeError()
         self.returnEnv()
 
@@ -730,32 +749,52 @@ class InterpreterClass:
             raise errors.FunctionVarlistError(name.data, name)
 
 
+
 def create_robot():
-    with open('map_check.txt') as file:
+    with open('map_big.txt') as file:
         text = file.read()
     text = text.split('\n')
     robot_info = text.pop(0).split(' ')
     map_size = text.pop(0).split(' ')
     x = int(robot_info[0])
     y = int(robot_info[1])
+    map_numbers = [0] * int(map_size[0])
     map = ['empty'] * int(map_size[0])
 
     for i in range(int(map_size[0])):
         map[i] = ['empty']*int(map_size[1])
+        map_numbers[i] = [0] * int(map_size[1])
     index = 0
     while len(text) > 0:
         line = list(text.pop(0))
-        line = [Cell(cells[i]) for i in line]
-        map[index] = line
+        new_line = []
+        for i, char in enumerate(line):
+            new_line.append(Cell(cells[char]))
+            if char == '#':
+                map_numbers[index][i] = '#'
+            if char == 'E':
+                map_numbers[index][i] = 'E'
+        map[index] = new_line
         index += 1
-    return Robot(x, y, map)
+    return Robot(x, y, map, map_numbers)
+
+
+def print_map_int(map):
+    for i in range(len(map)):
+        for j in range(len(map[0])):
+            print(map[i][j], end='\t')
+        print()
+    print()
 
 
 if __name__ == '__main__':
-    f = open('check2.txt', 'r')
+    f = open('robot_righthand.txt', 'r')
     data = f.read()
     robot = create_robot()
     my_interpreter = InterpreterClass(data, robot)
     result = my_interpreter.interprete()
-    if result == True:
+    if result == 'true':
         print(f"Robot find exit;\nNumber of steps:{my_interpreter.steps}")
+        print_map_int(my_interpreter.robot.map_int)
+    else:
+        print(f"Robot can't find exit;\nNumber of steps:{my_interpreter.steps}")
